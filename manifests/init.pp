@@ -100,14 +100,14 @@ class capsule (
   $foreman_oauth_secret          = $capsule::params::foreman_oauth_secret
   ) inherits capsule::params {
 
-  validate_present($parent_fqdn)
+  validate_present($capsule::parent_fqdn)
 
   if $pulp {
     validate_pulp($pulp)
     validate_present($pulp_oauth_secret)
   }
 
-  $foreman_url = "https://$parent_fqdn"
+  $foreman_url = "https://${parent_fqdn}"
 
   if $certs_tar {
     certs::tar_extract { $certs_tar:
@@ -140,7 +140,7 @@ class capsule (
   if $puppet {
     class { 'certs::puppet': } ~>
 
-    class { puppet:
+    class { 'puppet':
       server                      => true,
       server_foreman_url          => $foreman_url,
       server_foreman_ssl_cert     => $::certs::puppet::client_cert,
@@ -156,21 +156,12 @@ class capsule (
 
   if $tftp or $dhcp or $dns or $puppet or $puppetca {
 
-    if $certs_generate {
-      # we make sure the certs for foreman are properly deployed
-      class { 'certs::foreman':
-        hostname => $parent_fqdn,
-        deploy   => true,
-        before     => Service['foreman-proxy'],
-      }
-    }
-
     class { 'certs::foreman_proxy':
       require    => Package['foreman-proxy'],
       before     => Service['foreman-proxy'],
     }
 
-    class { foreman_proxy:
+    class { 'foreman_proxy':
       custom_repo           => true,
       port                  => $foreman_proxy_port,
       puppetca              => $puppetca,
@@ -191,7 +182,7 @@ class capsule (
       dns_forwarders        => $dns_forwarders,
       register_in_foreman   => $register_in_foreman,
       foreman_base_url      => $foreman_url,
-      registered_proxy_url  => "https://${fqdn}:${foreman_proxy_port}",
+      registered_proxy_url  => "https://${::fqdn}:${capsule::foreman_proxy_port}",
       oauth_effective_user  => $foreman_oauth_effective_user,
       oauth_consumer_key    => $foreman_oauth_key,
       oauth_consumer_secret => $foreman_oauth_secret

@@ -1,3 +1,4 @@
+# Default params for capsule settings
 class capsule::params {
 
   include foreman_proxy::params
@@ -19,7 +20,7 @@ class capsule::params {
   $puppet                        = false
   $puppetca                      = false
 
-  $foreman_proxy_port            = "9090"
+  $foreman_proxy_port            = '9090'
   $tftp                          = false
   $tftp_servername               = $foreman_proxy::params::tftp_servername
   $dhcp                          = false
