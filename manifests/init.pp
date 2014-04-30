@@ -114,7 +114,10 @@ class capsule (
   }
 
   if $pulp {
-    class { 'certs::apache':     hostname => $capsule_fqdn }
+    class { 'certs::apache':
+      hostname => $capsule_fqdn
+    }
+
     class { 'pulp':
       default_password => $pulp_admin_password,
       oauth_key        => $pulp_oauth_key,
@@ -138,8 +141,9 @@ class capsule (
   }
 
   if $puppet {
-    class { 'certs::puppet': hostname => $capsule_fqdn } ~>
-
+    class { 'certs::puppet':
+      hostname => $capsule_fqdn
+    } ~>
     class { 'puppet':
       server                      => true,
       server_foreman_url          => $foreman_url,
@@ -153,8 +157,9 @@ class capsule (
     }
   }
 
+  $foreman_proxy = $tftp or $dhcp or $dns or $puppet or $puppetca
 
-  if $tftp or $dhcp or $dns or $puppet or $puppetca {
+  if $foreman_proxy {
 
     class { 'certs::foreman_proxy':
       hostname   => $capsule_fqdn,
@@ -193,20 +198,18 @@ class capsule (
   if $certs_tar {
     certs::tar_extract { $capsule::certs_tar: }
 
-    if defined(Class['certs::apache']) {
+    if $pulp {
       Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
-    }
-
-    if defined(Class['certs::foreman_proxy']) {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
-    }
-
-    if defined(Class['certs::pulp_child']) {
       Certs::Tar_extract[$certs_tar] -> Class['certs::pulp_child']
     }
 
-    if defined(Class['certs::puppet']) {
+    if $puppet {
       Certs::Tar_extract[$certs_tar] -> Class['certs::puppet']
     }
+
+    if $foreman_proxy {
+      Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
+    }
+
   }
 }
