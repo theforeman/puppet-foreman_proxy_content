@@ -118,10 +118,15 @@ class capsule (
       hostname => $capsule_fqdn
     }
 
+    class { 'certs::qpid': } ~>
     class { 'pulp':
-      default_password => $pulp_admin_password,
-      oauth_key        => $pulp_oauth_key,
-      oauth_secret     => $pulp_oauth_secret
+      default_password            => $pulp_admin_password,
+      oauth_key                   => $pulp_oauth_key,
+      oauth_secret                => $pulp_oauth_secret,
+      qpid_ssl_cert_db            => $certs::nss_db_dir,
+      qpid_ssl_cert_password_file => $certs::qpid::nss_db_password_file,
+      messaging_ca_cert           => $certs::ca_cert,
+      messaging_client_cert       => $certs::params::messaging_client_cert
     } ~>
     class { 'pulp::child':
       parent_fqdn          => $parent_fqdn,
