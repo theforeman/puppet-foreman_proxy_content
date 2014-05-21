@@ -139,10 +139,6 @@ class capsule (
       hostname => $capsule_fqdn,
       notify   => [ Class['pulp'], Class['pulp::child'] ],
     }
-
-    katello_node { "https://${parent_fqdn}/katello":
-      content => $pulp
-    }
   }
 
   if $puppet {
