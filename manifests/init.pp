@@ -114,6 +114,15 @@ class capsule (
   }
 
   if $pulp {
+    apache::vhost { 'capsule':
+      servername      => $capsule_fqdn,
+      port            => 80,
+      priority        => '05',
+      docroot         => '/var/www/html',
+      options         => ['SymLinksIfOwnerMatch'],
+      custom_fragment => template('capsule/_pulp_includes.erb'),
+    }
+
     class { 'certs::apache':
       hostname => $capsule_fqdn
     }
