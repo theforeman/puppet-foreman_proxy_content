@@ -226,7 +226,8 @@ class capsule (
       registered_proxy_url  => "https://${capsule_fqdn}:${capsule::foreman_proxy_port}",
       oauth_effective_user  => $foreman_oauth_effective_user,
       oauth_consumer_key    => $foreman_oauth_key,
-      oauth_consumer_secret => $foreman_oauth_secret
+      oauth_consumer_secret => $foreman_oauth_secret,
+      pulp                  => $pulp
     }
   }
 
