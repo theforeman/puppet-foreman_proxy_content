@@ -11,6 +11,12 @@ class capsule::params {
   $foreman_oauth_key          = cache_data('oauth_consumer_key', random_password(32))
   $foreman_oauth_secret       = cache_data('oauth_consumer_secret', random_password(32))
 
+  $services_directory         = '/etc/katello/services.d'
+  $foreman_proxy_services     = ['foreman-proxy']
+  $pulp_services              = ['qdrouterd', 'qpidd', 'pulp_celerybeat', 'pulp_workers',
+                                  'pulp_resource_manager', 'httpd']
+
+
   $pulp                       = false
   $pulp_master                = false
   $pulp_admin_password        = cache_data('pulp_node_admin_password', random_password(32))

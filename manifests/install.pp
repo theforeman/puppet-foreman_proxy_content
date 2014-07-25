@@ -1,4 +1,4 @@
-# Pulp Installation Packages
+# Capsule Installation Packages
 class capsule::install {
 
   if $capsule::pulp or $capsule::pulp_master {
@@ -7,7 +7,7 @@ class capsule::install {
     }
   }
 
-  package{ ['katello-debug']:
+  package{ ['katello-debug', 'katello-capsule']:
     ensure => installed,
   }
 }

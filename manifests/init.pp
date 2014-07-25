@@ -28,6 +28,14 @@
 # $foreman_proxy_http_port::        HTTP port on which foreman proxy will listen
 #                                   type:integer
 #
+# $services_directory::             Directory where services configuration is stored
+#
+# $pulp_services::                  List of services related to pulp
+#                                   type: array
+#
+# $foreman_proxy_services::         List of services related to Foreman Proxy
+#                                   type: array
+#
 # $puppet::                         Use puppet
 #                                   type:boolean
 #
@@ -228,6 +236,10 @@ class capsule (
 
   $templates                     = $capsule::params::templates,
 
+  $pulp_services                 = $capsule::params::pulp_services,
+  $foreman_proxy_services        = $capsule::params::foreman_proxy_services,
+  $services_directory            = $capsule::params::services_directory,
+
   $qpid_router                   = $capsule::params::qpid_router,
   $qpid_router_hub_addr          = $capsule::params::qpid_router_hub_addr,
   $qpid_router_hub_port          = $capsule::params::qpid_router_hub_port,
@@ -250,6 +262,10 @@ class capsule (
   $capsule_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
   $reverse_proxy_real = $pulp or $reverse_proxy
+
+  $pulp_services_files = prefix($pulp_services, $services_directory)
+  $foreman_proxy_services_files = prefix($foreman_proxy_services, $services_directory)
+  ensure_resource('file', $foreman_proxy_services_files, {'ensure' => 'file', 'mode' => '0644'})
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
@@ -365,6 +381,7 @@ class capsule (
   }
 
   if $pulp {
+    ensure_resource('file', $pulp_services_files, {'ensure' => 'file', 'mode' => '0644'})
 
     apache::vhost { 'capsule':
       servername      => $capsule_fqdn,
