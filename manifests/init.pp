@@ -121,7 +121,6 @@ class capsule (
   validate_present($capsule::parent_fqdn)
 
   if $pulp {
-    validate_pulp($pulp)
     validate_present($pulp_oauth_secret)
   }
 
