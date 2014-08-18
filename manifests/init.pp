@@ -161,7 +161,8 @@ class capsule (
       parent_fqdn          => $parent_fqdn,
       oauth_effective_user => $pulp_oauth_effective_user,
       oauth_key            => $pulp_oauth_key,
-      oauth_secret         => $pulp_oauth_secret
+      oauth_secret         => $pulp_oauth_secret,
+      server_ca_cert       => $certs::params::pulp_server_ca_cert,
     }
 
     class { 'certs::pulp_child':
