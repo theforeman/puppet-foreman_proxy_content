@@ -19,8 +19,14 @@
 #
 # $pulp_oauth_secret::              OAuth secret to be used for Pulp REST interaction
 #
+# $pulp_services::                  List of services related to pulp
+#                                   type: array
+#
 # $foreman_proxy_port::             Port on which will foreman proxy listen
 #                                   type:integer
+#
+# $foreman_proxy_services::         List of services related to Foreman Proxy
+#                                   type: array
 #
 # $puppet::                         Use puppet
 #                                   type:boolean
@@ -118,7 +124,10 @@ class capsule (
   $register_in_foreman           = $capsule::params::register_in_foreman,
   $foreman_oauth_effective_user  = $capsule::params::foreman_oauth_effective_user,
   $foreman_oauth_key             = $capsule::params::foreman_oauth_key,
-  $foreman_oauth_secret          = $capsule::params::foreman_oauth_secret
+  $foreman_oauth_secret          = $capsule::params::foreman_oauth_secret,
+
+  $pulp_services                 = $capsule::params::pulp_services,
+  $foreman_proxy_services        = $capsule::params::foreman_proxy_services,
   ) inherits capsule::params {
 
   validate_present($capsule::parent_fqdn)
@@ -141,12 +150,31 @@ class capsule (
 
   $capsule_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
+  $pulp_services_files = prefix($pulp_services, '/etc/capsule/services.d/')
+  $foreman_proxy_services_files = prefix($foreman_proxy_services, '/etc/capsule/services.d/')
 
   if $register_in_foreman {
     validate_present($foreman_oauth_secret)
   }
 
+  file { ['/etc/capsule', '/etc/capsule/services.d']:
+    ensure => directory,
+    mode   => '0755',
+  }
+
+  file { '/usr/sbin/capsule-service':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/capsule/capsule-service',
+  }
+
   if $pulp {
+    file { $pulp_services_files:
+      ensure  => file,
+      mode    => '0644',
+      require => File['/etc/capsule/services.d'],
+    }
+
     apache::vhost { 'capsule':
       servername      => $capsule_fqdn,
       port            => 80,
@@ -205,6 +233,11 @@ class capsule (
   $foreman_proxy = $tftp or $dhcp or $dns or $puppet or $puppetca or $realm
 
   if $foreman_proxy {
+    file { $foreman_proxy_services_files:
+      ensure  => file,
+      mode    => '0644',
+      require => File['/etc/capsule/services.d'],
+    }
 
     class { 'certs::foreman_proxy':
       hostname   => $capsule_fqdn,
