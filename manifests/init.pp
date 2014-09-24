@@ -264,9 +264,9 @@ class capsule (
   if $foreman_proxy {
 
     class { 'certs::foreman_proxy':
-      hostname   => $capsule_fqdn,
-      require    => Package['foreman-proxy'],
-      before     => Service['foreman-proxy'],
+      hostname => $capsule_fqdn,
+      require  => Package['foreman-proxy'],
+      before   => Service['foreman-proxy'],
     }
 
     class { 'foreman_proxy':
