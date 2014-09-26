@@ -28,6 +28,11 @@
 # $puppetca::                       Use puppet ca
 #                                   type:boolean
 #
+# $puppet_ca_proxy::                The actual server that handles puppet CA.
+#                                   Setting this to anything non-empty causes
+#                                   the apache vhost to set up a proxy for all
+#                                   certificates pointing to the value.
+#
 # $tftp::                           Use TFTP
 #                                   type:boolean
 #
@@ -130,6 +135,7 @@ class capsule (
 
   $puppet                        = $capsule::params::puppet,
   $puppetca                      = $capsule::params::puppetca,
+  $puppet_ca_proxy               = $capsule::params::puppet_ca_proxy,
 
   $tftp                          = $capsule::params::tftp,
   $tftp_syslinux_root            = $capsule::params::tftp_syslinux_root,
@@ -256,6 +262,7 @@ class capsule (
       server_environments_owner   => 'apache',
       server_config_version       => '',
       server_enc_api              => 'v2',
+      server_ca_proxy             => $puppet_ca_proxy,
     }
   }
 
