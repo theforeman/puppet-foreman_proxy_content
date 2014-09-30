@@ -18,6 +18,9 @@ class capsule::params {
   $pulp_oauth_key             = 'katello'
   $pulp_oauth_secret          = undef
 
+  $parent_reverse_proxy      = false
+  $parent_reverse_proxy_port = 8443
+
   $puppet                        = false
   $puppetca                      = false
   $puppet_ca_proxy               = ''

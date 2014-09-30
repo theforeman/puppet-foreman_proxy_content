@@ -32,6 +32,10 @@
 #                                   Setting this to anything non-empty causes
 #                                   the apache vhost to set up a proxy for all
 #                                   certificates pointing to the value.
+# $parent_reverse_proxy::           Add reverse proxy to the parent
+#                                   type:boolean
+#
+# $parent_reverse_proxy_port::      reverse proxy listening port
 #
 # $tftp::                           Use TFTP
 #                                   type:boolean
@@ -137,6 +141,9 @@ class capsule (
   $puppetca                      = $capsule::params::puppetca,
   $puppet_ca_proxy               = $capsule::params::puppet_ca_proxy,
 
+  $parent_reverse_proxy          = $capsule::params::parent_reverse_proxy,
+  $parent_reverse_proxy_port     = $capsule::params::parent_reverse_proxy_port,
+
   $tftp                          = $capsule::params::tftp,
   $tftp_syslinux_root            = $capsule::params::tftp_syslinux_root,
   $tftp_syslinux_files           = $capsule::params::tftp_syslinux_files,
@@ -185,6 +192,7 @@ class capsule (
 
   validate_present($capsule::parent_fqdn)
 
+
   if $pulp_master or $pulp {
     foreman_proxy::settings_file { 'pulp':
       template_path  => 'capsule/pulp.yml'
@@ -200,12 +208,26 @@ class capsule (
   }
 
   class { 'capsule::install': }
-
   $capsule_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
 
   if $register_in_foreman {
     validate_present($foreman_oauth_secret)
+  }
+
+  if $pulp or $capsule::parent_reverse_proxy {
+    class { 'certs::apache':
+      hostname => $capsule_fqdn
+    }
+  }
+
+  if $capsule::parent_reverse_proxy {
+    Class['certs::foreman_proxy'] ~>
+    class { 'capsule::reverse_proxy':
+      path => '/',
+      url  => "${foreman_url}/",
+      port => $capsule::params::parent_reverse_proxy_port
+    }
   }
 
   if $pulp {
@@ -216,10 +238,6 @@ class capsule (
       docroot         => '/var/www/html',
       options         => ['SymLinksIfOwnerMatch'],
       custom_fragment => template('capsule/_pulp_includes.erb'),
-    }
-
-    class { 'certs::apache':
-      hostname => $capsule_fqdn
     }
 
     class { 'certs::qpid': } ~>
@@ -328,8 +346,11 @@ class capsule (
   if $certs_tar {
     certs::tar_extract { $capsule::certs_tar: } -> Class['certs']
 
-    if $pulp {
+    if $capsule::reverse_proxy or $pulp {
       Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
+    }
+
+    if $pulp {
       Certs::Tar_extract[$certs_tar] -> Class['certs::pulp_child']
     }
 
