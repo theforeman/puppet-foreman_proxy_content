@@ -35,7 +35,7 @@ class capsule::reverse_proxy(
         },
         {
           'error_code' => '503',
-          'document'  => '\'{"displayMessage": "Service unavailable or restarting, try later", "errors": ["Service unavailable or restarting, try later"], "status": "503" }\''
+          'document'   => '\'{"displayMessage": "Service unavailable or restarting, try later", "errors": ["Service unavailable or restarting, try later"], "status": "503" }\''
         },
       ]
     }
