@@ -195,7 +195,6 @@ class capsule (
   }
 
   if $pulp {
-    validate_pulp($pulp)
     validate_present($pulp_oauth_secret)
   }
 
