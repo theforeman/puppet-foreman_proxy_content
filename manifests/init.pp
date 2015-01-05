@@ -252,6 +252,7 @@ class capsule (
     } ~>
     class { 'puppet':
       server                      => true,
+      server_ca                   => $puppetca,
       server_foreman_url          => $foreman_url,
       server_foreman_ssl_cert     => $::certs::puppet::client_cert,
       server_foreman_ssl_key      => $::certs::puppet::client_key,
