@@ -32,26 +32,6 @@
        "version_requirement": ">= 1.5.0"
     },
     {
-       "name": "theforeman-concat_native",
-       "version_requirement": ">= 1.5.0"
-    },
-    {
-       "name": "theforeman-dhcp",
-       "version_requirement": ">= 1.5.0"
-    },
-    {
-       "name": "theforeman-dns",
-       "version_requirement": ">= 1.5.0"
-    },
-    {
-       "name": "theforeman-puppet",
-       "version_requirement": ">= 1.5.0"
-    },
-    {
-       "name": "theforeman-tftp",
-       "version_requirement": ">= 1.5.0"
-    },
-    {
        "name": "katello-common",
        "version_requirement": ">= 0.0.1"
     }
