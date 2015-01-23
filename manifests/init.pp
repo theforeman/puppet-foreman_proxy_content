@@ -19,7 +19,13 @@
 #
 # $pulp_oauth_secret::              OAuth secret to be used for Pulp REST interaction
 #
-# $foreman_proxy_port::             Port on which will foreman proxy listen
+# $foreman_proxy_port::             SSL port on which foreman proxy will listen
+#                                   type:integer
+#
+# $foreman_proxy_http::             Foreman proxy listen on HTTP
+#                                   type:boolean
+#
+# $foreman_proxy_http_port::        HTTP port on which foreman proxy will listen
 #                                   type:integer
 #
 # $puppet::                         Use puppet
@@ -127,6 +133,9 @@
 #
 # $rhsm_url::                       The URL that the RHSM API is rooted at
 #
+# $templates::                      Enable templates proxying feature
+#                                   type:boolean
+#
 class capsule (
   $parent_fqdn                   = $capsule::params::parent_fqdn,
   $certs_tar                     = $capsule::params::certs_tar,
@@ -138,6 +147,8 @@ class capsule (
   $pulp_oauth_secret             = $capsule::params::pulp_oauth_secret,
 
   $foreman_proxy_port            = $capsule::params::foreman_proxy_port,
+  $foreman_proxy_http            = $capsule::params::foreman_proxy_http,
+  $foreman_proxy_http_port       = $capsule::params::foreman_proxy_http_port,
 
   $puppet                        = $capsule::params::puppet,
   $puppetca                      = $capsule::params::puppetca,
@@ -192,6 +203,7 @@ class capsule (
 
   $rhsm_url                      = $capsule::params::rhsm_url,
 
+  $templates                     = $capsule::params::templates,
   ) inherits capsule::params {
 
   validate_present($capsule::parent_fqdn)
@@ -215,10 +227,16 @@ class capsule (
 
   if $pulp_master or $pulp {
     foreman_proxy::settings_file { 'pulp':
-      template_path  => 'capsule/pulp.yml'
+      enabled       => $pulp_master,
+      listen_on     => 'https',
+      template_path => 'capsule/pulp.yml',
+
     }
+
     foreman_proxy::settings_file { 'pulpnode':
-      template_path => 'capsule/pulpnode.yml'
+      enabled       => $pulp,
+      listen_on     => 'https',
+      template_path => 'capsule/pulpnode.yml',
     }
   }
 
@@ -235,7 +253,9 @@ class capsule (
 
   class { 'foreman_proxy':
     custom_repo           => true,
-    port                  => $foreman_proxy_port,
+    http                  => $foreman_proxy_http,
+    http_port             => $foreman_proxy_http_port,
+    ssl_port              => $foreman_proxy_port,
     puppetca              => $puppetca,
     ssl_cert              => $::certs::foreman_proxy::proxy_cert,
     ssl_key               => $::certs::foreman_proxy::proxy_key,
@@ -283,6 +303,7 @@ class capsule (
     oauth_effective_user  => $foreman_oauth_effective_user,
     oauth_consumer_key    => $foreman_oauth_key,
     oauth_consumer_secret => $foreman_oauth_secret,
+    templates             => $templates,
   }
 
   if $pulp or $reverse_proxy_real {
