@@ -33,6 +33,11 @@
 #                                   the apache vhost to set up a proxy for all
 #                                   certificates pointing to the value.
 #
+# $reverse_proxy::                  Add reverse proxy to the parent
+#                                   type:boolean
+#
+# $reverse_proxy_port::             reverse proxy listening port
+#
 # $tftp::                           Use TFTP
 #                                   type:boolean
 #
@@ -122,8 +127,6 @@
 #
 # $rhsm_url::                       The URL that the RHSM API is rooted at
 #
-# $rhsm_port::                      The port that clients will point at for RHSM on the Capsule
-#
 class capsule (
   $parent_fqdn                   = $capsule::params::parent_fqdn,
   $certs_tar                     = $capsule::params::certs_tar,
@@ -139,6 +142,9 @@ class capsule (
   $puppet                        = $capsule::params::puppet,
   $puppetca                      = $capsule::params::puppetca,
   $puppet_ca_proxy               = $capsule::params::puppet_ca_proxy,
+
+  $reverse_proxy                 = $capsule::params::reverse_proxy,
+  $reverse_proxy_port            = $capsule::params::reverse_proxy_port,
 
   $tftp                          = $capsule::params::tftp,
   $tftp_syslinux_root            = $capsule::params::tftp_syslinux_root,
@@ -185,11 +191,27 @@ class capsule (
   $foreman_oauth_secret          = $capsule::params::foreman_oauth_secret,
 
   $rhsm_url                      = $capsule::params::rhsm_url,
-  $rhsm_port                     = $capsule::params::rhsm_port,
 
   ) inherits capsule::params {
 
   validate_present($capsule::parent_fqdn)
+
+  if $pulp {
+    validate_present($pulp_oauth_secret)
+  }
+
+  if $register_in_foreman {
+    validate_present($foreman_oauth_secret)
+  }
+
+  $capsule_fqdn = $::fqdn
+  $foreman_url = "https://${parent_fqdn}"
+  $reverse_proxy_real = $pulp or $reverse_proxy
+
+  $rhsm_port = $reverse_proxy_real ? {
+    true  => $reverse_proxy_port,
+    false => '443'
+  }
 
   if $pulp_master or $pulp {
     foreman_proxy::settings_file { 'pulp':
@@ -200,17 +222,78 @@ class capsule (
     }
   }
 
-  if $pulp {
-    validate_present($pulp_oauth_secret)
+  class { 'capsule::install': } ~>
+  class { 'certs::foreman_proxy':
+    hostname => $capsule_fqdn,
+    require  => Package['foreman-proxy'],
+    before   => Service['foreman-proxy'],
+  } ~>
+  class { 'certs::katello':
+    deployment_url => $capsule::rhsm_url,
+    rhsm_port      => $capsule::rhsm_port
   }
 
-  class { 'capsule::install': }
+  class { 'foreman_proxy':
+    custom_repo           => true,
+    port                  => $foreman_proxy_port,
+    puppetca              => $puppetca,
+    ssl_cert              => $::certs::foreman_proxy::proxy_cert,
+    ssl_key               => $::certs::foreman_proxy::proxy_key,
+    ssl_ca                => $::certs::foreman_proxy::proxy_ca_cert,
+    foreman_ssl_cert      => $::certs::foreman_proxy::foreman_ssl_cert,
+    foreman_ssl_key       => $::certs::foreman_proxy::foreman_ssl_key,
+    foreman_ssl_ca        => $::certs::foreman_proxy::foreman_ssl_ca_cert,
+    tftp                  => $tftp,
+    tftp_syslinux_root    => $tftp_syslinux_root,
+    tftp_syslinux_files   => $tftp_syslinux_files,
+    tftp_root             => $tftp_root,
+    tftp_dirs             => $tftp_dirs,
+    tftp_servername       => $tftp_servername,
+    dhcp                  => $dhcp,
+    dhcp_interface        => $dhcp_interface,
+    dhcp_gateway          => $dhcp_gateway,
+    dhcp_range            => $dhcp_range,
+    dhcp_nameservers      => $dhcp_nameservers,
+    dhcp_vendor           => $dhcp_vendor,
+    dhcp_config           => $dhcp_config,
+    dhcp_leases           => $dhcp_leases,
+    dhcp_key_name         => $dhcp_key_name,
+    dhcp_key_secret       => $dhcp_key_secret,
+    dns                   => $dns,
+    dns_managed           => $dns_managed,
+    dns_provider          => $dns_provider,
+    dns_zone              => $dns_zone,
+    dns_reverse           => $dns_reverse,
+    dns_interface         => $dns_interface,
+    dns_server            => $dns_server,
+    dns_ttl               => $dns_ttl,
+    dns_tsig_keytab       => $dns_tsig_keytab,
+    dns_tsig_principal    => $dns_tsig_principal,
+    dns_forwarders        => $dns_forwarders,
+    virsh_network         => $virsh_network,
+    realm                 => $realm,
+    realm_provider        => $realm_provider,
+    realm_keytab          => $realm_keytab,
+    realm_principal       => $realm_principal,
+    freeipa_remove_dns    => $freeipa_remove_dns,
+    register_in_foreman   => $register_in_foreman,
+    foreman_base_url      => $foreman_url,
+    registered_proxy_url  => "https://${capsule_fqdn}:${capsule::foreman_proxy_port}",
+    oauth_effective_user  => $foreman_oauth_effective_user,
+    oauth_consumer_key    => $foreman_oauth_key,
+    oauth_consumer_secret => $foreman_oauth_secret
+  }
 
-  $capsule_fqdn = $::fqdn
-  $foreman_url = "https://${parent_fqdn}"
-
-  if $register_in_foreman {
-    validate_present($foreman_oauth_secret)
+  if $pulp or $reverse_proxy_real {
+    class { 'certs::apache':
+      hostname => $capsule_fqdn
+    } ~>
+    Class['certs::foreman_proxy'] ~>
+    class { 'capsule::reverse_proxy':
+      path => '/',
+      url  => "${foreman_url}/",
+      port => $capsule::reverse_proxy_port
+    }
   }
 
   if $pulp {
@@ -221,10 +304,6 @@ class capsule (
       docroot         => '/var/www/html',
       options         => ['SymLinksIfOwnerMatch'],
       custom_fragment => template('capsule/_pulp_includes.erb'),
-    }
-
-    class { 'certs::apache':
-      hostname => $capsule_fqdn
     }
 
     class { 'certs::qpid': } ~>
@@ -272,88 +351,20 @@ class capsule (
     }
   }
 
-  $foreman_proxy = $tftp or $dhcp or $dns or $puppet or $puppetca or $realm or $pulp
-
-  if $foreman_proxy {
-
-    class { 'certs::foreman_proxy':
-      hostname => $capsule_fqdn,
-      require  => Package['foreman-proxy'],
-      before   => Service['foreman-proxy'],
-    }
-
-    class { 'foreman_proxy':
-      custom_repo           => true,
-      port                  => $foreman_proxy_port,
-      puppetca              => $puppetca,
-      ssl_cert              => $::certs::foreman_proxy::proxy_cert,
-      ssl_key               => $::certs::foreman_proxy::proxy_key,
-      ssl_ca                => $::certs::foreman_proxy::proxy_ca_cert,
-      foreman_ssl_cert      => $::certs::foreman_proxy::foreman_ssl_cert,
-      foreman_ssl_key       => $::certs::foreman_proxy::foreman_ssl_key,
-      foreman_ssl_ca        => $::certs::foreman_proxy::foreman_ssl_ca_cert,
-      tftp                  => $tftp,
-      tftp_syslinux_root    => $tftp_syslinux_root,
-      tftp_syslinux_files   => $tftp_syslinux_files,
-      tftp_root             => $tftp_root,
-      tftp_dirs             => $tftp_dirs,
-      tftp_servername       => $tftp_servername,
-      dhcp                  => $dhcp,
-      dhcp_interface        => $dhcp_interface,
-      dhcp_gateway          => $dhcp_gateway,
-      dhcp_range            => $dhcp_range,
-      dhcp_nameservers      => $dhcp_nameservers,
-      dhcp_vendor           => $dhcp_vendor,
-      dhcp_config           => $dhcp_config,
-      dhcp_leases           => $dhcp_leases,
-      dhcp_key_name         => $dhcp_key_name,
-      dhcp_key_secret       => $dhcp_key_secret,
-      dns                   => $dns,
-      dns_managed           => $dns_managed,
-      dns_provider          => $dns_provider,
-      dns_zone              => $dns_zone,
-      dns_reverse           => $dns_reverse,
-      dns_interface         => $dns_interface,
-      dns_server            => $dns_server,
-      dns_ttl               => $dns_ttl,
-      dns_tsig_keytab       => $dns_tsig_keytab,
-      dns_tsig_principal    => $dns_tsig_principal,
-      dns_forwarders        => $dns_forwarders,
-      virsh_network         => $virsh_network,
-      realm                 => $realm,
-      realm_provider        => $realm_provider,
-      realm_keytab          => $realm_keytab,
-      realm_principal       => $realm_principal,
-      freeipa_remove_dns    => $freeipa_remove_dns,
-      register_in_foreman   => $register_in_foreman,
-      foreman_base_url      => $foreman_url,
-      registered_proxy_url  => "https://${capsule_fqdn}:${capsule::foreman_proxy_port}",
-      oauth_effective_user  => $foreman_oauth_effective_user,
-      oauth_consumer_key    => $foreman_oauth_key,
-      oauth_consumer_secret => $foreman_oauth_secret
-    }
-  }
-
   if $certs_tar {
     certs::tar_extract { $capsule::certs_tar: } -> Class['certs']
+    Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
+
+    if $reverse_proxy_real or $pulp {
+      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
+    }
 
     if $pulp {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
       Certs::Tar_extract[$certs_tar] -> Class['certs::pulp_child']
     }
 
     if $puppet {
       Certs::Tar_extract[$certs_tar] -> Class['certs::puppet']
     }
-
-    if $foreman_proxy {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
-    }
-
-  }
-
-  class { 'certs::katello':
-    deployment_url => $capsule::rhsm_url,
-    rhsm_port      => $capsule::rhsm_port
   }
 }
