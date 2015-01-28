@@ -26,6 +26,10 @@ class capsule::params {
   $puppet_ca_proxy               = ''
 
   $foreman_proxy_port            = '9090'
+
+  $foreman_proxy_http            = true
+  $foreman_proxy_http_port       = '8000'
+
   $tftp                          = false
   $tftp_servername               = $foreman_proxy::params::tftp_servername
   $tftp_syslinux_files           = $foreman_proxy::params::tftp_syslinux_files
@@ -66,6 +70,9 @@ class capsule::params {
   $realm_keytab                  = $foreman_proxy::params::realm_keytab
   $realm_principal               = $foreman_proxy::params::realm_principal
   $freeipa_remove_dns            = $foreman_proxy::params::freeipa_remove_dns
+
+  # Templates proxy
+  $templates                     = false
 
   $register_in_foreman = false
   $certs_tar = undef
