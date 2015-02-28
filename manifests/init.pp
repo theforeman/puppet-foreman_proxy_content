@@ -369,6 +369,11 @@ class capsule (
       oauth_key            => $pulp_oauth_key,
       oauth_secret         => $pulp_oauth_secret,
       server_ca_cert       => $certs::params::pulp_server_ca_cert,
+    } ~>
+    class { 'crane':
+      cert    => $certs::apache::apache_cert,
+      key     => $certs::apache::apache_key,
+      ca_cert => $certs::server_ca_cert,
     }
 
     class { 'certs::pulp_child':
