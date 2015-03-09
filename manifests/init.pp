@@ -261,6 +261,12 @@ class capsule (
       listen_on     => 'https',
       template_path => 'capsule/pulpnode.yml',
     }
+
+    if $qpid_router {
+      class { 'capsule::dispatch_router':
+        require => Class['pulp'],
+      }
+    }
   }
 
   class { 'capsule::install': } ~>
@@ -377,12 +383,6 @@ class capsule (
     }
   }
 
-
-  if $qpid_router {
-    class { 'capsule::dispatch_router':
-      require => Class['pulp'],
-    }
-  }
 
   if $puppet {
     class { 'certs::puppet':
