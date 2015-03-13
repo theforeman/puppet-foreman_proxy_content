@@ -59,6 +59,11 @@
 #
 # $tftp_servername::                Defines the TFTP server name to use, overrides the name in the subnet declaration
 #
+# $bmc::                            Enable BMC feature
+#                                   type:boolean
+#
+# $bmc_default_provider::           BMC default provider.
+#
 # $dhcp::                           Use DHCP
 #                                   type:boolean
 #
@@ -179,6 +184,9 @@ class capsule (
   $tftp_dirs                     = $capsule::params::tftp_dirs,
   $tftp_servername               = $capsule::params::tftp_servername,
 
+  $bmc                           = $capsule::params::bmc,
+  $bmc_default_provider          = $capsule::params::bmc_default_provider,
+
   $dhcp                          = $capsule::params::dhcp,
   $dhcp_managed                  = $capsule::params::dhcp_managed,
   $dhcp_interface                = $capsule::params::dhcp_interface,
@@ -292,6 +300,8 @@ class capsule (
     tftp_root             => $tftp_root,
     tftp_dirs             => $tftp_dirs,
     tftp_servername       => $tftp_servername,
+    bmc                   => $bmc,
+    bmc_default_provider  => $bmc_default_provider,
     dhcp                  => $dhcp,
     dhcp_interface        => $dhcp_interface,
     dhcp_gateway          => $dhcp_gateway,
