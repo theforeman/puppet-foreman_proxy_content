@@ -89,4 +89,6 @@ class capsule::params {
   $qpid_router_hub_port    = 5646
   $qpid_router_agent_port  = 5647
   $qpid_router_broker_port = 5671
+
+  $crane_port = $crane::params::port
 }

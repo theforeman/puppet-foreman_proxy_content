@@ -156,6 +156,8 @@
 #
 # $qpid_router_broker_port::        Port of qpidd broker to connect to
 #
+# $crane_port::                     Port for the crane service to run on
+#
 class capsule (
   $parent_fqdn                   = $capsule::params::parent_fqdn,
   $certs_tar                     = $capsule::params::certs_tar,
@@ -235,6 +237,8 @@ class capsule (
   $qpid_router_agent_port        = $capsule::params::qpid_router_agent_port,
   $qpid_router_broker_addr       = $capsule::params::qpid_router_broker_addr,
   $qpid_router_broker_port       = $capsule::params::qpid_router_broker_port,
+
+  $crane_port                    = $capsule::params::crane_port,
 ) inherits capsule::params {
 
   validate_present($capsule::parent_fqdn)
@@ -390,6 +394,7 @@ class capsule (
       cert    => $certs::apache::apache_cert,
       key     => $certs::apache::apache_key,
       ca_cert => $certs::server_ca_cert,
+      port    => $crane_port,
     }
 
     class { 'certs::pulp_child':
