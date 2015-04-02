@@ -156,6 +156,11 @@
 #
 # $qpid_router_broker_port::        Port of qpidd broker to connect to
 #
+# $monitor_qpid_router::            If true, the qdrouterd service will be monitored by
+#                                   monit to restart in the event it crashes
+#
+# $monitor_interval::               When monitoring, how often to have monit run checks
+#
 class capsule (
   $parent_fqdn                   = $capsule::params::parent_fqdn,
   $certs_tar                     = $capsule::params::certs_tar,
@@ -235,6 +240,9 @@ class capsule (
   $qpid_router_agent_port        = $capsule::params::qpid_router_agent_port,
   $qpid_router_broker_addr       = $capsule::params::qpid_router_broker_addr,
   $qpid_router_broker_port       = $capsule::params::qpid_router_broker_port,
+
+  $monitor_qpid_router           = $capsule::params::monitor_qpid_router,
+  $monitor_interval              = $capsule::params::monitor_interval
 ) inherits capsule::params {
 
   validate_present($capsule::parent_fqdn)

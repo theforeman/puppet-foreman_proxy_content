@@ -7,6 +7,17 @@ class capsule::dispatch_router (
 
   class { 'qpid::router': }
 
+  if $monitor_qpid_router {
+    class { '::monit':
+      check_interval => $monitor_interval
+    }
+
+    monit::check { 'qdrouterd':
+      content => template("capsule/qdrouterd_monit.erb"),
+      require => Class['qpid::router']
+    }
+  }
+
   # SSL Certificate Configuration
   class { 'certs::qpid_router':
     require => Class['qpid::router::install'],
