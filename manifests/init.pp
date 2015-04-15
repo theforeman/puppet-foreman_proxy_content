@@ -237,14 +237,14 @@ class capsule (
   $qpid_router_broker_port       = $capsule::params::qpid_router_broker_port,
 ) inherits capsule::params {
 
-  validate_present($capsule::parent_fqdn)
+  validate_string($capsule::parent_fqdn)
 
   if $pulp {
-    validate_present($pulp_oauth_secret)
+    validate_string($pulp_oauth_secret)
   }
 
   if $register_in_foreman {
-    validate_present($foreman_oauth_secret)
+    validate_string($foreman_oauth_secret)
   }
 
   $capsule_fqdn = $::fqdn
