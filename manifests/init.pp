@@ -67,6 +67,11 @@
 # $dhcp::                           Use DHCP
 #                                   type:boolean
 #
+# $dhcp_listen_on::                 DHCP proxy to listen on https, http, or both
+#
+# $dhcp_option_domain::             DHCP config option domain-name
+#                                   type: array
+#
 # $dhcp_managed::                   DHCP is managed by Foreman proxy
 #                                   type:boolean
 #
@@ -188,6 +193,8 @@ class capsule (
   $bmc_default_provider          = $capsule::params::bmc_default_provider,
 
   $dhcp                          = $capsule::params::dhcp,
+  $dhcp_listen_on                = $capsule::params::dhcp_listen_on,
+  $dhcp_option_domain            = $capsule::params::dhcp_option_domain,
   $dhcp_managed                  = $capsule::params::dhcp_managed,
   $dhcp_interface                = $capsule::params::dhcp_interface,
   $dhcp_gateway                  = $capsule::params::dhcp_gateway,
@@ -328,6 +335,8 @@ class capsule (
     bmc                   => $bmc,
     bmc_default_provider  => $bmc_default_provider,
     dhcp                  => $dhcp,
+    dhcp_listen_on        => $dhcp_listen_on,
+    dhcp_option_domain    => $dhcp_option_domain,
     dhcp_interface        => $dhcp_interface,
     dhcp_gateway          => $dhcp_gateway,
     dhcp_range            => $dhcp_range,
