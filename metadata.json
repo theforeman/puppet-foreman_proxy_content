@@ -31,10 +31,6 @@
        "name": "theforeman-foreman_proxy",
        "version_requirement": ">= 2.2.0"
     },
-    {
-       "name": "katello-common",
-       "version_requirement": ">= 0.0.1"
-    },
     {  
        "name": "katello-qpid",
        "version_requirement": ">= 1.0.0"
