@@ -77,7 +77,7 @@ class capsule::params {
   $freeipa_remove_dns            = $foreman_proxy::params::freeipa_remove_dns
 
   # Templates proxy
-  $templates                     = true
+  $templates                     = false
 
   $register_in_foreman = false
   $certs_tar = undef
