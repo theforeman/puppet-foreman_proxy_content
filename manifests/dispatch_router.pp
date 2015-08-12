@@ -49,6 +49,13 @@ class capsule::dispatch_router (
 
     qpid::router::link_route_pattern { 'broker-pulp-route':
       prefix    => 'pulp.',
+      direction => 'out',
+      connector => 'broker',
+    }
+
+    qpid::router::link_route_pattern { 'broker-pulp-task-route':
+      prefix    => 'pulp.task',
+      direction => 'in',
       connector => 'broker',
     }
 
