@@ -1,6 +1,6 @@
 {
   "name": "katello-capsule",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Katello",
   "summary": "Deploys and manages a Capsule",
   "license": "GPL-3.0+",
