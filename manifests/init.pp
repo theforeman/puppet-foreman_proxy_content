@@ -392,13 +392,17 @@ class capsule (
       ssl_cert_name          => 'broker',
     } ~>
     class { '::pulp':
-      default_password      => $pulp_admin_password,
-      oauth_key             => $pulp_oauth_key,
-      oauth_secret          => $pulp_oauth_secret,
-      messaging_transport   => 'qpid',
-      messaging_ca_cert     => $certs::ca_cert,
-      messaging_client_cert => $certs::params::messaging_client_cert,
-      messaging_url         => "ssl://${::fqdn}:5671",
+      default_password          => $pulp_admin_password,
+      oauth_key                 => $pulp_oauth_key,
+      oauth_secret              => $pulp_oauth_secret,
+      messaging_transport       => 'qpid',
+      messaging_ca_cert         => $certs::ca_cert,
+      messaging_client_cert     => $certs::params::messaging_client_cert,
+      messaging_url             => "ssl://${::fqdn}:5671",
+      node_oauth_effective_user => $pulp_oauth_effective_user,
+      node_oauth_key            => $pulp_oauth_key,
+      node_oauth_secret         => $pulp_oauth_secret,
+      node_server_ca_cert       => $certs::params::pulp_server_ca_cert,
     } ~>
     class { '::pulp::child':
       parent_fqdn          => $parent_fqdn,
