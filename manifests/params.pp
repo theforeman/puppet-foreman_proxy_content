@@ -8,12 +8,12 @@ class capsule::params {
 
   # OAuth credentials
   # shares cached_data with the foreman module so they're the same
-  $foreman_oauth_key          = cache_data('oauth_consumer_key', random_password(32))
-  $foreman_oauth_secret       = cache_data('oauth_consumer_secret', random_password(32))
+  $foreman_oauth_key          = cache_data('foreman_cache_data', 'oauth_consumer_key', random_password(32))
+  $foreman_oauth_secret       = cache_data('foreman_cache_data', 'oauth_consumer_secret', random_password(32))
 
   $pulp                       = false
   $pulp_master                = false
-  $pulp_admin_password        = cache_data('pulp_node_admin_password', random_password(32))
+  $pulp_admin_password        = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
   $pulp_oauth_effective_user  = 'admin'
   $pulp_oauth_key             = 'katello'
   $pulp_oauth_secret          = undef
