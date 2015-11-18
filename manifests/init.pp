@@ -353,6 +353,7 @@ class capsule (
     dhcp_option_domain    => $dhcp_option_domain,
     dhcp_interface        => $dhcp_interface,
     dhcp_gateway          => $dhcp_gateway,
+    dhcp_managed          => $dhcp_managed,
     dhcp_range            => $dhcp_range,
     dhcp_nameservers      => $dhcp_nameservers,
     dhcp_vendor           => $dhcp_vendor,
