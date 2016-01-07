@@ -40,8 +40,10 @@
 #                                       certificates pointing to the value.
 #
 # $remote_execution_ssh::               Enable remote execution SSH plugin
+#                                       type:boolean
 #
 # $remote_execution_ssh_generate_keys:: Automatically generate SSH keys or not
+#                                       type:boolean
 #
 # $remote_execution_ssh_identity_dir::  Directory where SSH keys are stored
 #
