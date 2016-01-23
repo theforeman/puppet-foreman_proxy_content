@@ -13,10 +13,6 @@ describe 'capsule' do
       }
     end
 
-    let(:pre_condition) do
-      ['include certs']
-    end
-
     it { should contain_class('capsule::install') }
   end
 
@@ -33,14 +29,13 @@ describe 'capsule' do
 
     let(:params) do
       {
-        :pulp              => true,
         :pulp_oauth_secret => 'mysecret',
         :qpid_router       => false
       }
     end
 
     let(:pre_condition) do
-      ['include certs']
+      "class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}"
     end
 
     it { should contain_class('crane').with( {'key' => '/etc/pki/katello/private/katello-apache.key',
