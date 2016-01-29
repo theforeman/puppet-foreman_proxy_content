@@ -76,6 +76,8 @@ class capsule (
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
 
+  $apache_version = $::apache::apache_version
+
   validate_present($capsule::parent_fqdn)
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
