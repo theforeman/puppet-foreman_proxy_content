@@ -35,7 +35,8 @@ describe 'capsule' do
     end
 
     let(:pre_condition) do
-      "class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}"
+      "class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}
+       class {'apache': apache_version => '2.4'}"
     end
 
     it { should contain_class('crane').with( {'key' => '/etc/pki/katello/private/katello-apache.key',
