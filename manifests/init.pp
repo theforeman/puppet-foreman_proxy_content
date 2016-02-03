@@ -76,8 +76,6 @@ class capsule (
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
 
-  $apache_version = $::apache::apache_version
-
   validate_present($capsule::parent_fqdn)
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
@@ -94,8 +92,10 @@ class capsule (
     false => '443'
   }
 
-  class { '::capsule::install': } ~>
-  class { '::capsule::config': }
+  package{ ['katello-debug']:
+    ensure => installed,
+  }
+
   class { '::certs::foreman_proxy':
     hostname => $capsule_fqdn,
     require  => Package['foreman-proxy'],
@@ -134,6 +134,25 @@ class capsule (
   }
 
   if $pulp {
+    include ::apache
+    $apache_version = $::apache::apache_version
+
+    file {'/etc/httpd/conf.d/pulp.conf':
+      ensure  => file,
+      content => template('capsule/pulp.conf.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+
+    file {'/etc/httpd/conf.d/pulp_nodes.conf':
+      ensure  => file,
+      content => template('capsule/pulp_nodes.conf.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+
     apache::vhost { 'capsule':
       servername      => $capsule_fqdn,
       port            => 80,
