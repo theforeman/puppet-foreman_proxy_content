@@ -13,7 +13,7 @@ describe 'capsule' do
       }
     end
 
-    it { should contain_class('capsule::install') }
+    it { should contain_package('katello-debug') }
   end
 
   context 'with pulp' do
