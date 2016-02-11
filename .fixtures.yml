@@ -18,5 +18,6 @@ fixtures:
     crane:         "git://github.com/katello/puppet-crane.git"
     pulp:          "git://github.com/katello/puppet-pulp.git"
     mongodb:       "git://github.com/puppetlabs/puppetlabs-mongodb.git"
+    trusted_ca:    "git://github.com/evenup/evenup-trusted_ca.git"
   symlinks:
     capsule: "#{source_dir}"
