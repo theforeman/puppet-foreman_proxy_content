@@ -7,8 +7,8 @@ describe 'capsule' do
       {
         :concat_basedir             => '/tmp',
         :operatingsystem            => 'RedHat',
-        :operatingsystemrelease     => '6.4',
-        :operatingsystemmajrelease  => '6.4',
+        :operatingsystemrelease     => '6',
+        :operatingsystemmajrelease  => '6',
         :osfamily                   => 'RedHat',
       }
     end
@@ -21,8 +21,8 @@ describe 'capsule' do
       {
         :concat_basedir             => '/tmp',
         :operatingsystem            => 'RedHat',
-        :operatingsystemrelease     => '6.4',
-        :operatingsystemmajrelease  => '6.4',
+        :operatingsystemrelease     => '6',
+        :operatingsystemmajrelease  => '6',
         :osfamily                   => 'RedHat',
       }
     end
