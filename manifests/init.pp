@@ -46,6 +46,9 @@
 #
 # $qpid_router_broker_port::            Port of qpidd broker to connect to
 #
+# $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
+#                                       type:boolean
+#
 class capsule (
   $parent_fqdn               = $capsule::params::parent_fqdn,
   $certs_tar                 = $capsule::params::certs_tar,
@@ -70,7 +73,9 @@ class capsule (
   $qpid_router_agent_port    = $capsule::params::qpid_router_agent_port,
   $qpid_router_broker_addr   = $capsule::params::qpid_router_broker_addr,
   $qpid_router_broker_port   = $capsule::params::qpid_router_broker_port,
+  $enable_ostree             = $capsule::params::enable_ostree,
 ) inherits capsule::params {
+  validate_bool($enable_ostree)
 
   include ::certs
   include ::foreman_proxy
@@ -165,6 +170,7 @@ class capsule (
       enable_rpm                => true,
       enable_puppet             => true,
       enable_docker             => true,
+      enable_ostree             => $enable_ostree,
       default_password          => $pulp_admin_password,
       oauth_enabled             => true,
       oauth_key                 => $pulp_oauth_key,
