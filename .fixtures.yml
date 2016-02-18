@@ -19,5 +19,6 @@ fixtures:
     pulp:          "git://github.com/katello/puppet-pulp.git"
     mongodb:       "git://github.com/puppetlabs/puppetlabs-mongodb.git"
     trusted_ca:    "git://github.com/evenup/evenup-trusted_ca.git"
+    squid3:        "git://github.com/thias/puppet-squid3.git"
   symlinks:
     capsule: "#{source_dir}"
