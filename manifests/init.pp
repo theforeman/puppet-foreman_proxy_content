@@ -185,6 +185,7 @@ class capsule (
       manage_broker             => false,
       manage_httpd              => false,
       manage_plugins_httpd      => true,
+      manage_squid              => true,
       repo_auth                 => true,
       node_oauth_effective_user => $pulp_oauth_effective_user,
       node_oauth_key            => $pulp_oauth_key,
