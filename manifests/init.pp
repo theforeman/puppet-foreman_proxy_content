@@ -227,6 +227,9 @@ class capsule (
       server_config_version       => '',
       server_enc_api              => 'v2',
       server_ca_proxy             => $puppet_ca_proxy,
+      additional_settings         => {
+                                        'disable_warnings' => 'deprecations',
+      },
     }
   }
 
