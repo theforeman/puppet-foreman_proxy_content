@@ -38,7 +38,7 @@
     },
     {
       "name": "katello-pulp",
-      "version_requirement": ">= 3.1.0 < 4.0.0"
+      "version_requirement": ">= 3.2.0 < 4.0.0"
     },
     {
       "name": "katello-qpid",
@@ -50,7 +50,7 @@
     },
     {
       "name": "katello-certs",
-      "version_requirement": ">= 0.1.0 < 1.0.0"
+      "version_requirement": ">= 0.5.0 < 1.0.0"
     }
   ],
   "requirements": [
