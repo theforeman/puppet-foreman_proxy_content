@@ -160,6 +160,7 @@ class capsule (
     }
 
     class { '::certs::qpid': } ~>
+    class { '::certs::qpid_client': } ~>
     class { '::qpid':
       ssl                    => true,
       ssl_cert_db            => $::certs::nss_db_dir,
@@ -183,7 +184,7 @@ class capsule (
       broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_use_ssl            => true,
       manage_broker             => false,
-      manage_httpd              => false,
+      manage_httpd              => true,
       manage_plugins_httpd      => true,
       manage_squid              => true,
       repo_auth                 => true,
@@ -191,22 +192,10 @@ class capsule (
       node_oauth_key            => $pulp_oauth_key,
       node_oauth_secret         => $pulp_oauth_secret,
       node_server_ca_cert       => $certs::params::pulp_server_ca_cert,
-    } ~>
-    class { '::pulp::child':
-      parent_fqdn          => $parent_fqdn,
-      oauth_effective_user => $pulp_oauth_effective_user,
-      oauth_key            => $pulp_oauth_key,
-      oauth_secret         => $pulp_oauth_secret,
-      server_ca_cert       => $certs::params::pulp_server_ca_cert,
     }
 
-    pulp::child::fragment{'gpg_key_proxy':
-      ssl_content => template('capsule/_pulp_child_gpg_proxy.erb'),
-    }
-
-    class { '::certs::pulp_child':
-      hostname => $capsule_fqdn,
-      notify   => [ Class['pulp'], Class['pulp::child'] ],
+    pulp::apache::fragment{'gpg_key_proxy':
+      ssl_content => template('capsule/_pulp_gpg_proxy.erb'),
     }
   }
 
@@ -243,7 +232,6 @@ class capsule (
 
     if $pulp {
       Certs::Tar_extract[$certs_tar] -> Class['certs'] -> Class['::certs::qpid']
-      Certs::Tar_extract[$certs_tar] -> Class['certs::pulp_child']
     }
 
     if $puppet {
