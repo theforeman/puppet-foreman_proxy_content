@@ -132,6 +132,10 @@ class capsule (
     validate_present($foreman_oauth_secret)
   }
 
+  package { 'client-bootstrap':
+    ensure => 'installed',
+  }
+
   if $pulp {
     apache::vhost { 'capsule':
       servername      => $capsule_fqdn,
