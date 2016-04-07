@@ -2,134 +2,140 @@
 #
 # === Parameters:
 #
-# $parent_fqdn::                    fqdn of the parent node. REQUIRED
+# $parent_fqdn::                        fqdn of the parent node. REQUIRED
 #
-# $certs_tar::                      path to a tar with certs for the node
+# $certs_tar::                          path to a tar with certs for the node
 #
-# $pulp::                           should Pulp be configured on the node
-#                                   type:boolean
+# $pulp_master::                        whether the capsule should be identified as a pulp master server
 #
-# $pulp_admin_password::            passowrd for the Pulp admin user.It should be left blank so that random password is generated
+# $pulp_admin_password::                password for the Pulp admin user. It should be left blank so that a random password is generated
 #
-# $pulp_oauth_effective_user::      User to be used for Pulp REST interaction
+# $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
 #
-# $pulp_oauth_key::                 OAuth key to be used for Pulp REST interaction
+# $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
 #
-# $pulp_oauth_secret::              OAuth secret to be used for Pulp REST interaction
+# $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
 #
-# $foreman_proxy_port::             Port on which will foreman proxy listen
-#                                   type:integer
+# $puppet::                             Use puppet
+#                                       type:boolean
 #
-# $puppet::                         Use puppet
-#                                   type:boolean
+# $puppet_ca_proxy::                    The actual server that handles puppet CA.
+#                                       Setting this to anything non-empty causes
+#                                       the apache vhost to set up a proxy for all
+#                                       certificates pointing to the value.
 #
-# $puppetca::                       Use puppet ca
-#                                   type:boolean
+# $reverse_proxy::                      Add reverse proxy to the parent
+#                                       type:boolean
 #
-# $tftp::                           Use TFTP
-#                                   type:boolean
+# $reverse_proxy_port::                 reverse proxy listening port
 #
-# $tftp_servername::                Defines the TFTP server name to use, overrides the name in the subnet declaration
+# $rhsm_url::                           The URL that the RHSM API is rooted at
 #
-# $dhcp::                           Use DHCP
-#                                   type:boolean
+# $qpid_router::                        Configure qpid dispatch router
+#                                       type:boolean
 #
-# $dhcp_interface::                 DHCP listen interface
+# $qpid_router_hub_addr::               Address for dispatch router hub
 #
-# $dhcp_gateway::                   DHCP pool gateway
+# $qpid_router_hub_port::               Port for dispatch router hub
 #
-# $dhcp_range::                     Space-separated DHCP pool range
+# $qpid_router_agent_addr::             Listener address for goferd agents
 #
-# $dhcp_nameservers::               DHCP nameservers
+# $qpid_router_agent_port::             Listener port for goferd agents
 #
-# $dns::                            Use DNS
-#                                   type:boolean
+# $qpid_router_broker_addr::            Address of qpidd broker to connect to
 #
-# $dns_zone::                       DNS zone name
+# $qpid_router_broker_port::            Port of qpidd broker to connect to
 #
-# $dns_reverse::                    DNS reverse zone name
-#
-# $dns_interface::                  DNS interface
-#
-# $dns_forwarders::                 DNS forwarders
-#                                   type:array
-#
-#
-# $realm::                          Use realm management
-#                                   type:boolean
-#
-# $realm_provider::                 Realm management provider
-#
-# $realm_keytab::                   Kerberos keytab path to authenticate realm updates
-#
-# $realm_principal::                Kerberos principal for realm updates
-#
-# $freeipa_remove_dns::             Remove DNS entries from FreeIPA when deleting hosts from realm
-#                                   type:boolean
-#
-# $register_in_foreman::            Register proxy back in Foreman
-#                                   type:boolean
-#
-# $foreman_oauth_effective_user::   User to be used for Foreman REST interaction
-#
-# $foreman_oauth_key::              OAuth key to be used for Foreman REST interaction
-#
-# $foreman_oauth_secret::           OAuth secret to be used for Foreman REST interaction
-#
+# $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
+#                                       type:boolean
 #
 class capsule (
-  $parent_fqdn                   = $capsule::params::parent_fqdn,
-  $certs_tar                     = $capsule::params::certs_tar,
-  $pulp                          = $capsule::params::pulp,
-  $pulp_admin_password           = $capsule::params::pulp_admin_password,
-  $pulp_oauth_effective_user     = $capsule::params::pulp_oauth_effective_user,
-  $pulp_oauth_key                = $capsule::params::pulp_oauth_key,
-  $pulp_oauth_secret             = $capsule::params::pulp_oauth_secret,
+  $parent_fqdn               = $capsule::params::parent_fqdn,
+  $certs_tar                 = $capsule::params::certs_tar,
+  $pulp_master               = $capsule::params::pulp_master,
+  $pulp_admin_password       = $capsule::params::pulp_admin_password,
+  $pulp_oauth_effective_user = $capsule::params::pulp_oauth_effective_user,
+  $pulp_oauth_key            = $capsule::params::pulp_oauth_key,
+  $pulp_oauth_secret         = $capsule::params::pulp_oauth_secret,
 
-  $foreman_proxy_port            = $capsule::params::foreman_proxy_port,
+  $puppet                    = $capsule::params::puppet,
+  $puppet_ca_proxy           = $capsule::params::puppet_ca_proxy,
 
-  $puppet                        = $capsule::params::puppet,
-  $puppetca                      = $capsule::params::puppetca,
+  $reverse_proxy             = $capsule::params::reverse_proxy,
+  $reverse_proxy_port        = $capsule::params::reverse_proxy_port,
 
-  $tftp                          = $capsule::params::tftp,
-  $tftp_servername               = $capsule::params::tftp_servername,
+  $rhsm_url                  = $capsule::params::rhsm_url,
 
-  $dhcp                          = $capsule::params::dhcp,
-  $dhcp_interface                = $capsule::params::dhcp_interface,
-  $dhcp_gateway                  = $capsule::params::dhcp_gateway,
-  $dhcp_range                    = $capsule::params::dhcp_range,
-  $dhcp_nameservers              = $capsule::params::dhcp_nameservers,
+  $qpid_router               = $capsule::params::qpid_router,
+  $qpid_router_hub_addr      = $capsule::params::qpid_router_hub_addr,
+  $qpid_router_hub_port      = $capsule::params::qpid_router_hub_port,
+  $qpid_router_agent_addr    = $capsule::params::qpid_router_agent_addr,
+  $qpid_router_agent_port    = $capsule::params::qpid_router_agent_port,
+  $qpid_router_broker_addr   = $capsule::params::qpid_router_broker_addr,
+  $qpid_router_broker_port   = $capsule::params::qpid_router_broker_port,
+  $enable_ostree             = $capsule::params::enable_ostree,
+) inherits capsule::params {
+  validate_bool($enable_ostree)
 
-  $dns                           = $capsule::params::dns,
-  $dns_zone                      = $capsule::params::dns_zone,
-  $dns_reverse                   = $capsule::params::dns_reverse,
-  $dns_interface                 = $capsule::params::dns_interface,
-  $dns_forwarders                = $capsule::params::dns_forwarders,
-
-  $realm                         = $capsule::params::realm,
-  $realm_provider                = $capsule::params::realm_provider,
-  $realm_keytab                  = $capsule::params::realm_keytab,
-  $realm_principal               = $capsule::params::realm_principal,
-  $freeipa_remove_dns            = $capsule::params::freeipa_remove_dns,
-
-  $register_in_foreman           = $capsule::params::register_in_foreman,
-  $foreman_oauth_effective_user  = $capsule::params::foreman_oauth_effective_user,
-  $foreman_oauth_key             = $capsule::params::foreman_oauth_key,
-  $foreman_oauth_secret          = $capsule::params::foreman_oauth_secret
-  ) inherits capsule::params {
+  include ::certs
+  include ::foreman_proxy
+  include ::foreman_proxy::plugin::pulp
 
   validate_present($capsule::parent_fqdn)
 
+  $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
   if $pulp {
-    validate_pulp($pulp)
     validate_present($pulp_oauth_secret)
   }
 
   $capsule_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
+  $reverse_proxy_real = $pulp or $reverse_proxy
 
-  if $register_in_foreman {
-    validate_present($foreman_oauth_secret)
+  $rhsm_port = $reverse_proxy_real ? {
+    true  => $reverse_proxy_port,
+    false => '443'
+  }
+
+  package{ ['katello-debug']:
+    ensure => installed,
+  }
+
+  class { '::certs::foreman_proxy':
+    hostname => $capsule_fqdn,
+    require  => Package['foreman-proxy'],
+    before   => Service['foreman-proxy'],
+  } ~>
+  class { '::certs::katello':
+    deployment_url => $capsule::rhsm_url,
+    rhsm_port      => $capsule::rhsm_port,
+  }
+
+  if $pulp or $reverse_proxy_real {
+    class { '::certs::apache':
+      hostname => $capsule_fqdn,
+    } ~>
+    Class['certs::foreman_proxy'] ~>
+    class { '::capsule::reverse_proxy':
+      path => '/',
+      url  => "${foreman_url}/",
+      port => $capsule::reverse_proxy_port,
+    }
+  }
+
+  if $pulp_master or $pulp {
+    if $qpid_router {
+      class { '::capsule::dispatch_router':
+        require => Class['pulp'],
+      }
+    }
+
+    class { '::crane':
+      cert    => $certs::apache::apache_cert,
+      key     => $certs::apache::apache_key,
+      ca_cert => $certs::ca_cert,
+      require => Class['certs::apache'],
+    }
   }
 
   package { 'client-bootstrap':
@@ -137,118 +143,106 @@ class capsule (
   }
 
   if $pulp {
+    include ::apache
+    $apache_version = $::apache::apache_version
+
+    file {'/etc/httpd/conf.d/pulp_nodes.conf':
+      ensure  => file,
+      content => template('capsule/pulp_nodes.conf.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+
     apache::vhost { 'capsule':
       servername      => $capsule_fqdn,
       port            => 80,
       priority        => '05',
       docroot         => '/var/www/html',
       options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('capsule/_pulp_includes.erb'),
+      custom_fragment => template('capsule/_pulp_includes.erb', 'capsule/httpd_pub.erb'),
     }
 
-    class { 'certs::apache':
-      hostname => $capsule_fqdn
-    }
-
-    class { 'certs::qpid': } ~>
-    class { 'pulp':
-      default_password            => $pulp_admin_password,
-      oauth_key                   => $pulp_oauth_key,
-      oauth_secret                => $pulp_oauth_secret,
-      qpid_ssl_cert_db            => $certs::nss_db_dir,
-      qpid_ssl_cert_password_file => $certs::qpid::nss_db_password_file,
-      messaging_ca_cert           => $certs::ca_cert,
-      messaging_client_cert       => $certs::params::messaging_client_cert,
-      messaging_url               => "ssl://${::fqdn}:5671"
+    class { '::certs::qpid': } ~>
+    class { '::certs::qpid_client': } ~>
+    class { '::qpid':
+      ssl                    => true,
+      ssl_cert_db            => $::certs::nss_db_dir,
+      ssl_cert_password_file => $::certs::qpid::nss_db_password_file,
+      ssl_cert_name          => 'broker',
     } ~>
-    class { 'pulp::child':
-      parent_fqdn          => $parent_fqdn,
-      oauth_effective_user => $pulp_oauth_effective_user,
-      oauth_key            => $pulp_oauth_key,
-      oauth_secret         => $pulp_oauth_secret
+    class { '::pulp':
+      enable_rpm                => true,
+      enable_puppet             => true,
+      enable_docker             => true,
+      enable_ostree             => $enable_ostree,
+      default_password          => $pulp_admin_password,
+      oauth_enabled             => true,
+      oauth_key                 => $pulp_oauth_key,
+      oauth_secret              => $pulp_oauth_secret,
+      messaging_transport       => 'qpid',
+      messaging_auth_enabled    => false,
+      messaging_ca_cert         => $certs::ca_cert,
+      messaging_client_cert     => $certs::params::messaging_client_cert,
+      messaging_url             => "ssl://${capsule_fqdn}:5671",
+      broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_use_ssl            => true,
+      manage_broker             => false,
+      manage_httpd              => true,
+      manage_plugins_httpd      => true,
+      manage_squid              => true,
+      repo_auth                 => true,
+      node_oauth_effective_user => $pulp_oauth_effective_user,
+      node_oauth_key            => $pulp_oauth_key,
+      node_oauth_secret         => $pulp_oauth_secret,
+      node_server_ca_cert       => $certs::params::pulp_server_ca_cert,
+      https_cert                => $certs::apache::apache_cert,
+      https_key                 => $certs::apache::apache_key,
+      ca_cert                   => $certs::ca_cert,
     }
 
-    class { 'certs::pulp_child':
-      hostname => $capsule_fqdn,
-      notify   => [ Class['pulp'], Class['pulp::child'] ],
+    pulp::apache::fragment{'gpg_key_proxy':
+      ssl_content => template('capsule/_pulp_gpg_proxy.erb'),
     }
   }
 
   if $puppet {
-    class { 'certs::puppet':
-      hostname => $capsule_fqdn
+    class { '::certs::puppet':
+      hostname => $capsule_fqdn,
     } ~>
-    class { 'puppet':
+    class { '::puppet':
       server                      => true,
+      server_ca                   => $::foreman_proxy::puppetca,
       server_foreman_url          => $foreman_url,
       server_foreman_ssl_cert     => $::certs::puppet::client_cert,
       server_foreman_ssl_key      => $::certs::puppet::client_key,
-      server_foreman_ssl_ca       => $::certs::puppet::client_ca_cert,
+      server_foreman_ssl_ca       => $::certs::puppet::ssl_ca_cert,
       server_storeconfigs_backend => false,
       server_dynamic_environments => true,
       server_environments_owner   => 'apache',
-      server_config_version       => ''
-    }
-  }
-
-  $foreman_proxy = $tftp or $dhcp or $dns or $puppet or $puppetca
-
-  if $foreman_proxy {
-
-    class { 'certs::foreman_proxy':
-      hostname   => $capsule_fqdn,
-      require    => Package['foreman-proxy'],
-      before     => Service['foreman-proxy'],
-    }
-
-    class { 'foreman_proxy':
-      custom_repo           => true,
-      port                  => $foreman_proxy_port,
-      puppetca              => $puppetca,
-      ssl_cert              => $::certs::foreman_proxy::proxy_cert,
-      ssl_key               => $::certs::foreman_proxy::proxy_key,
-      ssl_ca                => $::certs::foreman_proxy::proxy_ca_cert,
-      tftp                  => $tftp,
-      tftp_servername       => $tftp_servername,
-      dhcp                  => $dhcp,
-      dhcp_interface        => $dhcp_interface,
-      dhcp_gateway          => $dhcp_gateway,
-      dhcp_range            => $dhcp_range,
-      dhcp_nameservers      => $dhcp_nameservers,
-      dns                   => $dns,
-      dns_zone              => $dns_zone,
-      dns_reverse           => $dns_reverse,
-      dns_interface         => $dns_interface,
-      dns_forwarders        => $dns_forwarders,
-      realm                 => $realm,
-      realm_provider        => $realm_provider,
-      realm_keytab          => $realm_keytab,
-      realm_principal       => $realm_principal,
-      freeipa_remove_dns    => $freeipa_remove_dns,
-      register_in_foreman   => $register_in_foreman,
-      foreman_base_url      => $foreman_url,
-      registered_proxy_url  => "https://${capsule_fqdn}:${capsule::foreman_proxy_port}",
-      oauth_effective_user  => $foreman_oauth_effective_user,
-      oauth_consumer_key    => $foreman_oauth_key,
-      oauth_consumer_secret => $foreman_oauth_secret
+      server_config_version       => '',
+      server_enc_api              => 'v2',
+      server_ca_proxy             => $puppet_ca_proxy,
+      additional_settings         => {
+                                        'disable_warnings' => 'deprecations',
+      },
     }
   }
 
   if $certs_tar {
-    certs::tar_extract { $capsule::certs_tar: }
+    certs::tar_extract { $capsule::certs_tar: } -> Class['certs']
+    Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
+
+    if $reverse_proxy_real or $pulp {
+      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
+    }
 
     if $pulp {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
-      Certs::Tar_extract[$certs_tar] -> Class['certs::pulp_child']
+      Certs::Tar_extract[$certs_tar] -> Class['certs'] -> Class['::certs::qpid']
     }
 
     if $puppet {
       Certs::Tar_extract[$certs_tar] -> Class['certs::puppet']
     }
-
-    if $foreman_proxy {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
-    }
-
   }
 }
