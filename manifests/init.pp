@@ -97,7 +97,7 @@ class capsule (
     false => '443'
   }
 
-  package{ ['katello-debug']:
+  package{ ['katello-debug', 'katello-client-bootstrap']:
     ensure => installed,
   }
 
