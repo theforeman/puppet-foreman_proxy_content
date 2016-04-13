@@ -24,6 +24,10 @@
 #                                       the apache vhost to set up a proxy for all
 #                                       certificates pointing to the value.
 #
+# $puppet_server_implementation::       Select which Puppet server implementation to use:
+#                                       Default is the apache passenger implementation.
+#                                       Set this value to 'puppetserver' to use the JVM puppetserver implementation.
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #                                       type:boolean
 #
@@ -50,30 +54,31 @@
 #                                       type:boolean
 #
 class capsule (
-  $parent_fqdn               = $capsule::params::parent_fqdn,
-  $certs_tar                 = $capsule::params::certs_tar,
-  $pulp_master               = $capsule::params::pulp_master,
-  $pulp_admin_password       = $capsule::params::pulp_admin_password,
-  $pulp_oauth_effective_user = $capsule::params::pulp_oauth_effective_user,
-  $pulp_oauth_key            = $capsule::params::pulp_oauth_key,
-  $pulp_oauth_secret         = $capsule::params::pulp_oauth_secret,
+  $parent_fqdn                  = $capsule::params::parent_fqdn,
+  $certs_tar                    = $capsule::params::certs_tar,
+  $pulp_master                  = $capsule::params::pulp_master,
+  $pulp_admin_password          = $capsule::params::pulp_admin_password,
+  $pulp_oauth_effective_user    = $capsule::params::pulp_oauth_effective_user,
+  $pulp_oauth_key               = $capsule::params::pulp_oauth_key,
+  $pulp_oauth_secret            = $capsule::params::pulp_oauth_secret,
 
-  $puppet                    = $capsule::params::puppet,
-  $puppet_ca_proxy           = $capsule::params::puppet_ca_proxy,
+  $puppet                       = $capsule::params::puppet,
+  $puppet_ca_proxy              = $capsule::params::puppet_ca_proxy,
+  $puppet_server_implementation = $capsule::params::puppet_server_implementation,
 
-  $reverse_proxy             = $capsule::params::reverse_proxy,
-  $reverse_proxy_port        = $capsule::params::reverse_proxy_port,
+  $reverse_proxy                = $capsule::params::reverse_proxy,
+  $reverse_proxy_port           = $capsule::params::reverse_proxy_port,
 
-  $rhsm_url                  = $capsule::params::rhsm_url,
+  $rhsm_url                     = $capsule::params::rhsm_url,
 
-  $qpid_router               = $capsule::params::qpid_router,
-  $qpid_router_hub_addr      = $capsule::params::qpid_router_hub_addr,
-  $qpid_router_hub_port      = $capsule::params::qpid_router_hub_port,
-  $qpid_router_agent_addr    = $capsule::params::qpid_router_agent_addr,
-  $qpid_router_agent_port    = $capsule::params::qpid_router_agent_port,
-  $qpid_router_broker_addr   = $capsule::params::qpid_router_broker_addr,
-  $qpid_router_broker_port   = $capsule::params::qpid_router_broker_port,
-  $enable_ostree             = $capsule::params::enable_ostree,
+  $qpid_router                  = $capsule::params::qpid_router,
+  $qpid_router_hub_addr         = $capsule::params::qpid_router_hub_addr,
+  $qpid_router_hub_port         = $capsule::params::qpid_router_hub_port,
+  $qpid_router_agent_addr       = $capsule::params::qpid_router_agent_addr,
+  $qpid_router_agent_port       = $capsule::params::qpid_router_agent_port,
+  $qpid_router_broker_addr      = $capsule::params::qpid_router_broker_addr,
+  $qpid_router_broker_port      = $capsule::params::qpid_router_broker_port,
+  $enable_ostree                = $capsule::params::enable_ostree,
 ) inherits capsule::params {
   validate_bool($enable_ostree)
 
@@ -209,6 +214,7 @@ class capsule (
     class { '::puppet':
       server                      => true,
       server_ca                   => $::foreman_proxy::puppetca,
+      server_implementation       => $puppet_server_implementation,
       server_foreman_url          => $foreman_url,
       server_foreman_ssl_cert     => $::certs::puppet::client_cert,
       server_foreman_ssl_key      => $::certs::puppet::client_key,
