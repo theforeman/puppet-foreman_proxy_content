@@ -1,20 +1,15 @@
-# Configure the node
+# == Class: capsule
+#
+# Configure a Katello capsule
 #
 # === Parameters:
 #
-# $parent_fqdn::                        fqdn of the parent node. REQUIRED
+# $parent_fqdn::                        FQDN of the parent node.
 #
-# $certs_tar::                          path to a tar with certs for the node
+# $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
+#                                       type:boolean
 #
-# $pulp_master::                        whether the capsule should be identified as a pulp master server
-#
-# $pulp_admin_password::                password for the Pulp admin user. It should be left blank so that a random password is generated
-#
-# $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
-#
-# $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
-#
-# $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
+# $certs_tar::                          Path to a tar with certs for the node
 #
 # $puppet::                             Use puppet
 #                                       type:boolean
@@ -27,10 +22,22 @@
 # $puppet_server_implementation::       Puppet master implementation, either "master" (traditional
 #                                       Ruby) or "puppetserver" (JVM-based)
 #
+# === Advanced parameters:
+#
+# $pulp_master::                        Whether the capsule should be identified as a pulp master server
+#
+# $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
+#
+# $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
+#
+# $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
+#
+# $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #                                       type:boolean
 #
-# $reverse_proxy_port::                 reverse proxy listening port
+# $reverse_proxy_port::                 Reverse proxy listening port
 #
 # $rhsm_url::                           The URL that the RHSM API is rooted at
 #
@@ -48,10 +55,6 @@
 # $qpid_router_broker_addr::            Address of qpidd broker to connect to
 #
 # $qpid_router_broker_port::            Port of qpidd broker to connect to
-#
-# $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
-#                                       type:boolean
-#
 #
 class capsule (
   $parent_fqdn                  = $capsule::params::parent_fqdn,
