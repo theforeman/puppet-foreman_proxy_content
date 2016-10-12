@@ -25,6 +25,7 @@
 # === Advanced parameters:
 #
 # $pulp_master::                        Whether the capsule should be identified as a pulp master server
+#                                       type:boolean
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
 #
