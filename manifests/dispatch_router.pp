@@ -29,6 +29,16 @@ class capsule::dispatch_router (
     ssl_profile => 'server',
   }
 
+  # Enable logging for dispatch router
+  file { $capsule::qpid_router_logging_path:
+    ensure => directory,
+    owner  => 'qdrouterd',
+  } ~>
+  qpid::router::log { 'logging':
+    level  => $capsule::qpid_router_logging_level,
+    output => "${capsule::qpid_router_logging_path}/qdrouterd.log",
+  }
+
   # Act as hub if pulp master, otherwise connect to hub
   if $capsule::pulp_master {
     qpid::router::listener {'hub':

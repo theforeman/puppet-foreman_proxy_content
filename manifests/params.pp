@@ -26,5 +26,7 @@ class capsule::params {
   $qpid_router_hub_port      = 5646
   $qpid_router_agent_port    = 5647
   $qpid_router_broker_port   = 5671
+  $qpid_router_logging_level = 'info+'
+  $qpid_router_logging_path  = '/var/log/qdrouterd'
   $enable_ostree             = false
 }
