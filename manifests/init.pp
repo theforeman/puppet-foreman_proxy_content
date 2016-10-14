@@ -57,6 +57,10 @@
 #
 # $qpid_router_broker_port::            Port of qpidd broker to connect to
 #
+# $qpid_router_logging_level::          Logging level of dispatch router (e.g. info+ or debug+)
+#
+# $qpid_router_logging_path::           Directory for dispatch router logs
+#
 class capsule (
   $parent_fqdn                  = $capsule::params::parent_fqdn,
   $certs_tar                    = $capsule::params::certs_tar,
@@ -82,6 +86,8 @@ class capsule (
   $qpid_router_agent_port       = $capsule::params::qpid_router_agent_port,
   $qpid_router_broker_addr      = $capsule::params::qpid_router_broker_addr,
   $qpid_router_broker_port      = $capsule::params::qpid_router_broker_port,
+  $qpid_router_logging_level    = $capsule::params::qpid_router_logging_level,
+  $qpid_router_logging_path     = $capsule::params::qpid_router_logging_path,
   $enable_ostree                = $capsule::params::enable_ostree,
 ) inherits capsule::params {
   validate_bool($enable_ostree)
@@ -91,6 +97,7 @@ class capsule (
   include ::foreman_proxy::plugin::pulp
 
   validate_present($capsule::parent_fqdn)
+  validate_absolute_path($capsule::qpid_router_logging_path)
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
   if $pulp {
