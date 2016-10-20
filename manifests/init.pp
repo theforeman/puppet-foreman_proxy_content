@@ -61,6 +61,9 @@
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
 #
+# $docker_registry_port::               Docker registry port value other than 5000 (default) or 5001 may require SELinux changes
+#                                       type:integer
+#
 class capsule (
   $parent_fqdn                  = $capsule::params::parent_fqdn,
   $certs_tar                    = $capsule::params::certs_tar,
@@ -89,8 +92,11 @@ class capsule (
   $qpid_router_logging_level    = $capsule::params::qpid_router_logging_level,
   $qpid_router_logging_path     = $capsule::params::qpid_router_logging_path,
   $enable_ostree                = $capsule::params::enable_ostree,
+
+  $docker_registry_port         = $capsule::params::docker_registry_port,
 ) inherits capsule::params {
   validate_bool($enable_ostree)
+  validate_integer($docker_registry_port)
 
   include ::certs
   include ::foreman_proxy
@@ -151,6 +157,7 @@ class capsule (
       key     => $certs::apache::apache_key,
       ca_cert => $certs::ca_cert,
       require => Class['certs::apache'],
+      port    => $docker_registry_port,
     }
   }
 
