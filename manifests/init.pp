@@ -145,6 +145,14 @@ class capsule (
         require => Class['pulp'],
       }
     }
+    # adding ssl.conf back to resolve Katello issue #16972 - http://projects.theforeman.org/issues/16972
+    file {'/etc/httpd/conf.d/ssl.conf':
+      ensure  => file,
+      content => '# Managed by Puppet',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
 
     class { '::crane':
       cert    => $certs::apache::apache_cert,
