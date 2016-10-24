@@ -5,6 +5,11 @@ describe 'capsule' do
     context "on #{os}" do
       let(:facts) { facts }
 
+      let :pre_condition do
+        "include foreman_proxy"
+	  end
+
+
       it { should contain_package('katello-debug') }
       it { should contain_package('katello-client-bootstrap') }
 
@@ -17,8 +22,9 @@ describe 'capsule' do
         end
 
         let(:pre_condition) do
-          "class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}
-         class {'apache': apache_version => '2.4'}"
+          "include foreman_proxy
+          class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}
+          class {'apache': apache_version => '2.4'}"
         end
 
         it { should contain_class('crane').with( {'key' => '/etc/pki/katello/private/katello-apache.key',
