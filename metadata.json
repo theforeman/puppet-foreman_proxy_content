@@ -45,10 +45,6 @@
       "version_requirement": ">= 2.0.0 < 3.0.0"
     },
     {
-      "name": "katello-crane",
-      "version_requirement": ">= 2.0.0 < 3.0.0"
-    },
-    {
       "name": "katello-certs",
       "version_requirement": ">= 1.0.0 < 2.0.0"
     }
