@@ -27,8 +27,8 @@ describe 'capsule' do
           class {'apache': apache_version => '2.4'}"
         end
 
-        it { should contain_class('crane').with( {'key' => '/etc/pki/katello/private/katello-apache.key',
-                                                  'cert' => '/etc/pki/katello/certs/katello-apache.crt'} ) }
+        it { should contain_class('pulp').with(:oauth_secret => 'mysecret') }
+        it { should_not contain_class('capsule::dispatch_router') }
 
         it { should contain_pulp__apache__fragment('gpg_key_proxy').with({
           :ssl_content => %r{ProxyPass /katello/api/repositories/}} ) }
