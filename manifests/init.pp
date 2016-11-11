@@ -145,6 +145,13 @@ class capsule (
         require => Class['pulp'],
       }
     }
+
+    class { '::pulp::crane':
+      cert    => $certs::apache::apache_cert,
+      key     => $certs::apache::apache_key,
+      ca_cert => $certs::ca_cert,
+      require => Class['certs::apache'],
+    }
   }
 
   if $pulp {
@@ -177,7 +184,6 @@ class capsule (
       ssl_cert_name          => 'broker',
     } ~>
     class { '::pulp':
-      enable_crane              => true,
       enable_rpm                => true,
       enable_puppet             => true,
       enable_docker             => true,
