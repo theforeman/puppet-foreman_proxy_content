@@ -1,9 +1,9 @@
 #Adds http reverse-proxy to parent conf
-class capsule::reverse_proxy (
+class foreman_proxy_content::reverse_proxy (
 
   $path = '/',
-  $url  = "https://${capsule::parent_fqdn}/",
-  $port = $capsule::params::reverse_proxy_port
+  $url  = "https://${foreman_proxy_content::parent_fqdn}/",
+  $port = $foreman_proxy_content::params::reverse_proxy_port
 
   ) {
 
@@ -11,7 +11,7 @@ class capsule::reverse_proxy (
 
   Class['certs::foreman_proxy'] ~>
   apache::vhost { 'katello-reverse-proxy':
-    servername        => $capsule::capsule_fqdn,
+    servername        => $foreman_proxy_content::foreman_proxy_fqdn,
     port              => $port,
     docroot           => '/var/www/',
     priority          => '28',

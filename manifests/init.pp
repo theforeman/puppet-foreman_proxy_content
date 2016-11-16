@@ -1,6 +1,6 @@
-# == Class: capsule
+# == Class: foreman_proxy_content
 #
-# Configure a Katello capsule
+# Configure content for foreman proxy for use by katello
 #
 # === Parameters:
 #
@@ -24,7 +24,7 @@
 #
 # === Advanced parameters:
 #
-# $pulp_master::                        Whether the capsule should be identified as a pulp master server
+# $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
 #                                       type:boolean
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
@@ -61,50 +61,50 @@
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
 #
-class capsule (
-  $parent_fqdn                  = $capsule::params::parent_fqdn,
-  $certs_tar                    = $capsule::params::certs_tar,
-  $pulp_master                  = $capsule::params::pulp_master,
-  $pulp_admin_password          = $capsule::params::pulp_admin_password,
-  $pulp_oauth_effective_user    = $capsule::params::pulp_oauth_effective_user,
-  $pulp_oauth_key               = $capsule::params::pulp_oauth_key,
-  $pulp_oauth_secret            = $capsule::params::pulp_oauth_secret,
+class foreman_proxy_content (
+  $parent_fqdn                  = $foreman_proxy_content::params::parent_fqdn,
+  $certs_tar                    = $foreman_proxy_content::params::certs_tar,
+  $pulp_master                  = $foreman_proxy_content::params::pulp_master,
+  $pulp_admin_password          = $foreman_proxy_content::params::pulp_admin_password,
+  $pulp_oauth_effective_user    = $foreman_proxy_content::params::pulp_oauth_effective_user,
+  $pulp_oauth_key               = $foreman_proxy_content::params::pulp_oauth_key,
+  $pulp_oauth_secret            = $foreman_proxy_content::params::pulp_oauth_secret,
 
-  $puppet                       = $capsule::params::puppet,
-  $puppet_ca_proxy              = $capsule::params::puppet_ca_proxy,
+  $puppet                       = $foreman_proxy_content::params::puppet,
+  $puppet_ca_proxy              = $foreman_proxy_content::params::puppet_ca_proxy,
   $puppet_server_implementation = undef,
 
-  $reverse_proxy                = $capsule::params::reverse_proxy,
-  $reverse_proxy_port           = $capsule::params::reverse_proxy_port,
+  $reverse_proxy                = $foreman_proxy_content::params::reverse_proxy,
+  $reverse_proxy_port           = $foreman_proxy_content::params::reverse_proxy_port,
 
-  $rhsm_url                     = $capsule::params::rhsm_url,
+  $rhsm_url                     = $foreman_proxy_content::params::rhsm_url,
 
-  $qpid_router                  = $capsule::params::qpid_router,
-  $qpid_router_hub_addr         = $capsule::params::qpid_router_hub_addr,
-  $qpid_router_hub_port         = $capsule::params::qpid_router_hub_port,
-  $qpid_router_agent_addr       = $capsule::params::qpid_router_agent_addr,
-  $qpid_router_agent_port       = $capsule::params::qpid_router_agent_port,
-  $qpid_router_broker_addr      = $capsule::params::qpid_router_broker_addr,
-  $qpid_router_broker_port      = $capsule::params::qpid_router_broker_port,
-  $qpid_router_logging_level    = $capsule::params::qpid_router_logging_level,
-  $qpid_router_logging_path     = $capsule::params::qpid_router_logging_path,
-  $enable_ostree                = $capsule::params::enable_ostree,
-) inherits capsule::params {
+  $qpid_router                  = $foreman_proxy_content::params::qpid_router,
+  $qpid_router_hub_addr         = $foreman_proxy_content::params::qpid_router_hub_addr,
+  $qpid_router_hub_port         = $foreman_proxy_content::params::qpid_router_hub_port,
+  $qpid_router_agent_addr       = $foreman_proxy_content::params::qpid_router_agent_addr,
+  $qpid_router_agent_port       = $foreman_proxy_content::params::qpid_router_agent_port,
+  $qpid_router_broker_addr      = $foreman_proxy_content::params::qpid_router_broker_addr,
+  $qpid_router_broker_port      = $foreman_proxy_content::params::qpid_router_broker_port,
+  $qpid_router_logging_level    = $foreman_proxy_content::params::qpid_router_logging_level,
+  $qpid_router_logging_path     = $foreman_proxy_content::params::qpid_router_logging_path,
+  $enable_ostree                = $foreman_proxy_content::params::enable_ostree,
+) inherits foreman_proxy_content::params {
   validate_bool($enable_ostree)
 
   include ::certs
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
 
-  validate_present($capsule::parent_fqdn)
-  validate_absolute_path($capsule::qpid_router_logging_path)
+  validate_present($foreman_proxy_content::parent_fqdn)
+  validate_absolute_path($foreman_proxy_content::qpid_router_logging_path)
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
   if $pulp {
     validate_present($pulp_oauth_secret)
   }
 
-  $capsule_fqdn = $::fqdn
+  $foreman_proxy_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
   $reverse_proxy_real = $pulp or $reverse_proxy
 
@@ -118,30 +118,30 @@ class capsule (
   }
 
   class { '::certs::foreman_proxy':
-    hostname => $capsule_fqdn,
+    hostname => $foreman_proxy_fqdn,
     require  => Package['foreman-proxy'],
     before   => Service['foreman-proxy'],
   } ~>
   class { '::certs::katello':
-    deployment_url => $capsule::rhsm_url,
-    rhsm_port      => $capsule::rhsm_port,
+    deployment_url => $foreman_proxy_content::rhsm_url,
+    rhsm_port      => $foreman_proxy_content::rhsm_port,
   }
 
   if $pulp or $reverse_proxy_real {
     class { '::certs::apache':
-      hostname => $capsule_fqdn,
+      hostname => $foreman_proxy_fqdn,
     } ~>
     Class['certs::foreman_proxy'] ~>
-    class { '::capsule::reverse_proxy':
+    class { '::foreman_proxy_content::reverse_proxy':
       path => '/',
       url  => "${foreman_url}/",
-      port => $capsule::reverse_proxy_port,
+      port => $foreman_proxy_content::reverse_proxy_port,
     }
   }
 
   if $pulp_master or $pulp {
     if $qpid_router {
-      class { '::capsule::dispatch_router':
+      class { '::foreman_proxy_content::dispatch_router':
         require => Class['pulp'],
       }
     }
@@ -160,19 +160,19 @@ class capsule (
 
     file {'/etc/httpd/conf.d/pulp_nodes.conf':
       ensure  => file,
-      content => template('capsule/pulp_nodes.conf.erb'),
+      content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
     }
 
-    apache::vhost { 'capsule':
-      servername      => $capsule_fqdn,
+    apache::vhost { 'foreman_proxy_content':
+      servername      => $foreman_proxy_fqdn,
       port            => 80,
       priority        => '05',
       docroot         => '/var/www/html',
       options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('capsule/_pulp_includes.erb', 'capsule/httpd_pub.erb'),
+      custom_fragment => template('foreman_proxy_content/_pulp_includes.erb', 'foreman_proxy_content/httpd_pub.erb'),
     }
 
     class { '::certs::qpid': } ~>
@@ -196,7 +196,7 @@ class capsule (
       messaging_auth_enabled    => false,
       messaging_ca_cert         => $certs::ca_cert,
       messaging_client_cert     => $certs::params::messaging_client_cert,
-      messaging_url             => "ssl://${capsule_fqdn}:5671",
+      messaging_url             => "ssl://${foreman_proxy_fqdn}:5671",
       broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_use_ssl            => true,
       manage_broker             => false,
@@ -214,13 +214,13 @@ class capsule (
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
-      ssl_content => template('capsule/_pulp_gpg_proxy.erb'),
+      ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
     }
   }
 
   if $puppet {
     class { '::certs::puppet':
-      hostname => $capsule_fqdn,
+      hostname => $foreman_proxy_fqdn,
     } ~>
     class { '::puppet':
       server                      => true,
@@ -243,7 +243,7 @@ class capsule (
   }
 
   if $certs_tar {
-    certs::tar_extract { $capsule::certs_tar: } -> Class['certs']
+    certs::tar_extract { $foreman_proxy_content::certs_tar: } -> Class['certs']
     Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
 
     if $reverse_proxy_real or $pulp {
