@@ -29,4 +29,6 @@ class capsule::params {
   $qpid_router_logging_level = 'info+'
   $qpid_router_logging_path  = '/var/log/qdrouterd'
   $enable_ostree             = false
+
+  $docker_registry_port      = 5000
 }
