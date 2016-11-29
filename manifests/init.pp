@@ -14,14 +14,6 @@
 # $puppet::                             Use puppet
 #                                       type:boolean
 #
-# $puppet_ca_proxy::                    The actual server that handles puppet CA.
-#                                       Setting this to anything non-empty causes
-#                                       the apache vhost to set up a proxy for all
-#                                       certificates pointing to the value.
-#
-# $puppet_server_implementation::       Puppet master implementation, either "master" (traditional
-#                                       Ruby) or "puppetserver" (JVM-based)
-#
 # === Advanced parameters:
 #
 # $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
@@ -35,6 +27,13 @@
 #
 # $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
 #
+# $puppet_ca_proxy::                    The actual server that handles puppet CA.
+#                                       Setting this to anything non-empty causes
+#                                       the apache vhost to set up a proxy for all
+#                                       certificates pointing to the value.
+#
+# $puppet_server_implementation::       Puppet master implementation, either "master" (traditional
+#                                       Ruby) or "puppetserver" (JVM-based)
 # $reverse_proxy::                      Add reverse proxy to the parent
 #                                       type:boolean
 #
