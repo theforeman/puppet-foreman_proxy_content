@@ -23,4 +23,4 @@ fixtures:
     trusted_ca:    "git://github.com/evenup/evenup-trusted_ca.git"
     squid3:        "git://github.com/thias/puppet-squid3.git"
   symlinks:
-    capsule: "#{source_dir}"
+    foreman_proxy_content: "#{source_dir}"

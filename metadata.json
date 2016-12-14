@@ -1,11 +1,11 @@
 {
-  "name": "katello-capsule",
-  "version": "4.0.0",
+  "name": "katello-foreman_proxy_content",
+  "version": "1.0.0",
   "author": "Katello",
-  "summary": "Deploys and manages a Capsule",
+  "summary": "Deploys and manages a Foreman proxy server with content",
   "license": "GPL-3.0+",
-  "source": "https://github.com/Katello/puppet-capsule.git",
-  "project_page": "https://github.com/Katello/puppet-capsule",
+  "source": "https://github.com/Katello/puppet-foreman_proxy_content.git",
+  "project_page": "https://github.com/Katello/puppet-foreman_proxy_content",
   "issues_url": "http://projects.theforeman.org/projects/katello/issues",
   "dependencies": [
     {

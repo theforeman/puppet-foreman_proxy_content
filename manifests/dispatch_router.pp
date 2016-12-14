@@ -1,8 +1,8 @@
-# == Class: capsule::dispatch_router
+# == Class: foreman_proxy_content::dispatch_router
 #
 # Install and configure Qpid Dispatch Router
 #
-class capsule::dispatch_router (
+class foreman_proxy_content::dispatch_router (
 ) {
 
   class { '::qpid::router': }
@@ -24,34 +24,34 @@ class capsule::dispatch_router (
 
   # Listen for katello-agent clients
   qpid::router::listener { 'clients':
-    addr        => $capsule::qpid_router_agent_addr,
-    port        => $capsule::qpid_router_agent_port,
+    addr        => $foreman_proxy_content::qpid_router_agent_addr,
+    port        => $foreman_proxy_content::qpid_router_agent_port,
     ssl_profile => 'server',
   }
 
   # Enable logging for dispatch router
-  file { $capsule::qpid_router_logging_path:
+  file { $foreman_proxy_content::qpid_router_logging_path:
     ensure => directory,
     owner  => 'qdrouterd',
   } ~>
   qpid::router::log { 'logging':
-    level  => $capsule::qpid_router_logging_level,
-    output => "${capsule::qpid_router_logging_path}/qdrouterd.log",
+    level  => $foreman_proxy_content::qpid_router_logging_level,
+    output => "${foreman_proxy_content::qpid_router_logging_path}/qdrouterd.log",
   }
 
   # Act as hub if pulp master, otherwise connect to hub
-  if $capsule::pulp_master {
+  if $foreman_proxy_content::pulp_master {
     qpid::router::listener {'hub':
-      addr        => $capsule::qpid_router_hub_addr,
-      port        => $capsule::qpid_router_hub_port,
+      addr        => $foreman_proxy_content::qpid_router_hub_addr,
+      port        => $foreman_proxy_content::qpid_router_hub_port,
       role        => 'inter-router',
       ssl_profile => 'server',
     }
 
     # Connect dispatch router to the local qpid
     qpid::router::connector { 'broker':
-      addr         => $capsule::qpid_router_broker_addr,
-      port         => $capsule::qpid_router_broker_port,
+      addr         => $foreman_proxy_content::qpid_router_broker_addr,
+      port         => $foreman_proxy_content::qpid_router_broker_port,
       ssl_profile  => 'client',
       role         => 'on-demand',
       idle_timeout => 0,
@@ -75,8 +75,8 @@ class capsule::dispatch_router (
     }
   } else {
     qpid::router::connector { 'hub':
-      addr         => $capsule::parent_fqdn,
-      port         => $capsule::qpid_router_hub_port,
+      addr         => $foreman_proxy_content::parent_fqdn,
+      port         => $foreman_proxy_content::qpid_router_hub_port,
       ssl_profile  => 'client',
       role         => 'inter-router',
       idle_timeout => 0,

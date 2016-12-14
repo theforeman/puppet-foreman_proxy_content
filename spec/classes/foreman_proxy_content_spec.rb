@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'capsule' do
+describe 'foreman_proxy_content' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -28,7 +28,7 @@ describe 'capsule' do
         end
 
         it { should contain_class('pulp').with(:oauth_secret => 'mysecret') }
-        it { should_not contain_class('capsule::dispatch_router') }
+        it { should_not contain_class('foreman_proxy_content::dispatch_router') }
 
         it { should contain_pulp__apache__fragment('gpg_key_proxy').with({
           :ssl_content => %r{ProxyPass /katello/api/repositories/}} ) }

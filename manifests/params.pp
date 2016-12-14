@@ -1,5 +1,5 @@
-# Default params for capsule settings
-class capsule::params {
+# Default params for foreman_proxy_content settings
+class foreman_proxy_content::params {
 
   # when not specified, we expect all in one installation
   $parent_fqdn        = $::fqdn
