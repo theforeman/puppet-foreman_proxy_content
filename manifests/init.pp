@@ -11,10 +11,10 @@
 #
 # $certs_tar::                          Path to a tar with certs for the node
 #
-# $puppet::                             Use puppet
-#                                       type:boolean
-#
 # === Advanced parameters:
+#
+# $puppet::                             Enable puppet
+#                                       type:boolean
 #
 # $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
 #                                       type:boolean
@@ -27,13 +27,6 @@
 #
 # $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
 #
-# $puppet_ca_proxy::                    The actual server that handles puppet CA.
-#                                       Setting this to anything non-empty causes
-#                                       the apache vhost to set up a proxy for all
-#                                       certificates pointing to the value.
-#
-# $puppet_server_implementation::       Puppet master implementation, either "master" (traditional
-#                                       Ruby) or "puppetserver" (JVM-based)
 # $reverse_proxy::                      Add reverse proxy to the parent
 #                                       type:boolean
 #
@@ -70,8 +63,6 @@ class foreman_proxy_content (
   $pulp_oauth_secret            = $foreman_proxy_content::params::pulp_oauth_secret,
 
   $puppet                       = $foreman_proxy_content::params::puppet,
-  $puppet_ca_proxy              = $foreman_proxy_content::params::puppet_ca_proxy,
-  $puppet_server_implementation = undef,
 
   $reverse_proxy                = $foreman_proxy_content::params::reverse_proxy,
   $reverse_proxy_port           = $foreman_proxy_content::params::reverse_proxy_port,
@@ -218,26 +209,12 @@ class foreman_proxy_content (
   }
 
   if $puppet {
+    # We can't pull the certs out to the top level, because of how it gets the default
+    # parameter values from the main ::certs class.  Kafo can't handle that case, so
+    # it remains here for now.
     class { '::certs::puppet':
       hostname => $foreman_proxy_fqdn,
-    } ~>
-    class { '::puppet':
-      server                      => true,
-      server_ca                   => $::foreman_proxy::puppetca,
-      server_foreman_url          => $foreman_url,
-      server_foreman_ssl_cert     => $::certs::puppet::client_cert,
-      server_foreman_ssl_key      => $::certs::puppet::client_key,
-      server_foreman_ssl_ca       => $::certs::puppet::ssl_ca_cert,
-      server_storeconfigs_backend => false,
-      server_dynamic_environments => true,
-      server_environments_owner   => 'apache',
-      server_config_version       => '',
-      server_enc_api              => 'v2',
-      server_ca_proxy             => $puppet_ca_proxy,
-      server_implementation       => $puppet_server_implementation,
-      additional_settings         => {
-                                        'disable_warnings' => 'deprecations',
-      },
+      notify   => Class['puppet'],
     }
   }
 
