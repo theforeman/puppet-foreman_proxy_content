@@ -210,6 +210,7 @@ class foreman_proxy_content (
       https_cert                => $certs::apache::apache_cert,
       https_key                 => $certs::apache::apache_key,
       ca_cert                   => $certs::ca_cert,
+      crane_data_dir            => '/var/lib/pulp/published/docker/v2/app',
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
