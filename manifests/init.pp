@@ -5,53 +5,69 @@
 # === Parameters:
 #
 # $parent_fqdn::                        FQDN of the parent node.
+#                                       type:String
 #
 # $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
-#                                       type:boolean
+#                                       type:Boolean
 #
 # $certs_tar::                          Path to a tar with certs for the node
+#                                       type:Optional[Stdlib::Absolutepath]
 #
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
-#                                       type:boolean
+#                                       type:Boolean
 #
 # $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
-#                                       type:boolean
+#                                       type:Boolean
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
+#                                       type:String
 #
 # $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
+#                                       type:String
 #
 # $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
+#                                       type:String
 #
 # $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
+#                                       type:Optional[String]
 #
 # $reverse_proxy::                      Add reverse proxy to the parent
-#                                       type:boolean
+#                                       type:Boolean
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
+#                                       type:Integer[0, 65535]
 #
 # $rhsm_url::                           The URL that the RHSM API is rooted at
+#                                       type:String
 #
 # $qpid_router::                        Configure qpid dispatch router
-#                                       type:boolean
+#                                       type:Boolean
 #
 # $qpid_router_hub_addr::               Address for dispatch router hub
+#                                       type:String
 #
 # $qpid_router_hub_port::               Port for dispatch router hub
+#                                       type:Integer[0, 65535]
 #
 # $qpid_router_agent_addr::             Listener address for goferd agents
+#                                       type:String
 #
 # $qpid_router_agent_port::             Listener port for goferd agents
+#                                       type:Integer[0, 65535]
 #
 # $qpid_router_broker_addr::            Address of qpidd broker to connect to
+#                                       type:String
 #
 # $qpid_router_broker_port::            Port of qpidd broker to connect to
+#                                       type:Integer[0, 65535]
 #
 # $qpid_router_logging_level::          Logging level of dispatch router (e.g. info+ or debug+)
+#                                       type:String
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
+#                                       type:Stdlib::Absolutepath
 #
 class foreman_proxy_content (
   $parent_fqdn                  = $foreman_proxy_content::params::parent_fqdn,
