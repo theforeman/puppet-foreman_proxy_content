@@ -7,11 +7,10 @@ class foreman_proxy_content::params {
   $reverse_proxy      = false
   $reverse_proxy_port = 8443
 
-  $puppet             = false
-  $puppet_ca_proxy    = undef
-
   $certs_tar = undef
   $rhsm_url = '/rhsm'
+
+  $puppet                    = true
 
   $pulp_master               = false
   $pulp_admin_password       = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
