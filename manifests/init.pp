@@ -33,6 +33,9 @@
 # $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
 #                                       type:Optional[String]
 #
+# $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
+#                                       type:Optional[String]
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #                                       type:Boolean
 #
@@ -77,6 +80,7 @@ class foreman_proxy_content (
   $pulp_oauth_effective_user    = $foreman_proxy_content::params::pulp_oauth_effective_user,
   $pulp_oauth_key               = $foreman_proxy_content::params::pulp_oauth_key,
   $pulp_oauth_secret            = $foreman_proxy_content::params::pulp_oauth_secret,
+  $pulp_max_speed               = $foreman_proxy_content::params::pulp_max_speed,
 
   $puppet                       = $foreman_proxy_content::params::puppet,
 
@@ -218,6 +222,7 @@ class foreman_proxy_content (
       https_key                 => $certs::apache::apache_key,
       ca_cert                   => $certs::ca_cert,
       crane_data_dir            => '/var/lib/pulp/published/docker/v2/app',
+      yum_max_speed             => $pulp_max_speed,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
