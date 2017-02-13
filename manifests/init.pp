@@ -36,14 +36,14 @@
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
 #                                       type:Optional[String]
 #
-# $reverse_proxy::                      Add reverse proxy to the parent
-#                                       type:Boolean
-#
-# $reverse_proxy_port::                 Reverse proxy listening port
-#                                       type:Integer[0, 65535]
+# $pulp_ports::                         Ports for the Pulp apache vhost to listen on
+#                                       type:Array[Integer[0, 65535]]
 #
 # $rhsm_url::                           The URL that the RHSM API is rooted at
 #                                       type:String
+#
+# $rhsm_port::                          The port to use for the certificates RPM
+#                                       type:Integer[0, 65535]
 #
 # $qpid_router::                        Configure qpid dispatch router
 #                                       type:Boolean
@@ -84,10 +84,8 @@ class foreman_proxy_content (
 
   $puppet                       = $foreman_proxy_content::params::puppet,
 
-  $reverse_proxy                = $foreman_proxy_content::params::reverse_proxy,
-  $reverse_proxy_port           = $foreman_proxy_content::params::reverse_proxy_port,
-
   $rhsm_url                     = $foreman_proxy_content::params::rhsm_url,
+  $rhsm_port                    = $foreman_proxy_content::params::rhsm_port,
 
   $qpid_router                  = $foreman_proxy_content::params::qpid_router,
   $qpid_router_hub_addr         = $foreman_proxy_content::params::qpid_router_hub_addr,
@@ -116,12 +114,6 @@ class foreman_proxy_content (
 
   $foreman_proxy_fqdn = $::fqdn
   $foreman_url = "https://${parent_fqdn}"
-  $reverse_proxy_real = $pulp or $reverse_proxy
-
-  $rhsm_port = $reverse_proxy_real ? {
-    true  => $reverse_proxy_port,
-    false => '443'
-  }
 
   package{ ['katello-debug', 'katello-client-bootstrap']:
     ensure => installed,
@@ -135,18 +127,6 @@ class foreman_proxy_content (
   class { '::certs::katello':
     deployment_url => $foreman_proxy_content::rhsm_url,
     rhsm_port      => $foreman_proxy_content::rhsm_port,
-  }
-
-  if $pulp or $reverse_proxy_real {
-    class { '::certs::apache':
-      hostname => $foreman_proxy_fqdn,
-    } ~>
-    Class['certs::foreman_proxy'] ~>
-    class { '::foreman_proxy_content::reverse_proxy':
-      path => '/',
-      url  => "${foreman_url}/",
-      port => $foreman_proxy_content::reverse_proxy_port,
-    }
   }
 
   if $pulp_master or $pulp {
@@ -168,9 +148,22 @@ class foreman_proxy_content (
     include ::apache
     $apache_version = $::apache::apache_version
 
+    class { '::certs::apache':
+      hostname => $foreman_proxy_fqdn,
+    } ~>
+    Class['certs::foreman_proxy']
+
     file {'/etc/httpd/conf.d/pulp_nodes.conf':
       ensure  => file,
       content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+
+    file { '/etc/httpd/conf.d/rhsm_proxy.conf':
+      ensure  => file,
+      content => template('foreman_proxy_content/rhsm_proxy.conf.erb'),
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
@@ -220,6 +213,7 @@ class foreman_proxy_content (
       node_server_ca_cert       => $certs::params::pulp_server_ca_cert,
       https_cert                => $certs::apache::apache_cert,
       https_key                 => $certs::apache::apache_key,
+      https_ports               => $pulp_ports,
       ca_cert                   => $certs::ca_cert,
       crane_data_dir            => '/var/lib/pulp/published/docker/v2/app',
       yum_max_speed             => $pulp_max_speed,
@@ -244,11 +238,8 @@ class foreman_proxy_content (
     certs::tar_extract { $foreman_proxy_content::certs_tar: } -> Class['certs']
     Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
 
-    if $reverse_proxy_real or $pulp {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
-    }
-
     if $pulp {
+      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
       Certs::Tar_extract[$certs_tar] -> Class['certs'] -> Class['::certs::qpid']
     }
 

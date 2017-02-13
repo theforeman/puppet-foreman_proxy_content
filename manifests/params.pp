@@ -8,10 +8,14 @@ class foreman_proxy_content::params {
   $reverse_proxy_port = 8443
 
   $certs_tar = undef
+
+  $rhsm_proxy = true
   $rhsm_url = '/rhsm'
+  $rhsm_port = 443
 
   $puppet                    = true
 
+  $pulp_ports                = [443]
   $pulp_master               = false
   $pulp_admin_password       = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
   $pulp_oauth_effective_user = 'admin'
