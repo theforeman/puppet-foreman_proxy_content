@@ -1,0 +1,7 @@
+ProxyPass /rhsm https://<%= scope['foreman_proxy_content::parent_fqdn'] %>/rhsm
+
+<Location /rhsm>
+  ProxyPassReverse https://<%= scope['foreman_proxy_content::parent_fqdn'] %>/rhsm
+  RequestHeader set X_RHSM_SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s
+</Location>
+
