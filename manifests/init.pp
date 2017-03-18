@@ -130,7 +130,7 @@ class foreman_proxy_content (
   class { '::certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
     require  => Package['foreman-proxy'],
-    before   => Service['foreman-proxy'],
+    notify   => Service['foreman-proxy'],
   } ~>
   class { '::certs::katello':
     deployment_url => $foreman_proxy_content::rhsm_url,

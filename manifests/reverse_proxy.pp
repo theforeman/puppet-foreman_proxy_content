@@ -26,12 +26,15 @@ class foreman_proxy_content::reverse_proxy (
     ssl_verify_client => 'optional',
     ssl_verify_depth  => 10,
     request_headers   => ['set X_RHSM_SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"'],
-    proxy_pass        => [{
-      'path'         => $path,
-      'url'          => $url,
-      'reverse_urls' => [$path, $url]
-    }],
-    error_documents   => [{
+    proxy_pass        => [
+      {
+        'path'         => $path,
+        'url'          => $url,
+        'reverse_urls' => [$path, $url]
+      }
+    ],
+    error_documents   => [
+      {
         'error_code' => '503',
         'document'   => '\'{"displayMessage": "Internal error, contact administrator", "errors": ["Internal error, contact administrator"], "status": "500" }\''
       },
