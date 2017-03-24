@@ -192,6 +192,7 @@ class foreman_proxy_content (
       ssl_cert_db            => $::certs::nss_db_dir,
       ssl_cert_password_file => $::certs::qpid::nss_db_password_file,
       ssl_cert_name          => 'broker',
+      interface              => 'lo',
     } ~>
     class { '::pulp':
       enable_rpm                => true,
@@ -206,7 +207,7 @@ class foreman_proxy_content (
       messaging_auth_enabled    => false,
       messaging_ca_cert         => $certs::ca_cert,
       messaging_client_cert     => $certs::params::messaging_client_cert,
-      messaging_url             => "ssl://${foreman_proxy_fqdn}:5671",
+      messaging_url             => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_use_ssl            => true,
       manage_broker             => false,
