@@ -1,12 +1,9 @@
 #Adds http reverse-proxy to parent conf
 class foreman_proxy_content::reverse_proxy (
-
   $path = '/',
   $url  = "https://${foreman_proxy_content::parent_fqdn}/",
   $port = $foreman_proxy_content::params::reverse_proxy_port
-
-  ) {
-
+) {
   include ::apache
 
   Class['certs::foreman_proxy'] ~>
@@ -15,9 +12,7 @@ class foreman_proxy_content::reverse_proxy (
     port              => $port,
     docroot           => '/var/www/',
     priority          => '28',
-    ssl_options       => ['+StdEnvVars',
-                          '+ExportCertData',
-                          '+FakeBasicAuth'],
+    ssl_options       => ['+StdEnvVars', '+ExportCertData', '+FakeBasicAuth'],
     ssl               => true,
     ssl_proxyengine   => true,
     ssl_cert          => $certs::apache::apache_cert,
