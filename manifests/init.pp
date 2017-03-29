@@ -131,8 +131,8 @@ class foreman_proxy_content (
     hostname => $foreman_proxy_fqdn,
     require  => Package['foreman-proxy'],
     notify   => Service['foreman-proxy'],
-  } ~>
-  class { '::certs::katello':
+  }
+  ~> class { '::certs::katello':
     deployment_url => $foreman_proxy_content::rhsm_url,
     rhsm_port      => $foreman_proxy_content::rhsm_port,
   }
@@ -140,9 +140,9 @@ class foreman_proxy_content (
   if $pulp or $reverse_proxy_real {
     class { '::certs::apache':
       hostname => $foreman_proxy_fqdn,
-    } ~>
-    Class['certs::foreman_proxy'] ~>
-    class { '::foreman_proxy_content::reverse_proxy':
+    }
+    ~> Class['certs::foreman_proxy']
+    ~> class { '::foreman_proxy_content::reverse_proxy':
       path => '/',
       url  => "${foreman_url}/",
       port => $foreman_proxy_content::reverse_proxy_port,
@@ -185,16 +185,16 @@ class foreman_proxy_content (
       custom_fragment => template('foreman_proxy_content/_pulp_includes.erb', 'foreman_proxy_content/httpd_pub.erb'),
     }
 
-    class { '::certs::qpid': } ~>
-    class { '::certs::qpid_client': } ~>
-    class { '::qpid':
+    class { '::certs::qpid': }
+    ~> class { '::certs::qpid_client': }
+    ~> class { '::qpid':
       ssl                    => true,
       ssl_cert_db            => $::certs::nss_db_dir,
       ssl_cert_password_file => $::certs::qpid::nss_db_password_file,
       ssl_cert_name          => 'broker',
       interface              => 'lo',
-    } ~>
-    class { '::pulp':
+    }
+    ~> class { '::pulp':
       enable_rpm                => true,
       enable_puppet             => true,
       enable_docker             => true,

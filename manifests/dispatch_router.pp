@@ -10,13 +10,13 @@ class foreman_proxy_content::dispatch_router (
   # SSL Certificate Configuration
   class { '::certs::qpid_router':
     require => Class['qpid::router::install'],
-  } ~>
-  qpid::router::ssl_profile { 'client':
+  }
+  ~> qpid::router::ssl_profile { 'client':
     ca   => $certs::ca_cert,
     cert => $certs::qpid_router::client_cert,
     key  => $certs::qpid_router::client_key,
-  } ~>
-  qpid::router::ssl_profile { 'server':
+  }
+  ~> qpid::router::ssl_profile { 'server':
     ca   => $certs::ca_cert,
     cert => $certs::qpid_router::server_cert,
     key  => $certs::qpid_router::server_key,
@@ -33,8 +33,8 @@ class foreman_proxy_content::dispatch_router (
   file { $foreman_proxy_content::qpid_router_logging_path:
     ensure => directory,
     owner  => 'qdrouterd',
-  } ~>
-  qpid::router::log { 'logging':
+  }
+  ~> qpid::router::log { 'logging':
     level  => $foreman_proxy_content::qpid_router_logging_level,
     output => "${foreman_proxy_content::qpid_router_logging_path}/qdrouterd.log",
   }
