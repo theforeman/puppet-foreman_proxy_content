@@ -5,100 +5,78 @@
 # === Parameters:
 #
 # $parent_fqdn::                        FQDN of the parent node.
-#                                       type:String
 #
 # $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
-#                                       type:Boolean
 #
 # $certs_tar::                          Path to a tar with certs for the node
-#                                       type:Optional[Stdlib::Absolutepath]
 #
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
-#                                       type:Boolean
 #
 # $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
-#                                       type:Boolean
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
-#                                       type:String
 #
 # $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
-#                                       type:String
 #
 # $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
-#                                       type:String
 #
 # $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
-#                                       type:Optional[String]
 #
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
-#                                       type:Optional[String]
 #
 # $reverse_proxy::                      Add reverse proxy to the parent
-#                                       type:Boolean
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
-#                                       type:Integer[0, 65535]
 #
 # $rhsm_url::                           The URL that the RHSM API is rooted at
-#                                       type:String
 #
 # $qpid_router::                        Configure qpid dispatch router
-#                                       type:Boolean
 #
 # $qpid_router_hub_addr::               Address for dispatch router hub
-#                                       type:String
 #
 # $qpid_router_hub_port::               Port for dispatch router hub
-#                                       type:Integer[0, 65535]
 #
 # $qpid_router_agent_addr::             Listener address for goferd agents
-#                                       type:String
 #
 # $qpid_router_agent_port::             Listener port for goferd agents
-#                                       type:Integer[0, 65535]
 #
 # $qpid_router_broker_addr::            Address of qpidd broker to connect to
-#                                       type:String
 #
 # $qpid_router_broker_port::            Port of qpidd broker to connect to
-#                                       type:Integer[0, 65535]
 #
 # $qpid_router_logging_level::          Logging level of dispatch router (e.g. info+ or debug+)
-#                                       type:String
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
-#                                       type:Stdlib::Absolutepath
 #
 class foreman_proxy_content (
-  $parent_fqdn                  = $foreman_proxy_content::params::parent_fqdn,
-  $certs_tar                    = $foreman_proxy_content::params::certs_tar,
-  $pulp_master                  = $foreman_proxy_content::params::pulp_master,
-  $pulp_admin_password          = $foreman_proxy_content::params::pulp_admin_password,
-  $pulp_oauth_effective_user    = $foreman_proxy_content::params::pulp_oauth_effective_user,
-  $pulp_oauth_key               = $foreman_proxy_content::params::pulp_oauth_key,
-  $pulp_oauth_secret            = $foreman_proxy_content::params::pulp_oauth_secret,
-  $pulp_max_speed               = $foreman_proxy_content::params::pulp_max_speed,
+  String $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
+  Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
+  Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
+  String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
+  String $pulp_oauth_effective_user = $foreman_proxy_content::params::pulp_oauth_effective_user,
+  String $pulp_oauth_key = $foreman_proxy_content::params::pulp_oauth_key,
+  Optional[String] $pulp_oauth_secret = $foreman_proxy_content::params::pulp_oauth_secret,
+  Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
 
-  $puppet                       = $foreman_proxy_content::params::puppet,
+  Boolean $puppet = $foreman_proxy_content::params::puppet,
 
-  $reverse_proxy                = $foreman_proxy_content::params::reverse_proxy,
-  $reverse_proxy_port           = $foreman_proxy_content::params::reverse_proxy_port,
+  Boolean $reverse_proxy = $foreman_proxy_content::params::reverse_proxy,
+  Integer[0, 65535] $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
 
-  $rhsm_url                     = $foreman_proxy_content::params::rhsm_url,
+  String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
 
-  $qpid_router                  = $foreman_proxy_content::params::qpid_router,
-  $qpid_router_hub_addr         = $foreman_proxy_content::params::qpid_router_hub_addr,
-  $qpid_router_hub_port         = $foreman_proxy_content::params::qpid_router_hub_port,
-  $qpid_router_agent_addr       = $foreman_proxy_content::params::qpid_router_agent_addr,
-  $qpid_router_agent_port       = $foreman_proxy_content::params::qpid_router_agent_port,
-  $qpid_router_broker_addr      = $foreman_proxy_content::params::qpid_router_broker_addr,
-  $qpid_router_broker_port      = $foreman_proxy_content::params::qpid_router_broker_port,
-  $qpid_router_logging_level    = $foreman_proxy_content::params::qpid_router_logging_level,
-  $qpid_router_logging_path     = $foreman_proxy_content::params::qpid_router_logging_path,
-  $enable_ostree                = $foreman_proxy_content::params::enable_ostree,
+  Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
+  String $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
+  Integer[0, 65535] $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
+  String $qpid_router_agent_addr = $foreman_proxy_content::params::qpid_router_agent_addr,
+  Integer[0, 65535] $qpid_router_agent_port = $foreman_proxy_content::params::qpid_router_agent_port,
+  String $qpid_router_broker_addr = $foreman_proxy_content::params::qpid_router_broker_addr,
+  Integer[0, 65535] $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
+  String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
+  Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
+  Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
 ) inherits foreman_proxy_content::params {
   validate_bool($enable_ostree)
 
