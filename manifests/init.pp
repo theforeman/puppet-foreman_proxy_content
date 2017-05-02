@@ -51,7 +51,7 @@
 # $qpid_router_logging_path::           Directory for dispatch router logs
 #
 class foreman_proxy_content (
-  String $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
+  String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
@@ -78,18 +78,13 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
 ) inherits foreman_proxy_content::params {
-  validate_bool($enable_ostree)
-
   include ::certs
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
 
-  validate_present($foreman_proxy_content::parent_fqdn)
-  validate_absolute_path($foreman_proxy_content::qpid_router_logging_path)
-
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
   if $pulp {
-    validate_present($pulp_oauth_secret)
+    assert_type(String[1], $pulp_oauth_secret)
   }
 
   $foreman_proxy_fqdn = $::fqdn
