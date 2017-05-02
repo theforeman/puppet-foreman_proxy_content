@@ -1,8 +1,8 @@
-#Adds http reverse-proxy to parent conf
+# Adds http reverse-proxy to parent conf
 class foreman_proxy_content::reverse_proxy (
   $path = '/',
   $url  = "https://${foreman_proxy_content::parent_fqdn}/",
-  $port = $foreman_proxy_content::params::reverse_proxy_port
+  $port = $foreman_proxy_content::reverse_proxy_port,
 ) {
   include ::apache
 
@@ -30,7 +30,7 @@ class foreman_proxy_content::reverse_proxy (
     ],
     error_documents   => [
       {
-        'error_code' => '503',
+        'error_code' => '500',
         'document'   => '\'{"displayMessage": "Internal error, contact administrator", "errors": ["Internal error, contact administrator"], "status": "500" }\''
       },
       {
