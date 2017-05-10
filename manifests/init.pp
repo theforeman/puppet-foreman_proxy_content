@@ -150,12 +150,13 @@ class foreman_proxy_content (
     }
 
     apache::vhost { 'foreman_proxy_content':
-      servername      => $foreman_proxy_fqdn,
-      port            => 80,
-      priority        => '05',
-      docroot         => '/var/www/html',
-      options         => ['SymLinksIfOwnerMatch'],
-      custom_fragment => template('foreman_proxy_content/_pulp_includes.erb', 'foreman_proxy_content/httpd_pub.erb'),
+      servername          => $foreman_proxy_fqdn,
+      port                => 80,
+      priority            => '05',
+      docroot             => '/var/www/html',
+      options             => ['SymLinksIfOwnerMatch'],
+      additional_includes => ['/etc/pulp/vhosts80/*.conf'],
+      custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
     }
 
     class { '::certs::qpid': }
