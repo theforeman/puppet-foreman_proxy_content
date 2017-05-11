@@ -107,8 +107,8 @@ class foreman_proxy_content (
   }
 
   class { '::certs::katello':
-    deployment_url => $foreman_proxy_content::rhsm_url,
-    rhsm_port      => $foreman_proxy_content::rhsm_port,
+    deployment_url => $rhsm_url,
+    rhsm_port      => $rhsm_port,
     require        => Class['certs'],
   }
 
@@ -120,7 +120,7 @@ class foreman_proxy_content (
     ~> class { '::foreman_proxy_content::reverse_proxy':
       path      => '/',
       url       => "${foreman_url}/",
-      port      => $foreman_proxy_content::reverse_proxy_port,
+      port      => $reverse_proxy_port,
       subscribe => Class['certs::foreman_proxy'],
     }
   }
