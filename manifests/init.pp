@@ -102,23 +102,26 @@ class foreman_proxy_content (
 
   class { '::certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
-    require  => Package['foreman-proxy'],
+    require  => Class['certs'],
     notify   => Service['foreman-proxy'],
   }
-  ~> class { '::certs::katello':
+
+  class { '::certs::katello':
     deployment_url => $foreman_proxy_content::rhsm_url,
     rhsm_port      => $foreman_proxy_content::rhsm_port,
+    require        => Class['certs'],
   }
 
   if $pulp or $reverse_proxy_real {
     class { '::certs::apache':
       hostname => $foreman_proxy_fqdn,
+      require  => Class['certs'],
     }
-    ~> Class['certs::foreman_proxy']
     ~> class { '::foreman_proxy_content::reverse_proxy':
-      path => '/',
-      url  => "${foreman_url}/",
-      port => $foreman_proxy_content::reverse_proxy_port,
+      path      => '/',
+      url       => "${foreman_url}/",
+      port      => $foreman_proxy_content::reverse_proxy_port,
+      subscribe => Class['certs::foreman_proxy'],
     }
   }
 
@@ -159,14 +162,19 @@ class foreman_proxy_content (
       custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
     }
 
-    class { '::certs::qpid': }
-    ~> class { '::certs::qpid_client': }
+    class { '::certs::qpid':
+      require => Class['certs'],
+    }
     ~> class { '::qpid':
       ssl                    => true,
       ssl_cert_db            => $::certs::nss_db_dir,
       ssl_cert_password_file => $::certs::qpid::nss_db_password_file,
       ssl_cert_name          => 'broker',
       interface              => 'lo',
+    }
+
+    class { '::certs::qpid_client':
+      require => Class['certs'],
     }
     ~> class { '::pulp':
       enable_rpm                => true,
@@ -180,7 +188,7 @@ class foreman_proxy_content (
       messaging_transport       => 'qpid',
       messaging_auth_enabled    => false,
       messaging_ca_cert         => $certs::ca_cert,
-      messaging_client_cert     => $certs::params::messaging_client_cert,
+      messaging_client_cert     => $certs::messaging_client_cert,
       messaging_url             => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_use_ssl            => true,
@@ -192,7 +200,7 @@ class foreman_proxy_content (
       node_oauth_effective_user => $pulp_oauth_effective_user,
       node_oauth_key            => $pulp_oauth_key,
       node_oauth_secret         => $pulp_oauth_secret,
-      node_server_ca_cert       => $certs::params::pulp_server_ca_cert,
+      node_server_ca_cert       => $certs::pulp_server_ca_cert,
       https_cert                => $certs::apache::apache_cert,
       https_key                 => $certs::apache::apache_key,
       ca_cert                   => $certs::ca_cert,
@@ -211,24 +219,14 @@ class foreman_proxy_content (
     # it remains here for now.
     class { '::certs::puppet':
       hostname => $foreman_proxy_fqdn,
+      require  => Class['certs'],
       notify   => Class['puppet'],
     }
   }
 
   if $certs_tar {
-    certs::tar_extract { $foreman_proxy_content::certs_tar: } -> Class['certs']
-    Certs::Tar_extract[$certs_tar] -> Class['certs::foreman_proxy']
-
-    if $reverse_proxy_real or $pulp {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::apache']
-    }
-
-    if $pulp {
-      Certs::Tar_extract[$certs_tar] -> Class['certs'] -> Class['::certs::qpid']
-    }
-
-    if $puppet {
-      Certs::Tar_extract[$certs_tar] -> Class['certs::puppet']
+    certs::tar_extract { $certs_tar:
+      before => Class['certs'],
     }
   }
 }
