@@ -227,7 +227,7 @@ class foreman_proxy_content (
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
-      ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
+      ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb', 'foreman_proxy_content/httpd_pub.erb'),
     }
   }
 
