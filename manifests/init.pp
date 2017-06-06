@@ -157,10 +157,11 @@ class foreman_proxy_content (
     }
 
     class { '::pulp::crane':
-      cert    => $certs::apache::apache_cert,
-      key     => $certs::apache::apache_key,
-      ca_cert => $certs::ca_cert,
-      require => Class['certs::apache'],
+      cert     => $certs::apache::apache_cert,
+      key      => $certs::apache::apache_key,
+      ca_cert  => $certs::ca_cert,
+      data_dir => '/var/lib/pulp/published/docker/v2/app',
+      require  => Class['certs::apache'],
     }
   }
 
@@ -222,7 +223,6 @@ class foreman_proxy_content (
       https_cert                => $certs::apache::apache_cert,
       https_key                 => $certs::apache::apache_key,
       ca_cert                   => $certs::ca_cert,
-      crane_data_dir            => '/var/lib/pulp/published/docker/v2/app',
       yum_max_speed             => $pulp_max_speed,
     }
 
