@@ -141,6 +141,10 @@ class foreman_proxy_content (
     }
   }
 
+  package { 'client-bootstrap':
+    ensure => 'installed',
+  }
+
   if $pulp {
     include ::apache
     $apache_version = $::apache::apache_version
