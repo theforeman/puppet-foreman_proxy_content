@@ -1,7 +1,7 @@
 # Adds http reverse-proxy to parent conf
 class foreman_proxy_content::reverse_proxy (
   $path = '/',
-  $url  = "https://${foreman_proxy_content::parent_fqdn}/",
+  $url  = "${foreman_proxy_content::foreman_url}/",
   $port = $foreman_proxy_content::reverse_proxy_port,
 ) {
   include ::apache

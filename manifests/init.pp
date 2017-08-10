@@ -4,7 +4,7 @@
 #
 # === Parameters:
 #
-# $parent_fqdn::                        FQDN of the parent node.
+# $parent_fqdn::                        FQDN of the parent pulp node.
 #
 # $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
 #
@@ -82,16 +82,16 @@ class foreman_proxy_content (
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
 
-  $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
-  if $pulp {
+  $pulp_node = $::foreman_proxy::plugin::pulp::pulpnode_enabled
+  if $pulp_node {
     assert_type(String[1], $pulp_oauth_secret)
   }
 
   $foreman_proxy_fqdn = $::fqdn
-  $foreman_url = "https://${parent_fqdn}"
-  $reverse_proxy_real = $pulp or $reverse_proxy
+  $foreman_url = $::foreman_proxy::foreman_base_url
+  $setup_reverse_proxy = $pulp_node or $reverse_proxy
 
-  $rhsm_port = $reverse_proxy_real ? {
+  $rhsm_port = $setup_reverse_proxy ? {
     true  => $reverse_proxy_port,
     false => '443'
   }
@@ -112,7 +112,7 @@ class foreman_proxy_content (
     require        => Class['certs'],
   }
 
-  if $pulp or $reverse_proxy_real {
+  if $setup_reverse_proxy {
     class { '::certs::apache':
       hostname => $foreman_proxy_fqdn,
       require  => Class['certs'],
@@ -125,7 +125,7 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulp_master or $pulp {
+  if $pulp_master or $pulp_node {
     if $qpid_router {
       class { '::foreman_proxy_content::dispatch_router':
         require => Class['pulp'],
@@ -141,7 +141,7 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulp {
+  if $pulp_node {
     include ::apache
     $apache_version = $::apache::apache_version
 
