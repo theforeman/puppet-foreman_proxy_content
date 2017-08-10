@@ -5,10 +5,6 @@ alias /pub /var/www/html/pub
     PassengerEnabled off
   </IfModule>
   Options +FollowSymLinks +Indexes
-<%- if scope.function_versioncmp([@apache_version, '2.4']) >= 0 -%>
   Require all granted
-<% else -%>
-  Allow from all
-<% end -%>
 
 </Location>
