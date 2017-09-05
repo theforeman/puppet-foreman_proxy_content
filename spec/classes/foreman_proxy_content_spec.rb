@@ -23,8 +23,7 @@ describe 'foreman_proxy_content' do
 
         let(:pre_condition) do
           "include foreman_proxy
-          class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}
-          class {'apache': apache_version => '2.4'}"
+          class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}"
         end
 
         it { should contain_class('pulp').with(:oauth_secret => 'mysecret') }

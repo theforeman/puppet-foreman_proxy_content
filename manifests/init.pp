@@ -143,7 +143,6 @@ class foreman_proxy_content (
 
   if $pulp {
     include ::apache
-    $apache_version = $::apache::apache_version
 
     file {'/etc/httpd/conf.d/pulp_nodes.conf':
       ensure  => file,
