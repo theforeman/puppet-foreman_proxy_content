@@ -8,8 +8,9 @@ class foreman_proxy_content::reverse_proxy (
   include ::certs::apache
   include ::certs::foreman_proxy
 
-  Class['certs::foreman_proxy']
-  ~> apache::vhost { 'katello-reverse-proxy':
+  Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
+
+  apache::vhost { 'katello-reverse-proxy':
     servername        => $::foreman_proxy_content::foreman_proxy_fqdn,
     port              => $port,
     docroot           => '/var/www/',
