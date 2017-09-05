@@ -20,13 +20,14 @@ class foreman_proxy_content::params {
   $pulp_max_speed            = undef
 
   $qpid_router               = true
-  $qpid_router_hub_addr      = '0.0.0.0'
   $qpid_router_agent_addr    = '0.0.0.0'
-  $qpid_router_broker_addr   = 'localhost'
-  $qpid_router_hub_port      = 5646
   $qpid_router_agent_port    = 5647
+  $qpid_router_broker_addr   = 'localhost'
   $qpid_router_broker_port   = 5671
+  $qpid_router_hub_addr      = '0.0.0.0'
+  $qpid_router_hub_port      = 5646
   $qpid_router_logging_level = 'info+'
   $qpid_router_logging_path  = '/var/log/qdrouterd'
+
   $enable_ostree             = false
 }
