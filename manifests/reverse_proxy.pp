@@ -18,6 +18,7 @@ class foreman_proxy_content::reverse_proxy (
     ssl_cert          => $certs::apache::apache_cert,
     ssl_key           => $certs::apache::apache_key,
     ssl_ca            => $certs::ca_cert,
+    ssl_certs_dir     => '',
     ssl_verify_client => 'optional',
     ssl_verify_depth  => 10,
     request_headers   => ['set X_RHSM_SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"'],
