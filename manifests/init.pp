@@ -112,9 +112,9 @@ class foreman_proxy_content (
   String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
 
   Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
-  String $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
+  Optional[String] $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
   Integer[0, 65535] $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
-  String $qpid_router_agent_addr = $foreman_proxy_content::params::qpid_router_agent_addr,
+  Optional[String] $qpid_router_agent_addr = $foreman_proxy_content::params::qpid_router_agent_addr,
   Integer[0, 65535] $qpid_router_agent_port = $foreman_proxy_content::params::qpid_router_agent_port,
   String $qpid_router_broker_addr = $foreman_proxy_content::params::qpid_router_broker_addr,
   Integer[0, 65535] $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
