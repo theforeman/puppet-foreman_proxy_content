@@ -11,7 +11,6 @@ describe 'foreman_proxy_content' do
 
 
       it { should contain_package('katello-debug') }
-      it { should contain_package('katello-client-bootstrap') }
 
       context 'with pulp' do
         let(:params) do
@@ -28,6 +27,8 @@ describe 'foreman_proxy_content' do
 
         it { should contain_class('pulp').with(:oauth_secret => 'mysecret') }
         it { should_not contain_class('foreman_proxy_content::dispatch_router') }
+
+        it { should contain_class('foreman_proxy_content::pub_dir') }
 
         it { should contain_pulp__apache__fragment('gpg_key_proxy').with({
           :ssl_content => %r{ProxyPass /katello/api/repositories/}} ) }
