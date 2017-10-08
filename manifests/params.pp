@@ -38,4 +38,6 @@ class foreman_proxy_content::params {
   $qpid_router_logging_path  = '/var/log/qdrouterd'
 
   $enable_ostree             = false
+
+  $manage_broker             = true
 }

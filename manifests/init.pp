@@ -64,6 +64,8 @@
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
 #
+# $manage_broker::                      Manage the qpid message broker when applicable
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
@@ -98,6 +100,8 @@ class foreman_proxy_content (
   String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
+
+  Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
   include ::certs
   include ::foreman_proxy
@@ -173,15 +177,8 @@ class foreman_proxy_content (
 
     include ::foreman_proxy_content::pub_dir
 
-    class { '::certs::qpid':
-      require => Class['certs'],
-    }
-    ~> class { '::qpid':
-      ssl                    => true,
-      ssl_cert_db            => $::certs::nss_db_dir,
-      ssl_cert_password_file => $::certs::qpid::nss_db_password_file,
-      ssl_cert_name          => 'broker',
-      interface              => 'lo',
+    if $manage_broker {
+      include ::foreman_proxy_content::broker
     }
 
     class { '::certs::qpid_client':
