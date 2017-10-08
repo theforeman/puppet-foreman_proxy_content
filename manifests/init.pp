@@ -20,6 +20,22 @@
 #
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
 #
+# $pulp_max_tasks_per_child::           Number of tasks after which the worker is restarted and the memory it allocated is returned to the system
+#
+# $pulp_num_workers::                   Number of Pulp workers to use.
+#
+# $pulp_proxy_port::                    Port of the http proxy server
+#
+# $pulp_proxy_url::                     URL of the http proxy server
+#
+# $pulp_proxy_username::                Proxy username for authentication
+#
+# $pulp_proxy_password::                Proxy password for authentication
+#
+# $pulp_puppet_wsgi_processes::         Number of WSGI processes to spawn for the puppet webapp
+#
+# $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -54,6 +70,14 @@ class foreman_proxy_content (
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
+  Optional[Integer[1]] $pulp_max_tasks_per_child = $foreman_proxy_content::params::pulp_max_tasks_per_child,
+  Optional[Integer[1]] $pulp_num_workers = $foreman_proxy_content::params::pulp_num_workers,
+  Optional[String] $pulp_proxy_password = $foreman_proxy_content::params::pulp_proxy_password,
+  Optional[Integer[0, 65535]] $pulp_proxy_port = $foreman_proxy_content::params::pulp_proxy_port,
+  Optional[String] $pulp_proxy_url = $foreman_proxy_content::params::pulp_proxy_url,
+  Optional[String] $pulp_proxy_username = $foreman_proxy_content::params::pulp_proxy_username,
+  Optional[Integer[1]] $pulp_puppet_wsgi_processes = $foreman_proxy_content::params::pulp_puppet_wsgi_processes,
+  Optional[Stdlib::Absolutepath] $pulp_ca_cert = $foreman_proxy_content::params::pulp_ca_cert,
 
   Boolean $puppet = $foreman_proxy_content::params::puppet,
 
@@ -171,7 +195,7 @@ class foreman_proxy_content (
       default_password       => $pulp_admin_password,
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
-      messaging_ca_cert      => $certs::ca_cert,
+      messaging_ca_cert      => pick($pulp_ca_cert, $::certs::ca_cert),
       messaging_client_cert  => $certs::messaging_client_cert,
       messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
@@ -180,14 +204,20 @@ class foreman_proxy_content (
       manage_httpd           => true,
       manage_plugins_httpd   => true,
       manage_squid           => true,
+      puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
+      max_tasks_per_child    => $pulp_max_tasks_per_child,
+      num_workers            => $pulp_num_workers,
       repo_auth              => true,
-      puppet_wsgi_processes  => 1,
       node_server_ca_cert    => $certs::pulp_server_ca_cert,
       https_cert             => $certs::apache::apache_cert,
       https_key              => $certs::apache::apache_key,
       ssl_protocol           => $ssl_protocol,
       ca_cert                => $certs::ca_cert,
       yum_max_speed          => $pulp_max_speed,
+      proxy_port             => $pulp_proxy_port,
+      proxy_url              => $pulp_proxy_url,
+      proxy_username         => $pulp_proxy_username,
+      proxy_password         => $pulp_proxy_password,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':

@@ -18,6 +18,14 @@ class foreman_proxy_content::params {
   $pulp_master               = false
   $pulp_admin_password       = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
   $pulp_max_speed            = undef
+  $pulp_max_tasks_per_child  = undef
+  $pulp_num_workers          = undef
+  $pulp_proxy_password       = undef
+  $pulp_proxy_port           = undef
+  $pulp_proxy_url            = undef
+  $pulp_proxy_username       = undef
+  $pulp_puppet_wsgi_processes = 1
+  $pulp_ca_cert              = undef
 
   $qpid_router               = true
   $qpid_router_agent_addr    = '0.0.0.0'
