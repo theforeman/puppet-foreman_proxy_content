@@ -88,7 +88,7 @@ class foreman_proxy_content (
   }
 
   $foreman_proxy_fqdn = $::fqdn
-  $foreman_url = "https://${parent_fqdn}"
+  $foreman_url = $::foreman_proxy::foreman_base_url
   $reverse_proxy_real = $pulp or $reverse_proxy
 
   $rhsm_port = $reverse_proxy_real ? {
