@@ -96,9 +96,7 @@ class foreman_proxy_content (
     false => '443'
   }
 
-  package{ ['katello-debug', 'katello-client-bootstrap']:
-    ensure => installed,
-  }
+  ensure_packages('katello-debug')
 
   class { '::certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
@@ -152,15 +150,7 @@ class foreman_proxy_content (
       mode    => '0644',
     }
 
-    apache::vhost { 'foreman_proxy_content':
-      servername          => $foreman_proxy_fqdn,
-      port                => 80,
-      priority            => '05',
-      docroot             => '/var/www/html',
-      options             => ['SymLinksIfOwnerMatch'],
-      additional_includes => ['/etc/pulp/vhosts80/*.conf'],
-      custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
-    }
+    include ::foreman_proxy_content::pub_dir
 
     class { '::certs::qpid':
       require => Class['certs'],
