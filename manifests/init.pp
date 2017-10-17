@@ -167,13 +167,7 @@ class foreman_proxy_content (
       hostname => $foreman_proxy_fqdn,
       require  => Class['certs'],
     }
-    ~> class { '::foreman_proxy_content::reverse_proxy':
-      path         => '/',
-      url          => "${foreman_url}/",
-      port         => $reverse_proxy_port,
-      subscribe    => Class['certs::foreman_proxy'],
-      ssl_protocol => $ssl_protocol,
-    }
+    include ::foreman_proxy_content::reverse_proxy
   }
 
   if $pulp_master or $pulp {
