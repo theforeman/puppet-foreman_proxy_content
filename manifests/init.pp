@@ -133,8 +133,10 @@ class foreman_proxy_content (
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
   include ::certs
+  include ::certs::foreman_proxy
   include ::foreman_proxy
   include ::foreman_proxy::plugin::pulp
+  Class['certs::foreman_proxy'] ~> Class['foreman_proxy::service']
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
 
@@ -148,12 +150,6 @@ class foreman_proxy_content (
   }
 
   ensure_packages('katello-debug')
-
-  class { '::certs::foreman_proxy':
-    hostname => $foreman_proxy_fqdn,
-    require  => Class['certs'],
-    notify   => Service['foreman-proxy'],
-  }
 
   class { '::certs::katello':
     hostname       => $rhsm_hostname,
