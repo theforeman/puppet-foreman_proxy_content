@@ -1,6 +1,6 @@
 {
   "name": "katello-foreman_proxy_content",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "author": "Katello",
   "summary": "Deploys and manages a Foreman proxy server with content",
   "license": "GPL-3.0+",
