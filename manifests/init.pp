@@ -187,6 +187,7 @@ class foreman_proxy_content (
       manage_plugins_httpd      => true,
       manage_squid              => true,
       repo_auth                 => true,
+      puppet_wsgi_processes     => 1,
       node_oauth_effective_user => $pulp_oauth_effective_user,
       node_oauth_key            => $pulp_oauth_key,
       node_oauth_secret         => $pulp_oauth_secret,
