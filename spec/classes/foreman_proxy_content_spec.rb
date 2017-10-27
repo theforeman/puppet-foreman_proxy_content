@@ -32,6 +32,22 @@ describe 'foreman_proxy_content' do
         it { should contain_pulp__apache__fragment('gpg_key_proxy').with({
           :ssl_content => %r{ProxyPass /katello/api/repositories/}} ) }
       end
+
+      context 'with rhsm_hostname and rhsm_url' do
+        let(:params) do
+          {
+            :rhsm_hostname => 'katello.example.com',
+            :rhsm_url      => '/abc/rhsm'
+          }
+
+          it do
+            should contain_class('certs::katello').with(
+              :hostname => 'katello.example.com',
+              :deployment_url => '/abc/rhsm'
+            )
+          end
+        end
+      end
     end
   end
 end

@@ -8,6 +8,7 @@ class foreman_proxy_content::params {
   $reverse_proxy_port = 8443
 
   $certs_tar = undef
+  $rhsm_hostname = undef
   $rhsm_url = '/rhsm'
 
   $puppet                    = true
