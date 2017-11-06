@@ -1,5 +1,5 @@
 [![Puppet Forge](http://img.shields.io/puppetforge/v/katello/foreman_proxy_content.svg)](https://forge.puppetlabs.com/katello/foreman_proxy_content)
-[![Build Status](https://travis-ci.org/Katello/puppet-foreman_proxy_content.svg?branch=master)](https://travis-ci.org/Katello/puppet-foreman_proxy_content)
+[![Build Status](https://travis.ci.org/theforeman/puppet-foreman_proxy_content.svg?branch=master)](https://travis-ci.org/Katello/puppet-foreman_proxy_content)
 #### Table of Contents
 
 1. [Overview](#overview)
