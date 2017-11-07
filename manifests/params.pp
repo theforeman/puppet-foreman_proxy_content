@@ -14,9 +14,6 @@ class foreman_proxy_content::params {
 
   $pulp_master               = false
   $pulp_admin_password       = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
-  $pulp_oauth_effective_user = 'admin'
-  $pulp_oauth_key            = 'katello'
-  $pulp_oauth_secret         = undef
   $pulp_max_speed            = undef
 
   $qpid_router               = true

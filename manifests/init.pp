@@ -18,12 +18,6 @@
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
 #
-# $pulp_oauth_effective_user::          User to be used for Pulp REST interaction
-#
-# $pulp_oauth_key::                     OAuth key to be used for Pulp REST interaction
-#
-# $pulp_oauth_secret::                  OAuth secret to be used for Pulp REST interaction
-#
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
 #
 # $reverse_proxy::                      Add reverse proxy to the parent
@@ -55,9 +49,6 @@ class foreman_proxy_content (
   Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
-  String $pulp_oauth_effective_user = $foreman_proxy_content::params::pulp_oauth_effective_user,
-  String $pulp_oauth_key = $foreman_proxy_content::params::pulp_oauth_key,
-  Optional[String] $pulp_oauth_secret = $foreman_proxy_content::params::pulp_oauth_secret,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
 
   Boolean $puppet = $foreman_proxy_content::params::puppet,
@@ -83,9 +74,6 @@ class foreman_proxy_content (
   include ::foreman_proxy::plugin::pulp
 
   $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
-  if $pulp {
-    assert_type(String[1], $pulp_oauth_secret)
-  }
 
   $foreman_proxy_fqdn = $::fqdn
   $foreman_url = $::foreman_proxy::foreman_base_url
@@ -167,35 +155,29 @@ class foreman_proxy_content (
       require => Class['certs'],
     }
     ~> class { '::pulp':
-      enable_rpm                => true,
-      enable_puppet             => true,
-      enable_docker             => true,
-      enable_ostree             => $enable_ostree,
-      default_password          => $pulp_admin_password,
-      oauth_enabled             => true,
-      oauth_key                 => $pulp_oauth_key,
-      oauth_secret              => $pulp_oauth_secret,
-      messaging_transport       => 'qpid',
-      messaging_auth_enabled    => false,
-      messaging_ca_cert         => $certs::ca_cert,
-      messaging_client_cert     => $certs::messaging_client_cert,
-      messaging_url             => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_url                => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_use_ssl            => true,
-      manage_broker             => false,
-      manage_httpd              => true,
-      manage_plugins_httpd      => true,
-      manage_squid              => true,
-      repo_auth                 => true,
-      puppet_wsgi_processes     => 1,
-      node_oauth_effective_user => $pulp_oauth_effective_user,
-      node_oauth_key            => $pulp_oauth_key,
-      node_oauth_secret         => $pulp_oauth_secret,
-      node_server_ca_cert       => $certs::pulp_server_ca_cert,
-      https_cert                => $certs::apache::apache_cert,
-      https_key                 => $certs::apache::apache_key,
-      ca_cert                   => $certs::ca_cert,
-      yum_max_speed             => $pulp_max_speed,
+      enable_rpm             => true,
+      enable_puppet          => true,
+      enable_docker          => true,
+      enable_ostree          => $enable_ostree,
+      default_password       => $pulp_admin_password,
+      messaging_transport    => 'qpid',
+      messaging_auth_enabled => false,
+      messaging_ca_cert      => $certs::ca_cert,
+      messaging_client_cert  => $certs::messaging_client_cert,
+      messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_use_ssl         => true,
+      manage_broker          => false,
+      manage_httpd           => true,
+      manage_plugins_httpd   => true,
+      manage_squid           => true,
+      repo_auth              => true,
+      puppet_wsgi_processes  => 1,
+      node_server_ca_cert    => $certs::pulp_server_ca_cert,
+      https_cert             => $certs::apache::apache_cert,
+      https_key              => $certs::apache::apache_key,
+      ca_cert                => $certs::ca_cert,
+      yum_max_speed          => $pulp_max_speed,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':

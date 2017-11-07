@@ -15,7 +15,6 @@ describe 'foreman_proxy_content' do
       context 'with pulp' do
         let(:params) do
           {
-            :pulp_oauth_secret => 'mysecret',
             :qpid_router       => false
           }
         end
@@ -25,7 +24,7 @@ describe 'foreman_proxy_content' do
           class {'foreman_proxy::plugin::pulp': pulpnode_enabled => true}"
         end
 
-        it { should contain_class('pulp').with(:oauth_secret => 'mysecret') }
+        it { should contain_class('pulp').with(:manage_squid => true) }
         it { should_not contain_class('foreman_proxy_content::dispatch_router') }
 
         it { should contain_class('foreman_proxy_content::pub_dir') }
