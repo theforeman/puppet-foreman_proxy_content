@@ -24,7 +24,9 @@
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
 #
-# $rhsm_url::                           The URL that the RHSM API is rooted at
+# $rhsm_hostname::                      The hostname that the RHSM API is rooted at
+#
+# $rhsm_url::                           The URL path that the RHSM API is rooted at
 #
 # $qpid_router::                        Configure qpid dispatch router
 #
@@ -56,6 +58,7 @@ class foreman_proxy_content (
   Boolean $reverse_proxy = $foreman_proxy_content::params::reverse_proxy,
   Integer[0, 65535] $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
 
+  Optional[String] $rhsm_hostname = $foreman_proxy_content::params::rhsm_hostname,
   String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
 
   Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
@@ -93,6 +96,7 @@ class foreman_proxy_content (
   }
 
   class { '::certs::katello':
+    hostname       => $rhsm_hostname,
     deployment_url => $rhsm_url,
     rhsm_port      => $rhsm_port,
     require        => Class['certs'],
