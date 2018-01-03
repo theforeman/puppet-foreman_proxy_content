@@ -3,6 +3,7 @@ class foreman_proxy_content::reverse_proxy (
   $path = '/',
   $url  = "${foreman_proxy_content::foreman_url}/",
   $port = $::foreman_proxy_content::reverse_proxy_port,
+  $ssl_protocol = undef,
 ) {
   include ::apache
   include ::certs::apache
@@ -25,6 +26,7 @@ class foreman_proxy_content::reverse_proxy (
     ssl_ca                 => $::certs::ca_cert,
     ssl_verify_client      => 'optional',
     ssl_verify_depth       => 10,
+    ssl_protocol           => $ssl_protocol,
     request_headers        => ['set X_RHSM_SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"'],
     proxy_pass             => [
       {
