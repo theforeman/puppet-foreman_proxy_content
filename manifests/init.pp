@@ -28,6 +28,8 @@
 #
 # $rhsm_url::                           The URL path that the RHSM API is rooted at
 #
+# $ssl_protocol::                       Apache SSLProtocol configuration to use
+#
 # $qpid_router::                        Configure qpid dispatch router
 #
 # $qpid_router_hub_addr::               Address for dispatch router hub
@@ -57,6 +59,7 @@ class foreman_proxy_content (
 
   Boolean $reverse_proxy = $foreman_proxy_content::params::reverse_proxy,
   Integer[0, 65535] $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
+  Optional[String] $ssl_protocol = $foreman_proxy_content::params::ssl_protocol,
 
   Optional[String] $rhsm_hostname = $foreman_proxy_content::params::rhsm_hostname,
   String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
@@ -108,10 +111,11 @@ class foreman_proxy_content (
       require  => Class['certs'],
     }
     ~> class { '::foreman_proxy_content::reverse_proxy':
-      path      => '/',
-      url       => "${foreman_url}/",
-      port      => $reverse_proxy_port,
-      subscribe => Class['certs::foreman_proxy'],
+      path         => '/',
+      url          => "${foreman_url}/",
+      port         => $reverse_proxy_port,
+      subscribe    => Class['certs::foreman_proxy'],
+      ssl_protocol => $ssl_protocol,
     }
   }
 
@@ -180,6 +184,7 @@ class foreman_proxy_content (
       node_server_ca_cert    => $certs::pulp_server_ca_cert,
       https_cert             => $certs::apache::apache_cert,
       https_key              => $certs::apache::apache_key,
+      ssl_protocol           => $ssl_protocol,
       ca_cert                => $certs::ca_cert,
       yum_max_speed          => $pulp_max_speed,
     }
