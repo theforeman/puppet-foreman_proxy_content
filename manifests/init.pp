@@ -131,6 +131,7 @@ class foreman_proxy_content (
       key      => $certs::apache::apache_key,
       ca_cert  => $certs::ca_cert,
       data_dir => '/var/lib/pulp/published/docker/v2/app',
+      ssl_protocol => $ssl_protocol,
       require  => Class['certs::apache'],
     }
   }
