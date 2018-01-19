@@ -26,6 +26,7 @@ class foreman_proxy_content::params {
   $pulp_proxy_username       = undef
   $pulp_puppet_wsgi_processes = 1
   $pulp_ca_cert              = undef
+  $pulp_worker_timeout       = 60
 
   $qpid_router               = true
   $qpid_router_agent_addr    = '0.0.0.0'
