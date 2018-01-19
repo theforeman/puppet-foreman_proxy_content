@@ -66,6 +66,10 @@
 #
 # $manage_broker::                      Manage the qpid message broker when applicable
 #
+# $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
+#                                       mongo database has slow I/O, then setting a higher number may resolve issues where workers are
+#                                       going missing incorrectly.
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
@@ -80,6 +84,7 @@ class foreman_proxy_content (
   Optional[String] $pulp_proxy_username = $foreman_proxy_content::params::pulp_proxy_username,
   Optional[Integer[1]] $pulp_puppet_wsgi_processes = $foreman_proxy_content::params::pulp_puppet_wsgi_processes,
   Optional[Stdlib::Absolutepath] $pulp_ca_cert = $foreman_proxy_content::params::pulp_ca_cert,
+  Integer[0] $pulp_worker_timeout = $foreman_proxy_content::params::pulp_worker_timeout,
 
   Boolean $puppet = $foreman_proxy_content::params::puppet,
 
@@ -215,6 +220,7 @@ class foreman_proxy_content (
       proxy_url              => $pulp_proxy_url,
       proxy_username         => $pulp_proxy_username,
       proxy_password         => $pulp_proxy_password,
+      worker_timeout         => $pulp_worker_timeout,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
