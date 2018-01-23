@@ -24,7 +24,7 @@ class foreman_proxy_content::dispatch_router (
 
   # Listen for katello-agent clients
   qpid::router::listener { 'clients':
-    addr        => $foreman_proxy_content::qpid_router_agent_addr,
+    host        => $foreman_proxy_content::qpid_router_agent_addr,
     port        => $foreman_proxy_content::qpid_router_agent_port,
     ssl_profile => 'server',
   }
@@ -42,7 +42,7 @@ class foreman_proxy_content::dispatch_router (
   # Act as hub if pulp master, otherwise connect to hub
   if $foreman_proxy_content::pulp_master {
     qpid::router::listener {'hub':
-      addr        => $foreman_proxy_content::qpid_router_hub_addr,
+      host        => $foreman_proxy_content::qpid_router_hub_addr,
       port        => $foreman_proxy_content::qpid_router_hub_port,
       role        => 'inter-router',
       ssl_profile => 'server',
@@ -50,44 +50,63 @@ class foreman_proxy_content::dispatch_router (
 
     # Connect dispatch router to the local qpid
     qpid::router::connector { 'broker':
-      addr         => $foreman_proxy_content::qpid_router_broker_addr,
+      host         => $foreman_proxy_content::qpid_router_broker_addr,
       port         => $foreman_proxy_content::qpid_router_broker_port,
       ssl_profile  => 'client',
-      role         => 'on-demand',
+      role         => 'route-container',
       idle_timeout => 0,
     }
 
-    qpid::router::link_route_pattern { 'broker-pulp-route':
-      prefix    => 'pulp.',
-      direction => 'out',
-      connector => 'broker',
+    qpid::router::link_route { 'broker-pulp-route-out':
+      prefix     => 'pulp.',
+      direction  => 'out',
+      connection => 'broker',
     }
 
-    qpid::router::link_route_pattern { 'broker-pulp-task-route':
-      prefix    => 'pulp.task',
-      direction => 'in',
-      connector => 'broker',
+    qpid::router::link_route { 'broker-pulp-task-route-in':
+      prefix     => 'pulp.task',
+      direction  => 'in',
+      connection => 'broker',
     }
 
-    qpid::router::link_route_pattern { 'broker-qmf-route':
-      prefix    => 'qmf.',
-      connector => 'broker',
+    qpid::router::link_route { 'broker-qmf-route-in':
+      prefix     => 'qmf.',
+      connection => 'broker',
+      direction  => 'in',
+    }
+
+    qpid::router::link_route { 'broker-qmf-route-out':
+      prefix     => 'qmf.',
+      connection => 'broker',
+      direction  => 'out',
     }
   } else {
     qpid::router::connector { 'hub':
-      addr         => $foreman_proxy_content::parent_fqdn,
+      host         => $foreman_proxy_content::parent_fqdn,
       port         => $foreman_proxy_content::qpid_router_hub_port,
       ssl_profile  => 'client',
       role         => 'inter-router',
       idle_timeout => 0,
     }
 
-    qpid::router::link_route_pattern { 'hub-pulp-route':
+    qpid::router::link_route { 'hub-pulp-route-in':
       prefix    => 'pulp.',
+      direction => 'in',
     }
 
-    qpid::router::link_route_pattern { 'hub-qmf-route':
+    qpid::router::link_route { 'hub-pulp-route-out':
+      prefix    => 'pulp.',
+      direction => 'out',
+    }
+
+    qpid::router::link_route { 'hub-qmf-route-in':
       prefix    => 'qmf.',
+      direction => 'in',
+    }
+
+    qpid::router::link_route { 'hub-qmf-route-out':
+      prefix    => 'qmf.',
+      direction => 'out',
     }
   }
 }
