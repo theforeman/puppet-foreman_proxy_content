@@ -1,5 +1,26 @@
 # Change Log
 
+## [7.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.0.0) (2018-01-25)
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.1.0...7.0.0)
+
+**Breaking changes:**
+
+- refs \#22289 - fixes for dispatch router 1.0 [\#155](https://github.com/theforeman/puppet-foreman_proxy_content/pull/155) ([stbenjam](https://github.com/stbenjam))
+- Fixes \#21464 - Remove Pulp oauth support [\#151](https://github.com/theforeman/puppet-foreman_proxy_content/pull/151) ([sean797](https://github.com/sean797))
+
+**Implemented enhancements:**
+
+- Allow use of puppet-qpid 4.X [\#158](https://github.com/theforeman/puppet-foreman_proxy_content/pull/158) ([ehelms](https://github.com/ehelms))
+- Refs \#22338 - add worker\_timeout param [\#156](https://github.com/theforeman/puppet-foreman_proxy_content/pull/156) ([chris1984](https://github.com/chris1984))
+- refs \#21350 - allow config of TLS version on 8443 [\#154](https://github.com/theforeman/puppet-foreman_proxy_content/pull/154) ([stbenjam](https://github.com/stbenjam))
+- introduce rhsm\_hostname parameter [\#148](https://github.com/theforeman/puppet-foreman_proxy_content/pull/148) ([timogoebel](https://github.com/timogoebel))
+- Fixes \#21430 - use 1 puppet wsgi process [\#147](https://github.com/theforeman/puppet-foreman_proxy_content/pull/147) ([jlsherrill](https://github.com/jlsherrill))
+- Allow katello-certs 4.0 [\#146](https://github.com/theforeman/puppet-foreman_proxy_content/pull/146) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Update Github URLs [\#150](https://github.com/theforeman/puppet-foreman_proxy_content/pull/150) ([ekohl](https://github.com/ekohl))
+
 ## [6.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/6.1.0)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.0.0...6.1.0)
