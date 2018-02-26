@@ -6,7 +6,17 @@
 #
 # $parent_fqdn::                        FQDN of the parent node.
 #
-# $enable_ostree::                      Boolean to enable ostree plugin. This requires existence of an ostree install.
+# $enable_ostree::                      Enable ostree content plugin, this requires an ostree install
+#
+# $enable_yum::                         Enable rpm content plugin, including syncing of yum content
+#
+# $enable_file::                        Enable file content plugin
+#
+# $enable_puppet::                      Enable puppet content plugin
+#
+# $enable_docker::                      Enable docker content plugin
+#
+# $enable_deb::                         Enable debian content plugin
 #
 # $certs_tar::                          Path to a tar with certs for the node
 #
@@ -105,6 +115,11 @@ class foreman_proxy_content (
   String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
+  Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
+  Boolean $enable_file = $foreman_proxy_content::params::enable_file,
+  Boolean $enable_puppet = $foreman_proxy_content::params::enable_puppet,
+  Boolean $enable_docker = $foreman_proxy_content::params::enable_docker,
+  Boolean $enable_deb = $foreman_proxy_content::params::enable_deb,
 
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
@@ -190,10 +205,12 @@ class foreman_proxy_content (
       require => Class['certs'],
     }
     ~> class { '::pulp':
-      enable_rpm             => true,
-      enable_puppet          => true,
-      enable_docker          => true,
       enable_ostree          => $enable_ostree,
+      enable_rpm             => $enable_yum,
+      enable_iso             => $enable_file,
+      enable_deb             => $enable_deb,
+      enable_puppet          => $enable_puppet,
+      enable_docker          => $enable_docker,
       default_password       => $pulp_admin_password,
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
