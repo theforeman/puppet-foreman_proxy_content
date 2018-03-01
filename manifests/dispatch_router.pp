@@ -12,9 +12,11 @@ class foreman_proxy_content::dispatch_router (
     require => Class['qpid::router::install'],
   }
   ~> qpid::router::ssl_profile { 'client':
-    ca   => $certs::ca_cert,
-    cert => $certs::qpid_router::client_cert,
-    key  => $certs::qpid_router::client_key,
+    ca        => $certs::ca_cert,
+    cert      => $certs::qpid_router::client_cert,
+    key       => $certs::qpid_router::client_key,
+    ciphers   => $foreman_proxy_content::qpid_router_ssl_ciphers,
+    protocols => $foreman_proxy_content::qpid_router_ssl_protocols,
   }
   ~> qpid::router::ssl_profile { 'server':
     ca   => $certs::ca_cert,

@@ -37,6 +37,8 @@ class foreman_proxy_content::params {
   $qpid_router_hub_port      = 5646
   $qpid_router_logging_level = 'info+'
   $qpid_router_logging_path  = '/var/log/qdrouterd'
+  $qpid_router_ssl_ciphers   = undef
+  $qpid_router_ssl_protocols = undef
 
   $enable_ostree             = false
   $enable_yum                = true

@@ -74,6 +74,10 @@
 #
 # $qpid_router_logging_path::           Directory for dispatch router logs
 #
+# $qpid_router_ssl_ciphers::            SSL Ciphers to support in dispatch router
+#
+# $qpid_router_ssl_protocols::          Protocols to support in dispatch router (e.g. TLSv1.2, etc)
+#
 # $manage_broker::                      Manage the qpid message broker when applicable
 #
 # $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
@@ -114,6 +118,8 @@ class foreman_proxy_content (
   Integer[0, 65535] $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
   String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
+  Optional[String] $qpid_router_ssl_ciphers = $foreman_proxy_content::params::qpid_router_ssl_ciphers,
+  Optional[Array[String]] $qpid_router_ssl_protocols = $foreman_proxy_content::params::qpid_router_ssl_protocols,
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
