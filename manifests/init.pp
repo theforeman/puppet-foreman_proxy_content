@@ -190,16 +190,6 @@ class foreman_proxy_content (
   }
 
   if $pulp {
-    include ::apache
-
-    file {'/etc/httpd/conf.d/pulp_nodes.conf':
-      ensure  => file,
-      content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
-
     if $manage_broker {
       include ::foreman_proxy_content::broker
     }
