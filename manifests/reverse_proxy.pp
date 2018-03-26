@@ -23,6 +23,7 @@ class foreman_proxy_content::reverse_proxy (
     ssl_proxy_machine_cert => $::certs::foreman_proxy::foreman_proxy_ssl_client_bundle,
     ssl_cert               => $::certs::apache::apache_cert,
     ssl_key                => $::certs::apache::apache_key,
+    ssl_chain              => $::certs::katello_server_ca_cert,
     ssl_ca                 => $::certs::ca_cert,
     ssl_verify_client      => 'optional',
     ssl_verify_depth       => 10,
