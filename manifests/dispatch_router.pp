@@ -31,14 +31,22 @@ class foreman_proxy_content::dispatch_router (
     ssl_profile => 'server',
   }
 
-  # Enable logging for dispatch router
-  file { $foreman_proxy_content::qpid_router_logging_path:
-    ensure => directory,
-    owner  => 'qdrouterd',
+  # Enable logging to syslog or file
+  if $foreman_proxy_content::qpid_router_logging == 'file' {
+    file { $foreman_proxy_content::qpid_router_logging_path:
+      ensure => directory,
+      owner  => 'qdrouterd',
+    }
   }
-  ~> qpid::router::log { 'logging':
+
+  $output_real = $foreman_proxy_content::qpid_router_logging ? {
+    'file'   => "${foreman_proxy_content::qpid_router_logging_path}/qdrouterd.log",
+    'syslog' => 'syslog',
+  }
+
+  qpid::router::log { 'logging':
     level  => $foreman_proxy_content::qpid_router_logging_level,
-    output => "${foreman_proxy_content::qpid_router_logging_path}/qdrouterd.log",
+    output => $output_real,
   }
 
   # Act as hub if pulp master, otherwise connect to hub
