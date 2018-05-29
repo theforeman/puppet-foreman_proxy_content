@@ -72,7 +72,9 @@
 #
 # $qpid_router_logging_level::          Logging level of dispatch router (e.g. info+ or debug+)
 #
-# $qpid_router_logging_path::           Directory for dispatch router logs
+# $qpid_router_logging::                Whether to log to file or syslog.
+#
+# $qpid_router_logging_path::           Directory for dispatch router logs, if using file logging
 #
 # $qpid_router_ssl_ciphers::            SSL Ciphers to support in dispatch router
 #
@@ -117,6 +119,7 @@ class foreman_proxy_content (
   String $qpid_router_broker_addr = $foreman_proxy_content::params::qpid_router_broker_addr,
   Integer[0, 65535] $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
   String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
+  Enum['file', 'syslog'] $qpid_router_logging = $foreman_proxy_content::params::qpid_router_logging,
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Optional[String] $qpid_router_ssl_ciphers = $foreman_proxy_content::params::qpid_router_ssl_ciphers,
   Optional[Array[String]] $qpid_router_ssl_protocols = $foreman_proxy_content::params::qpid_router_ssl_protocols,
