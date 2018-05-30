@@ -1,6 +1,18 @@
 # Change Log
 
-## [7.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.0) (2018-05-09)
+## [7.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.1) (2018-05-30)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.0...7.1.1)
+
+**Implemented enhancements:**
+
+- fixes \#23557 - log to syslog by default [\#164](https://github.com/theforeman/puppet-foreman_proxy_content/pull/164) ([stbenjam](https://github.com/stbenjam))
+
+**Merged pull requests:**
+
+- Allow puppetlabs-apache 3.x [\#165](https://github.com/theforeman/puppet-foreman_proxy_content/pull/165) ([ekohl](https://github.com/ekohl))
+
+## [7.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.0) (2018-05-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.1.1...7.1.0)
 
