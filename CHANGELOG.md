@@ -1,5 +1,12 @@
 # Change Log
 
+## [7.1.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.2) (2018-06-08)
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.1...7.1.2)
+
+**Merged pull requests:**
+
+- refs \#21350 - use ssl configuration for server profile [\#166](https://github.com/theforeman/puppet-foreman_proxy_content/pull/166) ([stbenjam](https://github.com/stbenjam))
+
 ## [7.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.1) (2018-05-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.0...7.1.1)
