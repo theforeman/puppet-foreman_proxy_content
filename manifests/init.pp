@@ -42,6 +42,14 @@
 #
 # $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
 #
+# $pulp_yum_gpg_sign_repo_metadata::    Whether yum repo metadata GPG signing will be enabled
+#
+# $pulp_yum_gpg_key_id::                GPG Key ID to use for yum repo metadata signing
+#
+# $pulp_yum_gpg_cmd::                   Custom GPG command/script to use for yum repo metadata signing
+#
+# $pulp_yum_regenerate_repomd_signatures:: Whether to regenerate existing yum repo metadata GPG signatures
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -100,6 +108,10 @@ class foreman_proxy_content (
   Optional[String] $pulp_proxy_username = $foreman_proxy_content::params::pulp_proxy_username,
   Optional[Integer[1]] $pulp_puppet_wsgi_processes = $foreman_proxy_content::params::pulp_puppet_wsgi_processes,
   Optional[Stdlib::Absolutepath] $pulp_ca_cert = $foreman_proxy_content::params::pulp_ca_cert,
+  Boolean $pulp_yum_gpg_sign_repo_metadata = $foreman_proxy_content::params::pulp_yum_gpg_sign_repo_metadata,
+  Optional[String] $pulp_yum_gpg_key_id = $foreman_proxy_content::params::pulp_yum_gpg_key_id,
+  Optional[String] $pulp_yum_gpg_cmd = $foreman_proxy_content::params::pulp_yum_gpg_cmd,
+  Boolean $pulp_yum_regenerate_repomd_signatures = $foreman_proxy_content::params::pulp_yum_regenerate_repomd_signatures,
   Integer[0] $pulp_worker_timeout = $foreman_proxy_content::params::pulp_worker_timeout,
 
   Boolean $puppet = $foreman_proxy_content::params::puppet,
@@ -159,10 +171,11 @@ class foreman_proxy_content (
   }
 
   class { 'certs::katello':
-    hostname       => $rhsm_hostname,
-    deployment_url => $rhsm_url,
-    rhsm_port      => $rhsm_port,
-    require        => Class['certs'],
+    hostname           => $rhsm_hostname,
+    deployment_url     => $rhsm_url,
+    rhsm_port          => $rhsm_port,
+    include_repomd_gpg => $pulp_yum_gpg_sign_repo_metadata,
+    require            => Class['certs'],
   }
 
   if $pulp or $reverse_proxy_real {
@@ -214,42 +227,53 @@ class foreman_proxy_content (
       include foreman_proxy_content::broker
     }
 
+    if $pulp_yum_gpg_sign_repo_metadata {
+      class { '::certs::repomd_gpg':
+        hostname => $foreman_proxy_fqdn,
+        before   => [Class['certs::katello'], Class['pulp']],
+      }
+    }
+
     class { 'certs::qpid_client':
       require => Class['certs'],
     }
     ~> class { 'pulp':
-      enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_yum,
-      enable_iso             => $enable_file,
-      enable_deb             => $enable_deb,
-      enable_puppet          => $enable_puppet,
-      enable_docker          => $enable_docker,
-      default_password       => $pulp_admin_password,
-      messaging_transport    => 'qpid',
-      messaging_auth_enabled => false,
-      messaging_ca_cert      => pick($pulp_ca_cert, $certs::ca_cert),
-      messaging_client_cert  => $certs::qpid_client_cert,
-      messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_use_ssl         => true,
-      manage_broker          => false,
-      manage_httpd           => true,
-      manage_plugins_httpd   => true,
-      manage_squid           => true,
-      puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
-      num_workers            => $pulp_num_workers,
-      repo_auth              => true,
-      node_server_ca_cert    => $certs::pulp_server_ca_cert,
-      https_cert             => $certs::apache::apache_cert,
-      https_key              => $certs::apache::apache_key,
-      ssl_protocol           => $ssl_protocol,
-      ca_cert                => $certs::ca_cert,
-      yum_max_speed          => $pulp_max_speed,
-      proxy_port             => $pulp_proxy_port,
-      proxy_url              => $pulp_proxy_url,
-      proxy_username         => $pulp_proxy_username,
-      proxy_password         => $pulp_proxy_password,
-      worker_timeout         => $pulp_worker_timeout,
+      enable_ostree                    => $enable_ostree,
+      enable_rpm                       => $enable_yum,
+      enable_iso                       => $enable_file,
+      enable_deb                       => $enable_deb,
+      enable_puppet                    => $enable_puppet,
+      enable_docker                    => $enable_docker,
+      default_password                 => $pulp_admin_password,
+      messaging_transport              => 'qpid',
+      messaging_auth_enabled           => false,
+      messaging_ca_cert                => pick($pulp_ca_cert, $certs::ca_cert),
+      messaging_client_cert            => $certs::qpid_client_cert,
+      messaging_url                    => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_url                       => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_use_ssl                   => true,
+      manage_broker                    => false,
+      manage_httpd                     => true,
+      manage_plugins_httpd             => true,
+      manage_squid                     => true,
+      puppet_wsgi_processes            => $pulp_puppet_wsgi_processes,
+      num_workers                      => $pulp_num_workers,
+      repo_auth                        => true,
+      node_server_ca_cert              => $certs::pulp_server_ca_cert,
+      https_cert                       => $certs::apache::apache_cert,
+      https_key                        => $certs::apache::apache_key,
+      ssl_protocol                     => $ssl_protocol,
+      ca_cert                          => $certs::ca_cert,
+      yum_gpg_sign_repo_metadata       => $pulp_yum_gpg_sign_repo_metadata,
+      yum_gpg_key_id                   => $pulp_yum_gpg_key_id,
+      yum_gpg_cmd                      => $pulp_yum_gpg_cmd,
+      yum_regenerate_repomd_signatures => ($pulp_yum_regenerate_repomd_signatures or $::certs::regenerate_ca or $::certs::regenerate),
+      yum_max_speed                    => $pulp_max_speed,
+      proxy_port                       => $pulp_proxy_port,
+      proxy_url                        => $pulp_proxy_url,
+      proxy_username                   => $pulp_proxy_username,
+      proxy_password                   => $pulp_proxy_password,
+      worker_timeout                   => $pulp_worker_timeout,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':

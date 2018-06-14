@@ -25,6 +25,10 @@ class foreman_proxy_content::params {
   $pulp_proxy_username       = undef
   $pulp_puppet_wsgi_processes = 1
   $pulp_ca_cert              = undef
+  $pulp_yum_gpg_sign_repo_metadata = true
+  $pulp_yum_gpg_key_id       = undef
+  $pulp_yum_gpg_cmd          = undef
+  $pulp_yum_regenerate_repomd_signatures = false
   $pulp_worker_timeout       = 60
 
   $qpid_router               = true
