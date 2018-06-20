@@ -259,11 +259,12 @@ class foreman_proxy_content (
     # parameter values from the main ::certs class.  Kafo can't handle that case, so
     # it remains here for now.
     include ::puppet
-    include ::puppet::server
-    class { '::certs::puppet':
-      hostname => $foreman_proxy_fqdn,
-      require  => Class['certs'],
-      notify   => Class['puppet'],
+    if $::puppet::server and $::puppet::server::foreman {
+      class { '::certs::puppet':
+        hostname => $foreman_proxy_fqdn,
+        require  => Class['certs'],
+        before   => Class['puppet'],
+      }
     }
   }
 
