@@ -191,6 +191,8 @@ class foreman_proxy_content (
       ssl_protocol => $ssl_protocol,
       require      => Class['certs::apache'],
     }
+
+    include ::foreman_proxy_content::pub_dir
   }
 
   if $pulp {
@@ -203,8 +205,6 @@ class foreman_proxy_content (
       group   => 'root',
       mode    => '0644',
     }
-
-    include ::foreman_proxy_content::pub_dir
 
     if $manage_broker {
       include ::foreman_proxy_content::broker
