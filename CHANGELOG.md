@@ -1,11 +1,24 @@
-# Change Log
+# Changelog
+
+## [7.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.2.0) (2018-07-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.2...7.2.0)
+
+**Implemented enhancements:**
+
+- Only set up puppet integration if needed [\#168](https://github.com/theforeman/puppet-foreman_proxy_content/pull/168) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Setup pub dir on server and proxies [\#169](https://github.com/theforeman/puppet-foreman_proxy_content/pull/169) ([ehelms](https://github.com/ehelms))
 
 ## [7.1.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.2) (2018-06-08)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.1...7.1.2)
 
 **Merged pull requests:**
 
-- refs \#21350 - use ssl configuration for server profile [\#166](https://github.com/theforeman/puppet-foreman_proxy_content/pull/166) ([stbenjam](https://github.com/stbenjam))
+- refs [\#21350](https://projects.theforeman.org/issues/21350) - use ssl configuration for server profile [\#166](https://github.com/theforeman/puppet-foreman_proxy_content/pull/166) ([stbenjam](https://github.com/stbenjam))
 
 ## [7.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.1.1) (2018-05-30)
 
@@ -13,7 +26,7 @@
 
 **Implemented enhancements:**
 
-- fixes \#23557 - log to syslog by default [\#164](https://github.com/theforeman/puppet-foreman_proxy_content/pull/164) ([stbenjam](https://github.com/stbenjam))
+- fixes [\#23557](https://projects.theforeman.org/issues/23557) - log to syslog by default [\#164](https://github.com/theforeman/puppet-foreman_proxy_content/pull/164) ([stbenjam](https://github.com/stbenjam))
 
 **Merged pull requests:**
 
@@ -29,7 +42,8 @@
 - make all repo types configurable [\#160](https://github.com/theforeman/puppet-foreman_proxy_content/pull/160) ([jlsherrill](https://github.com/jlsherrill))
 
 ## [7.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.0.0) (2018-01-25)
-[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.1.0...7.0.0)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.1.1...7.0.0)
 
 **Breaking changes:**
 
@@ -38,18 +52,31 @@
 
 **Implemented enhancements:**
 
-- Allow use of puppet-qpid 4.X [\#158](https://github.com/theforeman/puppet-foreman_proxy_content/pull/158) ([ehelms](https://github.com/ehelms))
 - Refs [\#22338](https://projects.theforeman.org/issues/22338) - add worker\_timeout param [\#156](https://github.com/theforeman/puppet-foreman_proxy_content/pull/156) ([chris1984](https://github.com/chris1984))
 - refs [\#21350](https://projects.theforeman.org/issues/21350) - allow config of TLS version on 8443 [\#154](https://github.com/theforeman/puppet-foreman_proxy_content/pull/154) ([stbenjam](https://github.com/stbenjam))
 - introduce rhsm\_hostname parameter [\#148](https://github.com/theforeman/puppet-foreman_proxy_content/pull/148) ([timogoebel](https://github.com/timogoebel))
 - Fixes [\#21430](https://projects.theforeman.org/issues/21430) - use 1 puppet wsgi process [\#147](https://github.com/theforeman/puppet-foreman_proxy_content/pull/147) ([jlsherrill](https://github.com/jlsherrill))
 - Allow katello-certs 4.0 [\#146](https://github.com/theforeman/puppet-foreman_proxy_content/pull/146) ([ekohl](https://github.com/ekohl))
+- expose more pulp parameters [\#143](https://github.com/theforeman/puppet-foreman_proxy_content/pull/143) ([timogoebel](https://github.com/timogoebel))
+- introduce manage broker parameter [\#141](https://github.com/theforeman/puppet-foreman_proxy_content/pull/141) ([timogoebel](https://github.com/timogoebel))
 
 **Merged pull requests:**
 
 - Update Github URLs [\#150](https://github.com/theforeman/puppet-foreman_proxy_content/pull/150) ([ekohl](https://github.com/ekohl))
 
-## [6.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/6.1.0)
+## [6.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/6.1.1) (2018-02-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.1.0...6.1.1)
+
+**Breaking changes:**
+
+- refs [\#22289](https://projects.theforeman.org/issues/22289) - fixes for dispatch router 1.0 [\#155](https://github.com/theforeman/puppet-foreman_proxy_content/pull/155) ([stbenjam](https://github.com/stbenjam))
+
+**Implemented enhancements:**
+
+- Allow use of puppet-qpid 4.X [\#158](https://github.com/theforeman/puppet-foreman_proxy_content/pull/158) ([ehelms](https://github.com/ehelms))
+
+## [6.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/6.1.0) (2017-10-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/6.0.0...6.1.0)
 
@@ -62,6 +89,7 @@
 - Explicitly set ssl\_certs\_dir to an empty string [\#137](https://github.com/theforeman/puppet-foreman_proxy_content/pull/137) ([ekohl](https://github.com/ekohl))
 
 ## [6.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/6.0.0) (2017-08-30)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/5.0.1...6.0.0)
 
 **Merged pull requests:**
@@ -79,6 +107,7 @@
 - Move to puppet 4 [\#122](https://github.com/theforeman/puppet-foreman_proxy_content/pull/122) ([ekohl](https://github.com/ekohl))
 
 ## [5.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/5.0.1) (2017-06-13)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/5.0.0...5.0.1)
 
 **Merged pull requests:**
@@ -88,6 +117,7 @@
 - fixes [\#19269](https://projects.theforeman.org/issues/19269) - allow browsing /pub over https [\#119](https://github.com/theforeman/puppet-foreman_proxy_content/pull/119) ([stbenjam](https://github.com/stbenjam))
 
 ## [5.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/5.0.0) (2017-04-07)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/4.0.1...5.0.0)
 
 **Merged pull requests:**
@@ -103,6 +133,7 @@
 - refs [\#17714](https://projects.theforeman.org/issues/17714) - Remove puppet from foreman\_proxy\_content [\#108](https://github.com/theforeman/puppet-foreman_proxy_content/pull/108) ([stbenjam](https://github.com/stbenjam))
 
 ## [4.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/4.0.1) (2017-01-24)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/4.0.0...4.0.1)
 
 **Merged pull requests:**
@@ -110,6 +141,7 @@
 - fixes [\#18144](https://projects.theforeman.org/issues/18144) - set /etc/crane.conf data\_dir [\#109](https://github.com/theforeman/puppet-foreman_proxy_content/pull/109) ([thomasmckay](https://github.com/thomasmckay))
 
 ## [4.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/4.0.0) (2017-01-03)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/3.1.2...4.0.0)
 
 **Merged pull requests:**
@@ -128,15 +160,19 @@
 - fixes [\#11338](https://projects.theforeman.org/issues/11338) - use asymmetric routing for pulp/pulp.task queues [\#53](https://github.com/theforeman/puppet-foreman_proxy_content/pull/53) ([stbenjam](https://github.com/stbenjam))
 
 ## [3.1.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/3.1.2) (2016-09-12)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/3.1.1...3.1.2)
 
 ## [3.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/3.1.1) (2016-09-12)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/3.1.0...3.1.1)
 
 ## [3.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/3.1.0) (2016-09-12)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/3.0.1...3.1.0)
 
 ## [3.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/3.0.1) (2016-09-12)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/3.0.0...3.0.1)
 
 **Merged pull requests:**
@@ -151,6 +187,7 @@
 - refs [\#15217](https://projects.theforeman.org/issues/15217) - puppet 4 support [\#87](https://github.com/theforeman/puppet-foreman_proxy_content/pull/87) ([stbenjam](https://github.com/stbenjam))
 
 ## [3.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/3.0.0) (2016-06-08)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/2.1.0...3.0.0)
 
 **Merged pull requests:**
@@ -159,6 +196,7 @@
 - refs [\#15326](https://projects.theforeman.org/issues/15326) - revert mongo auth [\#85](https://github.com/theforeman/puppet-foreman_proxy_content/pull/85) ([stbenjam](https://github.com/stbenjam))
 
 ## [2.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/2.1.0) (2016-05-18)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/2.0.2...2.1.0)
 
 **Merged pull requests:**
@@ -168,6 +206,7 @@
 - Fixes [\#14534](https://projects.theforeman.org/issues/14534) - ensure we install client-bootstrap [\#81](https://github.com/theforeman/puppet-foreman_proxy_content/pull/81) ([mccun934](https://github.com/mccun934))
 
 ## [2.0.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/2.0.2) (2016-04-11)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/2.0.1...2.0.2)
 
 **Merged pull requests:**
@@ -175,6 +214,7 @@
 - Fixes [\#14359](https://projects.theforeman.org/issues/14359) - SSL errors on capsule sync [\#79](https://github.com/theforeman/puppet-foreman_proxy_content/pull/79) ([johnpmitsch](https://github.com/johnpmitsch))
 
 ## [2.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/2.0.1) (2016-03-17)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/2.0.0...2.0.1)
 
 **Merged pull requests:**
@@ -185,6 +225,7 @@
 - Fixes [\#14075](https://projects.theforeman.org/issues/14075) - ignore deprecated warnings [\#75](https://github.com/theforeman/puppet-foreman_proxy_content/pull/75) ([ares](https://github.com/ares))
 
 ## [2.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/2.0.0) (2016-02-24)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/1.0.3...2.0.0)
 
 **Merged pull requests:**
@@ -199,6 +240,7 @@
 - refs [\#10533](https://projects.theforeman.org/issues/10533) - initial changes to support decoupling puppet-foreman\_proxy from puppet-capsule [\#64](https://github.com/theforeman/puppet-foreman_proxy_content/pull/64) ([bbuckingham](https://github.com/bbuckingham))
 
 ## [1.0.3](https://github.com/theforeman/puppet-foreman_proxy_content/tree/1.0.3) (2015-11-20)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/1.0.1...1.0.3)
 
 **Merged pull requests:**
@@ -208,9 +250,11 @@
 - fixes [\#12000](https://projects.theforeman.org/issues/12000) - add support for remote execution ssh plugin [\#62](https://github.com/theforeman/puppet-foreman_proxy_content/pull/62) ([stbenjam](https://github.com/stbenjam))
 
 ## [1.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/1.0.1) (2015-10-23)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/1.0.2...1.0.1)
 
 ## [1.0.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/1.0.2) (2015-10-23)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/1.0.0...1.0.2)
 
 **Merged pull requests:**
@@ -219,6 +263,7 @@
 - fixes [\#12026](https://projects.theforeman.org/issues/12026) - changes need for dispatch router heartbeat [\#59](https://github.com/theforeman/puppet-foreman_proxy_content/pull/59) ([stbenjam](https://github.com/stbenjam))
 
 ## [1.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/1.0.0) (2015-10-15)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/0.2.1...1.0.0)
 
 **Merged pull requests:**
@@ -228,6 +273,7 @@
 - Support puppet-pulp 1.0.0 [\#56](https://github.com/theforeman/puppet-foreman_proxy_content/pull/56) ([ehelms](https://github.com/ehelms))
 
 ## [0.2.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/0.2.1) (2015-09-03)
+
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/0.2.0...0.2.1)
 
 **Merged pull requests:**
@@ -236,6 +282,9 @@
 - Add forge and travis badges to README [\#52](https://github.com/theforeman/puppet-foreman_proxy_content/pull/52) ([stbenjam](https://github.com/stbenjam))
 
 ## [0.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/0.2.0) (2015-07-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/df8a7710b37b10f1d398c96e605941360034501e...0.2.0)
+
 **Merged pull requests:**
 
 - Prepare puppet-capsule for release [\#51](https://github.com/theforeman/puppet-foreman_proxy_content/pull/51) ([stbenjam](https://github.com/stbenjam))
@@ -284,4 +333,4 @@
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
