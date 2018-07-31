@@ -16,5 +16,6 @@ fixtures:
     mongodb:       "https://github.com/puppetlabs/puppetlabs-mongodb.git"
     trusted_ca:    "https://github.com/evenup/evenup-trusted_ca.git"
     squid3:        "https://github.com/thias/puppet-squid3.git"
+    systemd:       "https://github.com/camptocamp/puppet-systemd.git"
   symlinks:
     foreman_proxy_content: "#{source_dir}"
