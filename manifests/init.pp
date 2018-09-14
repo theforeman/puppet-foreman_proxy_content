@@ -18,8 +18,6 @@
 #
 # $enable_deb::                         Enable debian content plugin
 #
-# $certs_tar::                          Path to a tar with certs for the node
-#
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
@@ -88,7 +86,6 @@
 #
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
-  Optional[Stdlib::Absolutepath] $certs_tar = $foreman_proxy_content::params::certs_tar,
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
@@ -264,12 +261,6 @@ class foreman_proxy_content (
         hostname => $foreman_proxy_fqdn,
         before   => Class['foreman::puppetmaster'],
       }
-    }
-  }
-
-  if $certs_tar {
-    certs::tar_extract { $certs_tar:
-      before => Class['certs'],
     }
   }
 }
