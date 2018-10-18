@@ -1,5 +1,14 @@
 # Changelog
 
+## [7.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.0) (2018-10-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.2.0...7.3.0)
+
+**Implemented enhancements:**
+
+- Allow puppetlabs-stdlib 5.x [\#177](https://github.com/theforeman/puppet-foreman_proxy_content/pull/177) ([ekohl](https://github.com/ekohl))
+- Fixes [\#12386](https://projects.theforeman.org/issues/12386) - Let qdrouterd listen on IPv6 [\#139](https://github.com/theforeman/puppet-foreman_proxy_content/pull/139) ([ekohl](https://github.com/ekohl))
+
 ## [7.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.2.0) (2018-07-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.1.2...7.2.0)
