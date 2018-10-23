@@ -53,6 +53,36 @@ describe 'foreman_proxy_content' do
             .with_deployment_url('/abc/rhsm')
         end
       end
+
+      context 'with puppet' do
+        let(:params) do
+          {
+            puppet: true,
+          }
+        end
+
+        describe 'with puppet server enabled' do
+          let(:pre_condition) do
+            <<-PUPPET
+            class { 'puppet':
+              server         => true,
+              server_foreman => true,
+            }
+            PUPPET
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_class('certs::puppet')
+              .that_comes_before('Class[foreman::puppetmaster]')
+          end
+        end
+
+        describe 'with puppet server disabled' do
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.not_to contain_class('certs::puppet') }
+        end
+      end
     end
   end
 end
