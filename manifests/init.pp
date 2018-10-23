@@ -262,8 +262,7 @@ class foreman_proxy_content (
     if $::puppet::server and $::puppet::server::foreman {
       class { '::certs::puppet':
         hostname => $foreman_proxy_fqdn,
-        require  => Class['certs'],
-        before   => Class['puppet'],
+        before   => Class['foreman::puppetmaster'],
       }
     }
   }
