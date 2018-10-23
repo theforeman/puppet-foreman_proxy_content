@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.3.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.1) (2018-10-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.0...7.3.1)
+
+**Merged pull requests:**
+
+- Correct chaining on puppet master integration [\#179](https://github.com/theforeman/puppet-foreman_proxy_content/pull/179) ([ekohl](https://github.com/ekohl))
+
 ## [7.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.0) (2018-10-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.2.0...7.3.0)
