@@ -34,7 +34,7 @@ describe 'foreman_proxy_content' do
 
         it do
           is_expected.to contain_pulp__apache__fragment('gpg_key_proxy')
-            .with_ssl_content(%r{ProxyPass /katello/api/repositories/ https://foo\.example\.com/katello/api/repositories/})
+            .with_ssl_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
         end
       end
 

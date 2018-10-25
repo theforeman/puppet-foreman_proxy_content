@@ -1,5 +1,5 @@
-  ProxyPass /katello/api/repositories/ <%= @foreman_url %>/katello/api/repositories/
-  <Location /katello/api/repositories/>
+  ProxyPass /katello/api/v2/repositories/ <%= @foreman_url %>/katello/api/v2/repositories/
+  <Location /katello/api/v2/repositories/>
     ProxyPassReverse <%= @foreman_url %>/
   </Location>
   SSLProxyEngine On
