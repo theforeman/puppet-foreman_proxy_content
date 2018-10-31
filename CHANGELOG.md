@@ -1,10 +1,18 @@
 # Changelog
 
+## [7.3.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.2) (2018-10-31)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.1...7.3.2)
+
+**Fixed bugs:**
+
+- fixes [\#24316](https://projects.theforeman.org/issues/24316) - corrects route for foreman-proxy GPG keys [\#181](https://github.com/theforeman/puppet-foreman_proxy_content/pull/181) ([cfouant](https://github.com/cfouant))
+
 ## [7.3.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.1) (2018-10-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.0...7.3.1)
 
-**Merged pull requests:**
+**Fixed bugs:**
 
 - Correct chaining on puppet master integration [\#179](https://github.com/theforeman/puppet-foreman_proxy_content/pull/179) ([ekohl](https://github.com/ekohl))
 
@@ -16,6 +24,10 @@
 
 - Allow puppetlabs-stdlib 5.x [\#177](https://github.com/theforeman/puppet-foreman_proxy_content/pull/177) ([ekohl](https://github.com/ekohl))
 - Fixes [\#12386](https://projects.theforeman.org/issues/12386) - Let qdrouterd listen on IPv6 [\#139](https://github.com/theforeman/puppet-foreman_proxy_content/pull/139) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Allow extlib 4.x and foreman\_proxy 9.x + Release 7.3.0 [\#178](https://github.com/theforeman/puppet-foreman_proxy_content/pull/178) ([ekohl](https://github.com/ekohl))
 
 ## [7.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.2.0) (2018-07-16)
 
