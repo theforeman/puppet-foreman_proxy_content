@@ -1,9 +1,15 @@
 fixtures:
   repositories:
     apache:        "https://github.com/puppetlabs/puppetlabs-apache.git"
+    augeas_core:
+      repo: 'https://github.com/puppetlabs/puppetlabs-augeas_core'
+      puppet_version: '>= 6.0.0'
     stdlib:        "https://github.com/puppetlabs/puppetlabs-stdlib.git"
-    extlib:        "https://github.com/puppet-community/puppet-extlib"
+    extlib:        "https://github.com/voxpupuli/puppet-extlib"
     concat:        "https://github.com/puppetlabs/puppetlabs-concat.git"
+    cron_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-cron_core"
+      puppet_version: ">= 6.0.0"
     datacat:       "https://github.com/richardc/puppet-datacat"
     foreman_proxy: "https://github.com/theforeman/puppet-foreman_proxy.git"
     foreman:       "https://github.com/theforeman/puppet-foreman"
@@ -13,7 +19,13 @@ fixtures:
     certs:         "https://github.com/theforeman/puppet-certs.git"
     qpid:          "https://github.com/theforeman/puppet-qpid.git"
     pulp:          "https://github.com/theforeman/puppet-pulp.git"
-    mongodb:       "https://github.com/puppetlabs/puppetlabs-mongodb.git"
-    trusted_ca:    "https://github.com/evenup/evenup-trusted_ca.git"
-    squid3:        "https://github.com/thias/puppet-squid3.git"
+    mongodb:       "https://github.com/voxpupuli/puppet-mongodb.git"
+    trusted_ca:    "https://github.com/voxpupuli/puppet-trusted_ca.git"
+    squid3:        "https://github.com/theforeman/puppet-squid3.git"
+    selinux_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"
+      puppet_version: ">= 6.0.0"
     systemd:       "https://github.com/camptocamp/puppet-systemd.git"
+    yumrepo_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-yumrepo_core"
+      puppet_version: ">= 6.0.0"
