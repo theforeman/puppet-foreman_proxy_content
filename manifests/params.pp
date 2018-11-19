@@ -2,7 +2,7 @@
 class foreman_proxy_content::params {
 
   # when not specified, we expect all in one installation
-  $parent_fqdn        = $::fqdn
+  $parent_fqdn        = $facts['fqdn']
 
   $reverse_proxy      = false
   $reverse_proxy_port = 8443

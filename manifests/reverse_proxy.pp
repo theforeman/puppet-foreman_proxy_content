@@ -2,29 +2,29 @@
 class foreman_proxy_content::reverse_proxy (
   $path = '/',
   $url  = "${foreman_proxy_content::foreman_url}/",
-  $port = $::foreman_proxy_content::reverse_proxy_port,
+  $port = $foreman_proxy_content::reverse_proxy_port,
   $ssl_protocol = undef,
 ) {
-  include ::apache
-  include ::certs::apache
-  include ::certs::foreman_proxy
+  include apache
+  include certs::apache
+  include certs::foreman_proxy
 
   Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
 
   apache::vhost { 'katello-reverse-proxy':
-    servername             => $::foreman_proxy_content::foreman_proxy_fqdn,
+    servername             => $foreman_proxy_content::foreman_proxy_fqdn,
     port                   => $port,
     docroot                => '/var/www/',
     priority               => '28',
     ssl_options            => ['+StdEnvVars', '+ExportCertData', '+FakeBasicAuth'],
     ssl                    => true,
     ssl_proxyengine        => true,
-    ssl_proxy_ca_cert      => $::certs::ca_cert,
-    ssl_proxy_machine_cert => $::certs::foreman_proxy::foreman_proxy_ssl_client_bundle,
-    ssl_cert               => $::certs::apache::apache_cert,
-    ssl_key                => $::certs::apache::apache_key,
-    ssl_chain              => $::certs::katello_server_ca_cert,
-    ssl_ca                 => $::certs::ca_cert,
+    ssl_proxy_ca_cert      => $certs::ca_cert,
+    ssl_proxy_machine_cert => $certs::foreman_proxy::foreman_proxy_ssl_client_bundle,
+    ssl_cert               => $certs::apache::apache_cert,
+    ssl_key                => $certs::apache::apache_key,
+    ssl_chain              => $certs::katello_server_ca_cert,
+    ssl_ca                 => $certs::ca_cert,
     ssl_verify_client      => 'optional',
     ssl_verify_depth       => 10,
     ssl_protocol           => $ssl_protocol,

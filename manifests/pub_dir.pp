@@ -2,10 +2,10 @@
 # e.g. the katello ca certificate is available
 # for download
 class foreman_proxy_content::pub_dir (
-  String $servername = $::fqdn
+  String $servername = $facts['fqdn'],
 ) {
-  include ::foreman_proxy_content
-  include ::apache
+  include foreman_proxy_content
+  include apache
 
   ensure_packages('katello-client-bootstrap')
 

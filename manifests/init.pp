@@ -129,14 +129,14 @@ class foreman_proxy_content (
 
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
-  include ::certs
-  include ::foreman_proxy
-  include ::foreman_proxy::plugin::pulp
+  include certs
+  include foreman_proxy
+  include foreman_proxy::plugin::pulp
 
-  $pulp = $::foreman_proxy::plugin::pulp::pulpnode_enabled
+  $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
 
-  $foreman_proxy_fqdn = $::fqdn
-  $foreman_url = $::foreman_proxy::foreman_base_url
+  $foreman_proxy_fqdn = $facts['fqdn']
+  $foreman_url = $foreman_proxy::foreman_base_url
   $reverse_proxy_real = $pulp or $reverse_proxy
 
   $rhsm_port = $reverse_proxy_real ? {
@@ -146,13 +146,13 @@ class foreman_proxy_content (
 
   ensure_packages('katello-debug')
 
-  class { '::certs::foreman_proxy':
+  class { 'certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
     require  => Class['certs'],
     notify   => Service['foreman-proxy'],
   }
 
-  class { '::certs::katello':
+  class { 'certs::katello':
     hostname       => $rhsm_hostname,
     deployment_url => $rhsm_url,
     rhsm_port      => $rhsm_port,
@@ -160,11 +160,11 @@ class foreman_proxy_content (
   }
 
   if $pulp or $reverse_proxy_real {
-    class { '::certs::apache':
+    class { 'certs::apache':
       hostname => $foreman_proxy_fqdn,
       require  => Class['certs'],
     }
-    ~> class { '::foreman_proxy_content::reverse_proxy':
+    ~> class { 'foreman_proxy_content::reverse_proxy':
       path         => '/',
       url          => "${foreman_url}/",
       port         => $reverse_proxy_port,
@@ -175,12 +175,12 @@ class foreman_proxy_content (
 
   if $pulp_master or $pulp {
     if $qpid_router {
-      class { '::foreman_proxy_content::dispatch_router':
+      class { 'foreman_proxy_content::dispatch_router':
         require => Class['pulp'],
       }
     }
 
-    class { '::pulp::crane':
+    class { 'pulp::crane':
       cert         => $certs::apache::apache_cert,
       key          => $certs::apache::apache_key,
       ca_cert      => $certs::ca_cert,
@@ -189,11 +189,11 @@ class foreman_proxy_content (
       require      => Class['certs::apache'],
     }
 
-    include ::foreman_proxy_content::pub_dir
+    include foreman_proxy_content::pub_dir
   }
 
   if $pulp {
-    include ::apache
+    include apache
 
     file {'/etc/httpd/conf.d/pulp_nodes.conf':
       ensure  => file,
@@ -204,13 +204,13 @@ class foreman_proxy_content (
     }
 
     if $manage_broker {
-      include ::foreman_proxy_content::broker
+      include foreman_proxy_content::broker
     }
 
-    class { '::certs::qpid_client':
+    class { 'certs::qpid_client':
       require => Class['certs'],
     }
-    ~> class { '::pulp':
+    ~> class { 'pulp':
       enable_ostree          => $enable_ostree,
       enable_rpm             => $enable_yum,
       enable_iso             => $enable_file,
@@ -220,7 +220,7 @@ class foreman_proxy_content (
       default_password       => $pulp_admin_password,
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
-      messaging_ca_cert      => pick($pulp_ca_cert, $::certs::ca_cert),
+      messaging_ca_cert      => pick($pulp_ca_cert, $certs::ca_cert),
       messaging_client_cert  => $certs::messaging_client_cert,
       messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
@@ -253,11 +253,11 @@ class foreman_proxy_content (
 
   if $puppet {
     # We can't pull the certs out to the top level, because of how it gets the default
-    # parameter values from the main ::certs class.  Kafo can't handle that case, so
+    # parameter values from the main certs class.  Kafo can't handle that case, so
     # it remains here for now.
-    include ::puppet
-    if $::puppet::server and $::puppet::server::foreman {
-      class { '::certs::puppet':
+    include puppet
+    if $puppet::server and $puppet::server::foreman {
+      class { 'certs::puppet':
         hostname => $foreman_proxy_fqdn,
         before   => Class['foreman::puppetmaster'],
       }
