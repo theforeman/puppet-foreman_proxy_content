@@ -15,7 +15,7 @@ class foreman_proxy_content::pub_dir (
     priority            => '05',
     docroot             => '/var/www/html',
     options             => ['SymLinksIfOwnerMatch'],
-    additional_includes => ['/etc/pulp/vhosts80/*.conf'],
+    additional_includes => ["${apache::confd_dir}/pulp-vhosts80/*.conf"],
     custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
   }
 }
