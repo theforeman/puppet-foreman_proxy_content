@@ -21,7 +21,8 @@ fixtures:
     pulp:          "https://github.com/theforeman/puppet-pulp.git"
     mongodb:       "https://github.com/voxpupuli/puppet-mongodb.git"
     trusted_ca:    "https://github.com/voxpupuli/puppet-trusted_ca.git"
-    squid3:        "https://github.com/theforeman/puppet-squid3.git"
+    squid:         "https://github.com/voxpupuli/puppet-squid.git"
+    selinux:       "https://github.com/voxpupuli/puppet-selinux.git"
     selinux_core:
       repo: "https://github.com/puppetlabs/puppetlabs-selinux_core"
       puppet_version: ">= 6.0.0"
