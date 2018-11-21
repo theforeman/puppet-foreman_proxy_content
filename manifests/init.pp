@@ -221,7 +221,7 @@ class foreman_proxy_content (
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
       messaging_ca_cert      => pick($pulp_ca_cert, $certs::ca_cert),
-      messaging_client_cert  => $certs::messaging_client_cert,
+      messaging_client_cert  => $certs::qpid_client_cert,
       messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
       broker_use_ssl         => true,
