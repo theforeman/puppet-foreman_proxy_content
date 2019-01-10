@@ -16,7 +16,7 @@ class foreman_proxy_content::params {
   $puppet                    = true
 
   $pulp_master               = false
-  $pulp_admin_password       = cache_data('foreman_cache_data', 'pulp_node_admin_password', random_password(32))
+  $pulp_admin_password       = extlib::cache_data('foreman_cache_data', 'pulp_node_admin_password', extlib::random_password(32))
   $pulp_max_speed            = undef
   $pulp_max_tasks_per_child  = undef
   $pulp_num_workers          = undef
