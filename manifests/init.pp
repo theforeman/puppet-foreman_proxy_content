@@ -28,8 +28,6 @@
 #
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
 #
-# $pulp_max_tasks_per_child::           Number of tasks after which the worker is restarted and the memory it allocated is returned to the system
-#
 # $pulp_num_workers::                   Number of Pulp workers to use.
 #
 # $pulp_proxy_port::                    Port of the http proxy server
@@ -89,7 +87,6 @@ class foreman_proxy_content (
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
-  Optional[Integer[1]] $pulp_max_tasks_per_child = $foreman_proxy_content::params::pulp_max_tasks_per_child,
   Optional[Integer[1]] $pulp_num_workers = $foreman_proxy_content::params::pulp_num_workers,
   Optional[String] $pulp_proxy_password = $foreman_proxy_content::params::pulp_proxy_password,
   Optional[Integer[0, 65535]] $pulp_proxy_port = $foreman_proxy_content::params::pulp_proxy_port,
@@ -230,7 +227,6 @@ class foreman_proxy_content (
       manage_plugins_httpd   => true,
       manage_squid           => true,
       puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
-      max_tasks_per_child    => $pulp_max_tasks_per_child,
       num_workers            => $pulp_num_workers,
       repo_auth              => true,
       node_server_ca_cert    => $certs::pulp_server_ca_cert,
