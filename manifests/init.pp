@@ -78,6 +78,12 @@
 #
 # $qpid_router_ssl_protocols::          Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
+# $qpid_router_sasl_mech::              SASL mechanism to be used from router to broker
+#
+# $qpid_router_sasl_username::          SASL username to be used from router to broker
+#
+# $qpid_router_sasl_password::          SASL password to be used from router to broker
+#
 # $manage_broker::                      Manage the qpid message broker when applicable
 #
 # $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
@@ -120,6 +126,9 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Optional[String] $qpid_router_ssl_ciphers = $foreman_proxy_content::params::qpid_router_ssl_ciphers,
   Optional[Array[String]] $qpid_router_ssl_protocols = $foreman_proxy_content::params::qpid_router_ssl_protocols,
+  Optional[String] $qpid_router_sasl_mech = $foreman_proxy_content::params::qpid_router_sasl_mech,
+  Optional[String] $qpid_router_sasl_username = $foreman_proxy_content::params::qpid_router_sasl_username,
+  Optional[String] $qpid_router_sasl_password = $foreman_proxy_content::params::qpid_router_sasl_password,
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
