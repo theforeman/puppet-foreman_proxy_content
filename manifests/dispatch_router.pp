@@ -60,11 +60,14 @@ class foreman_proxy_content::dispatch_router (
 
     # Connect dispatch router to the local qpid
     qpid::router::connector { 'broker':
-      host         => $foreman_proxy_content::qpid_router_broker_addr,
-      port         => $foreman_proxy_content::qpid_router_broker_port,
-      ssl_profile  => 'client',
-      role         => 'route-container',
-      idle_timeout => 0,
+      host          => $foreman_proxy_content::qpid_router_broker_addr,
+      port          => $foreman_proxy_content::qpid_router_broker_port,
+      sasl_mech     => $foreman_proxy_content::qpid_router_sasl_mech,
+      sasl_username => $foreman_proxy_content::qpid_router_sasl_username,
+      sasl_password => $foreman_proxy_content::qpid_router_sasl_password,
+      ssl_profile   => 'client',
+      role          => 'route-container',
+      idle_timeout  => 0,
     }
 
     qpid::router::link_route { 'broker-pulp-route-out':
