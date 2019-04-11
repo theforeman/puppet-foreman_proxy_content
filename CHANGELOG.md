@@ -1,5 +1,11 @@
 # Changelog
 
+## [8.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/8.0.1) (2019-04-11)
+
+**Fixed bugs:**
+
+- Refs [\#26571](https://projects.theforeman.org/issues/26571) - Add dispatch router auth [\#197](https://github.com/theforeman/puppet-foreman_proxy_content/pull/197) ([jturel](https://github.com/jturel))
+
 ## [8.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/8.0.0) (2019-01-15)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.2...8.0.0)
