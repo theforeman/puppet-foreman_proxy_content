@@ -9,7 +9,7 @@
   "issues_url": "https://projects.theforeman.org/projects/katello/issues",
   "dependencies": [
     {
-      "name": "puppetlabs-stdlib",
+      "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.0 < 6.0.0"
     },
     {
@@ -17,23 +17,23 @@
       "version_requirement": ">= 3.0.0 < 4.0.0"
     },
     {
-      "name": "puppetlabs-apache",
+      "name": "puppetlabs/apache",
       "version_requirement": ">= 2.0.0 < 5.0.0"
     },
     {
-      "name": "theforeman-foreman_proxy",
+      "name": "theforeman/foreman_proxy",
       "version_requirement": ">= 5.0.0 < 12.0.0"
     },
     {
-      "name": "katello-pulp",
+      "name": "katello/pulp",
       "version_requirement": ">= 5.3.0 < 6.0.0"
     },
     {
-      "name": "katello-qpid",
+      "name": "katello/qpid",
       "version_requirement": ">= 4.2.0 < 5.0.0"
     },
     {
-      "name": "katello-certs",
+      "name": "katello/certs",
       "version_requirement": ">= 2.0.0 < 6.0.0"
     }
   ],
