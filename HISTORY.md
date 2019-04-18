@@ -1,3 +1,46 @@
+## [9.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.0) (2019-04-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/8.0.1...9.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 4 [\#199](https://github.com/theforeman/puppet-foreman_proxy_content/pull/199) ([ekohl](https://github.com/ekohl))
+- Refs [\#26323](https://projects.theforeman.org/issues/26323) - Remove max\_tasks\_per\_child setting [\#196](https://github.com/theforeman/puppet-foreman_proxy_content/pull/196) ([chris1984](https://github.com/chris1984))
+- Update qpid client certificate [\#185](https://github.com/theforeman/puppet-foreman_proxy_content/pull/185) ([ehelms](https://github.com/ehelms))
+- Pulp vhosts80 moved to httpd conf.d [\#184](https://github.com/theforeman/puppet-foreman_proxy_content/pull/184) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow theforeman-foreman\_proxy 11.x [\#195](https://github.com/theforeman/puppet-foreman_proxy_content/pull/195) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Require qpid \>= 4.5, allow newest major versions [\#198](https://github.com/theforeman/puppet-foreman_proxy_content/pull/198) ([ekohl](https://github.com/ekohl))
+
+## [8.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/8.0.1) (2019-04-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/8.0.0...8.0.1)
+
+**Fixed bugs:**
+
+- Refs [\#26571](https://projects.theforeman.org/issues/26571) - Add dispatch router auth [\#197](https://github.com/theforeman/puppet-foreman_proxy_content/pull/197) ([jturel](https://github.com/jturel))
+
+## [8.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/8.0.0) (2019-01-15)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.2...8.0.0)
+
+**Breaking changes:**
+
+- Remove certs\_tar parameter [\#176](https://github.com/theforeman/puppet-foreman_proxy_content/pull/176) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Allow apache 4.x and foreman\_proxy 10.x [\#191](https://github.com/theforeman/puppet-foreman_proxy_content/pull/191) ([ekohl](https://github.com/ekohl))
+- Use extlib namespaced functions [\#190](https://github.com/theforeman/puppet-foreman_proxy_content/pull/190) ([ekohl](https://github.com/ekohl))
+- Allow katello-certs 5.Y+ [\#186](https://github.com/theforeman/puppet-foreman_proxy_content/pull/186) ([ehelms](https://github.com/ehelms))
+- Add Puppet 6 support [\#183](https://github.com/theforeman/puppet-foreman_proxy_content/pull/183) ([ekohl](https://github.com/ekohl))
+- Set the ssl\_chain to the server ca cert [\#162](https://github.com/theforeman/puppet-foreman_proxy_content/pull/162) ([ekohl](https://github.com/ekohl))
+
 ## [7.3.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.2) (2018-10-31)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.1...7.3.2)
