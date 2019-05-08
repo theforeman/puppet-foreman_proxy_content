@@ -41,7 +41,7 @@ class foreman_proxy_content::params {
   $qpid_router_ssl_protocols = undef
   $qpid_router_sasl_mech   = 'PLAIN'
   $qpid_router_sasl_username = 'katello_agent'
-  $qpid_router_sasl_password = cache_data('foreman_cache_data', 'qpid_router_sasl_password', random_password(16))
+  $qpid_router_sasl_password = extlib::cache_data('foreman_cache_data', 'qpid_router_sasl_password', extlib::random_password(16))
 
   $enable_ostree             = false
   $enable_yum                = true
