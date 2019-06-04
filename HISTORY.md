@@ -1,3 +1,15 @@
+## [9.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.1) (2019-06-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.0...9.0.1)
+
+**Fixed bugs:**
+
+- Further namespace extlib functions [\#202](https://github.com/theforeman/puppet-foreman_proxy_content/pull/202) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- allow newer versions of dependencies [\#203](https://github.com/theforeman/puppet-foreman_proxy_content/pull/203) ([mmoll](https://github.com/mmoll))
+
 ## [9.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.0) (2019-04-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/8.0.1...9.0.0)
@@ -40,6 +52,14 @@
 - Allow katello-certs 5.Y+ [\#186](https://github.com/theforeman/puppet-foreman_proxy_content/pull/186) ([ehelms](https://github.com/ehelms))
 - Add Puppet 6 support [\#183](https://github.com/theforeman/puppet-foreman_proxy_content/pull/183) ([ekohl](https://github.com/ekohl))
 - Set the ssl\_chain to the server ca cert [\#162](https://github.com/theforeman/puppet-foreman_proxy_content/pull/162) ([ekohl](https://github.com/ekohl))
+
+## [7.3.3](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.3) (2019-04-30)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/7.3.2...7.3.3)
+
+**Fixed bugs:**
+
+- Refs [\#26571](https://projects.theforeman.org/issues/26571) - Add dispatch router auth [\#201](https://github.com/theforeman/puppet-foreman_proxy_content/pull/201) ([jturel](https://github.com/jturel))
 
 ## [7.3.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/7.3.2) (2018-10-31)
 
