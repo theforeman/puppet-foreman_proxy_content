@@ -51,4 +51,10 @@ class foreman_proxy_content::params {
   $enable_deb                = true
 
   $manage_broker             = true
+
+  $netmask_cidr = inline_template('<%= IPAddr.new(scope.lookupvar(\'netmask\')).to_i.to_s(2).count(\'1\') %>')
+  $enable_passthrough_pulp    = false
+  $passthrough_pulp_http_port = 3129
+  $passthrough_pulp_allowed_net = "${facts['network']}/${netmask_cidr}"
+  $passthrough_pulp_master_host = $facts['fqdn']
 }

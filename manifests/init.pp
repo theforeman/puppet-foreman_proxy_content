@@ -18,6 +18,8 @@
 #
 # $enable_deb::                         Enable debian content plugin
 #
+# $enable_passthrough_pulp::            Enable passthrough mode to pulp master via squid
+#
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
@@ -88,6 +90,12 @@
 #                                       mongo database has slow I/O, then setting a higher number may resolve issues where workers are
 #                                       going missing incorrectly.
 #
+# $passthrough_pulp_http_port::         Port at squid for the passthrough pulp mode
+#
+# $passthrough_pulp_allowed_net::       Allowed network to access squid for the passthrough pulp mode
+#
+# $passthrough_pulp_master_host::       Pulp master hostname to be used for the passhthrough pulp mode via squid
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
@@ -132,6 +140,11 @@ class foreman_proxy_content (
   Boolean $enable_puppet = $foreman_proxy_content::params::enable_puppet,
   Boolean $enable_docker = $foreman_proxy_content::params::enable_docker,
   Boolean $enable_deb = $foreman_proxy_content::params::enable_deb,
+
+  Boolean $enable_passthrough_pulp = $foreman_proxy_content::params::enable_passthrough_pulp,
+  Stdlib::Port $passthrough_pulp_http_port = $foreman_proxy_content::params::passthrough_pulp_http_port,
+  String $passthrough_pulp_allowed_net = $foreman_proxy_content::params::passthrough_pulp_allowed_net,
+  Stdlib::Host $passthrough_pulp_master_host = $foreman_proxy_content::params::passthrough_pulp_master_host,
 
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
@@ -217,38 +230,42 @@ class foreman_proxy_content (
       require => Class['certs'],
     }
     ~> class { 'pulp':
-      enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_yum,
-      enable_iso             => $enable_file,
-      enable_deb             => $enable_deb,
-      enable_puppet          => $enable_puppet,
-      enable_docker          => $enable_docker,
-      default_password       => $pulp_admin_password,
-      messaging_transport    => 'qpid',
-      messaging_auth_enabled => false,
-      messaging_ca_cert      => pick($pulp_ca_cert, $certs::ca_cert),
-      messaging_client_cert  => $certs::qpid_client_cert,
-      messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_use_ssl         => true,
-      manage_broker          => false,
-      manage_httpd           => true,
-      manage_plugins_httpd   => true,
-      manage_squid           => true,
-      puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
-      num_workers            => $pulp_num_workers,
-      repo_auth              => true,
-      node_server_ca_cert    => $certs::pulp_server_ca_cert,
-      https_cert             => $certs::apache::apache_cert,
-      https_key              => $certs::apache::apache_key,
-      ssl_protocol           => $ssl_protocol,
-      ca_cert                => $certs::ca_cert,
-      yum_max_speed          => $pulp_max_speed,
-      proxy_port             => $pulp_proxy_port,
-      proxy_url              => $pulp_proxy_url,
-      proxy_username         => $pulp_proxy_username,
-      proxy_password         => $pulp_proxy_password,
-      worker_timeout         => $pulp_worker_timeout,
+      enable_ostree                => $enable_ostree,
+      enable_rpm                   => $enable_yum,
+      enable_iso                   => $enable_file,
+      enable_deb                   => $enable_deb,
+      enable_puppet                => $enable_puppet,
+      enable_docker                => $enable_docker,
+      default_password             => $pulp_admin_password,
+      messaging_transport          => 'qpid',
+      messaging_auth_enabled       => false,
+      messaging_ca_cert            => pick($pulp_ca_cert, $certs::ca_cert),
+      messaging_client_cert        => $certs::qpid_client_cert,
+      messaging_url                => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_url                   => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
+      broker_use_ssl               => true,
+      manage_broker                => false,
+      manage_httpd                 => true,
+      manage_plugins_httpd         => true,
+      manage_squid                 => true,
+      puppet_wsgi_processes        => $pulp_puppet_wsgi_processes,
+      num_workers                  => $pulp_num_workers,
+      repo_auth                    => true,
+      node_server_ca_cert          => $certs::pulp_server_ca_cert,
+      https_cert                   => $certs::apache::apache_cert,
+      https_key                    => $certs::apache::apache_key,
+      ssl_protocol                 => $ssl_protocol,
+      ca_cert                      => $certs::ca_cert,
+      yum_max_speed                => $pulp_max_speed,
+      proxy_port                   => $pulp_proxy_port,
+      proxy_url                    => $pulp_proxy_url,
+      proxy_username               => $pulp_proxy_username,
+      proxy_password               => $pulp_proxy_password,
+      worker_timeout               => $pulp_worker_timeout,
+      enable_passthrough_pulp      => $enable_passthrough_pulp,
+      passthrough_pulp_http_port   => $passthrough_pulp_http_port,
+      passthrough_pulp_allowed_net => $passthrough_pulp_allowed_net,
+      passthrough_pulp_master_host => $passthrough_pulp_master_host,
     }
 
     pulp::apache::fragment{'gpg_key_proxy':
