@@ -16,6 +16,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
               'path' => '/',
               'url' => "https://#{facts[:fqdn]}/",
               'reverse_urls' => ['/', "https://#{facts[:fqdn]}/"],
+              'params' => {},
             }])
         end
       end
@@ -32,9 +33,34 @@ describe 'foreman_proxy_content::reverse_proxy' do
               'path' => '/',
               'url' => 'https://foreman.example.com/',
               'reverse_urls' => ['/', 'https://foreman.example.com/'],
+              'params' => {},
             }])
           is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
             .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/$})
+        end
+
+        describe 'with vhost_params' do
+          let(:params) { super().merge(vhost_params: {keepalive: 'on'}) }
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_apache__vhost('katello-reverse-proxy').with_keepalive('on') }
+        end
+
+        describe 'with proxy_pass_params' do
+          let(:params) { super().merge(proxy_pass_params: {disablereuse: 'on'}) }
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_apache__vhost('katello-reverse-proxy')
+              .with_proxy_pass([{
+                'path' => '/',
+                'url' => 'https://foreman.example.com/',
+                'reverse_urls' => ['/', 'https://foreman.example.com/'],
+                'params' => {'disablereuse' => 'on'},
+              }])
+            is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
+              .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=on$})
+          end
         end
       end
     end

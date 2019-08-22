@@ -10,12 +10,18 @@
 #   The port to listen on
 # @param ssl_protocol
 #   The ssl protocol(s) to accept
+# @param vhost_params
+#   Any parameters to pass to the apache::vhost resource
+# @param proxy_pass_params
+#   Any parameters to pass to the proxy_pass param of the apache::vhost resource
 class foreman_proxy_content::reverse_proxy (
   Stdlib::Unixpath $path = '/',
   Stdlib::Httpurl $url = "${foreman_proxy_content::foreman_url}/",
   Stdlib::Fqdn $servername = $foreman_proxy_content::foreman_proxy_fqdn,
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
+  Hash[String, Any] $vhost_params = {},
+  Hash[String, String] $proxy_pass_params = {},
 ) {
   include apache
   include certs::apache
@@ -45,7 +51,8 @@ class foreman_proxy_content::reverse_proxy (
       {
         'path'         => $path,
         'url'          => $url,
-        'reverse_urls' => [$path, $url]
+        'reverse_urls' => [$path, $url],
+        'params'       => $proxy_pass_params,
       }
     ],
     error_documents        => [
@@ -58,5 +65,6 @@ class foreman_proxy_content::reverse_proxy (
         'document'   => '\'{"displayMessage": "Service unavailable or restarting, try later", "errors": ["Service unavailable or restarting, try later"], "status": "503" }\''
       },
     ],
+    *                      => $vhost_params,
   }
 }
