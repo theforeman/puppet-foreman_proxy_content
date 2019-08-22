@@ -1,9 +1,21 @@
 # Adds http reverse-proxy to parent conf
+#
+# @param path
+#   The path where to mount the reverse proxy
+# @param url
+#   The URL to forward to
+# @param servername
+#   The Apache vhost server name to listen on
+# @param port
+#   The port to listen on
+# @param ssl_protocol
+#   The ssl protocol(s) to accept
 class foreman_proxy_content::reverse_proxy (
-  $path = '/',
-  $url  = "${foreman_proxy_content::foreman_url}/",
-  $port = $foreman_proxy_content::reverse_proxy_port,
-  $ssl_protocol = undef,
+  Stdlib::Unixpath $path = '/',
+  Stdlib::Httpurl $url = "${foreman_proxy_content::foreman_url}/",
+  Stdlib::Fqdn $servername = $foreman_proxy_content::foreman_proxy_fqdn,
+  Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
+  Variant[Array[String], String, Undef] $ssl_protocol = undef,
 ) {
   include apache
   include certs::apache
@@ -12,7 +24,7 @@ class foreman_proxy_content::reverse_proxy (
   Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
 
   apache::vhost { 'katello-reverse-proxy':
-    servername             => $foreman_proxy_content::foreman_proxy_fqdn,
+    servername             => $servername,
     port                   => $port,
     docroot                => '/var/www/',
     priority               => '28',
