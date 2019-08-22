@@ -4,6 +4,6 @@ alias /pub /var/www/html/pub
   <IfModule mod_passenger.c>
     PassengerEnabled off
   </IfModule>
-  Options +FollowSymLinks +Indexes
+  Options <%= @pub_dir_options %>
   Require all granted
 </Location>

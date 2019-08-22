@@ -3,6 +3,7 @@
 # for download
 class foreman_proxy_content::pub_dir (
   String $servername = $facts['fqdn'],
+  String $pub_dir_options = '+FollowSymLinks +Indexes',
 ) {
   include foreman_proxy_content
   include apache
