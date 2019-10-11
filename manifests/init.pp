@@ -190,7 +190,7 @@ class foreman_proxy_content (
     class { 'pulp::crane':
       cert         => $certs::apache::apache_cert,
       key          => $certs::apache::apache_key,
-      ca_cert      => $certs::ca_cert,
+      ca_cert      => $certs::katello_server_ca_cert,
       data_dir     => '/var/lib/pulp/published/docker/v2/app',
       ssl_protocol => $ssl_protocol,
       require      => Class['certs::apache'],
