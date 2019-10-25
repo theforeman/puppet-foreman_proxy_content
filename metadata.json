@@ -1,7 +1,7 @@
 {
   "name": "katello-foreman_proxy_content",
   "version": "9.1.0",
-  "author": "Katello",
+  "author": "katello",
   "summary": "Deploys and manages a Foreman proxy server with content",
   "license": "GPL-3.0+",
   "source": "https://github.com/theforeman/puppet-foreman_proxy_content.git",
