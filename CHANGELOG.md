@@ -1,5 +1,18 @@
 # Changelog
 
+## [9.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.1.0) (2019-10-25)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.2...9.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#27687](https://projects.theforeman.org/issues/27687) - Add vhost\_params and proxy\_pass\_params [\#210](https://github.com/theforeman/puppet-foreman_proxy_content/pull/210) ([ekohl](https://github.com/ekohl))
+- Fixes [\#27689](https://projects.theforeman.org/issues/27689) - Allow customization of pub dir on foreman proxy server [\#207](https://github.com/theforeman/puppet-foreman_proxy_content/pull/207) ([snagoor](https://github.com/snagoor))
+
+**Fixed bugs:**
+
+- Fixes [\#28043](https://projects.theforeman.org/issues/28043) - Crane uses the Katello server CA [\#211](https://github.com/theforeman/puppet-foreman_proxy_content/pull/211) ([ekohl](https://github.com/ekohl))
+
 ## [9.0.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.2) (2019-07-31)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.1...9.0.2)
