@@ -136,12 +136,12 @@ class foreman_proxy_content (
   include foreman_proxy
   include foreman_proxy::plugin::pulp
 
-  $pulp_master = $foreman_proxy::plugin::pulp::enabled
-  $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
+  $pulp2_master = $foreman_proxy::plugin::pulp::enabled
+  $pulp2_node = $foreman_proxy::plugin::pulp::pulpnode_enabled
 
   $foreman_proxy_fqdn = $facts['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
-  $reverse_proxy_real = $pulp or $reverse_proxy
+  $reverse_proxy_real = $pulp2_node or $reverse_proxy
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
@@ -163,96 +163,27 @@ class foreman_proxy_content (
     require        => Class['certs'],
   }
 
-  if $pulp or $reverse_proxy_real {
+  if $pulp2_master or $reverse_proxy_real {
     class { 'certs::apache':
       hostname => $foreman_proxy_fqdn,
-      require  => Class['certs'],
     }
-    ~> class { 'foreman_proxy_content::reverse_proxy':
+  }
+
+  if $reverse_proxy_real {
+    class { 'foreman_proxy_content::reverse_proxy':
       path         => '/',
       url          => "${foreman_url}/",
       servername   => $foreman_proxy_fqdn,
       port         => $reverse_proxy_port,
-      subscribe    => Class['certs::foreman_proxy'],
       ssl_protocol => $ssl_protocol,
     }
   }
 
-  if $pulp_master or $pulp {
-    if $qpid_router {
-      class { 'foreman_proxy_content::dispatch_router':
-        require => Class['pulp'],
-      }
+  if $pulp2_master or $pulp2_node {
+    if $pulp2_master and $pulp2_node {
+      fail("Can't be both a Pulp 2 master and node at the same time")
     }
-
-    class { 'pulp::crane':
-      cert         => $certs::apache::apache_cert,
-      key          => $certs::apache::apache_key,
-      ca_cert      => $certs::katello_server_ca_cert,
-      data_dir     => '/var/lib/pulp/published/docker/v2/app',
-      ssl_protocol => $ssl_protocol,
-      require      => Class['certs::apache'],
-    }
-
-    include foreman_proxy_content::pub_dir
-  }
-
-  if $pulp {
-    include apache
-
-    file {'/etc/httpd/conf.d/pulp_nodes.conf':
-      ensure  => file,
-      content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
-
-    if $manage_broker {
-      include foreman_proxy_content::broker
-    }
-
-    class { 'certs::qpid_client':
-      require => Class['certs'],
-    }
-    ~> class { 'pulp':
-      enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_yum,
-      enable_iso             => $enable_file,
-      enable_deb             => $enable_deb,
-      enable_puppet          => $enable_puppet,
-      enable_docker          => $enable_docker,
-      default_password       => $pulp_admin_password,
-      messaging_transport    => 'qpid',
-      messaging_auth_enabled => false,
-      messaging_ca_cert      => pick($pulp_ca_cert, $certs::ca_cert),
-      messaging_client_cert  => $certs::qpid_client_cert,
-      messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_use_ssl         => true,
-      manage_broker          => false,
-      manage_httpd           => true,
-      manage_plugins_httpd   => true,
-      manage_squid           => true,
-      puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
-      num_workers            => $pulp_num_workers,
-      repo_auth              => true,
-      node_server_ca_cert    => $certs::pulp_server_ca_cert,
-      https_cert             => $certs::apache::apache_cert,
-      https_key              => $certs::apache::apache_key,
-      ssl_protocol           => $ssl_protocol,
-      ca_cert                => $certs::ca_cert,
-      yum_max_speed          => $pulp_max_speed,
-      proxy_port             => $pulp_proxy_port,
-      proxy_url              => $pulp_proxy_url,
-      proxy_username         => $pulp_proxy_username,
-      proxy_password         => $pulp_proxy_password,
-      worker_timeout         => $pulp_worker_timeout,
-    }
-
-    pulp::apache::fragment{'gpg_key_proxy':
-      ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb', 'foreman_proxy_content/httpd_pub.erb'),
-    }
+    contain foreman_proxy_content::pulp
   }
 
   if $puppet {

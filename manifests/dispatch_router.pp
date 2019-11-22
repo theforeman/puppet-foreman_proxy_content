@@ -50,7 +50,7 @@ class foreman_proxy_content::dispatch_router (
   }
 
   # Act as hub if pulp master, otherwise connect to hub
-  if $foreman_proxy_content::pulp_master {
+  if $foreman_proxy_content::pulp2_master {
     qpid::router::listener {'hub':
       host        => $foreman_proxy_content::qpid_router_hub_addr,
       port        => $foreman_proxy_content::qpid_router_hub_port,
