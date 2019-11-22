@@ -22,8 +22,6 @@
 #
 # $puppet::                             Enable puppet
 #
-# $pulp_master::                        Whether the foreman_proxy_content should be identified as a pulp master server
-#
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
 #
 # $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
@@ -90,7 +88,6 @@
 #
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
-  Boolean $pulp_master = $foreman_proxy_content::params::pulp_master,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
   Optional[Integer[1]] $pulp_num_workers = $foreman_proxy_content::params::pulp_num_workers,
@@ -139,6 +136,7 @@ class foreman_proxy_content (
   include foreman_proxy
   include foreman_proxy::plugin::pulp
 
+  $pulp_master = $foreman_proxy::plugin::pulp::enabled
   $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
 
   $foreman_proxy_fqdn = $facts['fqdn']
@@ -183,9 +181,7 @@ class foreman_proxy_content (
 
   if $pulp_master or $pulp {
     if $qpid_router {
-      class { 'foreman_proxy_content::dispatch_router':
-        require => Class['pulp'],
-      }
+      contain foreman_proxy_content::dispatch_router
     }
 
     class { 'pulp::crane':

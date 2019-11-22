@@ -21,6 +21,7 @@ describe 'foreman_proxy_content' do
           <<-PUPPET
           include foreman_proxy
           class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
             pulpnode_enabled => true,
           }
           PUPPET
