@@ -165,7 +165,7 @@ class foreman_proxy_content (
     require        => Class['certs'],
   }
 
-  if $pulp or $reverse_proxy_real {
+  if $reverse_proxy_real {
     class { 'foreman_proxy_content::reverse_proxy':
       path         => '/',
       url          => "${foreman_url}/",
