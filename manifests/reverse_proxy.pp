@@ -24,8 +24,11 @@ class foreman_proxy_content::reverse_proxy (
   Hash[String, String] $proxy_pass_params = {},
 ) {
   include apache
-  include certs::apache
   include certs::foreman_proxy
+
+  class { 'certs::apache':
+    hostname => $servername,
+  }
 
   Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
 
