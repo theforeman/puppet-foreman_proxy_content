@@ -1,8 +1,6 @@
 # @summary Configure pulp
 # @api private
-class foreman_proxy_content::pulp(
-  $qpid_router = $foreman_proxy_content::qpid_router,
-){
+class foreman_proxy_content::pulp {
   include certs::apache
   include certs::qpid_client
 
@@ -106,7 +104,7 @@ class foreman_proxy_content::pulp(
     require      => Class['certs::apache'],
   }
 
-  if $qpid_router {
+  if $foreman_proxy_content::qpid_router {
     contain foreman_proxy_content::dispatch_router
     Class['pulp'] -> Class['foreman_proxy_content::dispatch_router']
   }
