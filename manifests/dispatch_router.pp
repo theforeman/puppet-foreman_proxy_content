@@ -1,14 +1,41 @@
-# == Class: foreman_proxy_content::dispatch_router
+# @summary Install and configure Qpid Dispatch Router
 #
-# Install and configure Qpid Dispatch Router
+# @param agent_addr
+#   Listener address for goferd agents
 #
+# @param agent_port
+#   Listener port for goferd agents
+#
+# @param logging_level
+#   Logging level of dispatch router (e.g. info+ or debug+)
+#
+# @param logging
+#   Whether to log to file or syslog.
+#
+# @param logging_path
+#   Directory for dispatch router logs, if using file logging
+#
+# @param ssl_ciphers
+#   SSL Ciphers to support in dispatch router
+#
+# @param ssl_protocols
+#   Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 class foreman_proxy_content::dispatch_router (
+  Optional[Stdlib::Host] $agent_addr = undef,
+  Stdlib::Port $agent_port = 5647,
+
+  Optional[String] $ssl_ciphers = undef,
+  Optional[Array[String]] $ssl_protocols = undef,
+
+  String $logging_level = 'info+',
+  Enum['file', 'syslog'] $logging = 'syslog',
+  Stdlib::Absolutepath $logging_path = '/var/log/qdrouterd',
 ) {
 
-  class { '::qpid::router': }
+  contain qpid::router
 
   # SSL Certificate Configuration
-  class { '::certs::qpid_router':
+  class { 'certs::qpid_router':
     require => Class['qpid::router::install'],
   }
   ~> qpid::router::ssl_profile { 'client':
@@ -20,106 +47,32 @@ class foreman_proxy_content::dispatch_router (
     ca        => $certs::ca_cert,
     cert      => $certs::qpid_router::server_cert,
     key       => $certs::qpid_router::server_key,
-    ciphers   => $foreman_proxy_content::qpid_router_ssl_ciphers,
-    protocols => $foreman_proxy_content::qpid_router_ssl_protocols,
+    ciphers   => $ssl_ciphers,
+    protocols => $ssl_protocols,
   }
 
   # Listen for katello-agent clients
   qpid::router::listener { 'clients':
-    host        => $foreman_proxy_content::qpid_router_agent_addr,
-    port        => $foreman_proxy_content::qpid_router_agent_port,
+    host        => $agent_addr,
+    port        => $agent_port,
     ssl_profile => 'server',
   }
 
   # Enable logging to syslog or file
-  if $foreman_proxy_content::qpid_router_logging == 'file' {
-    file { $foreman_proxy_content::qpid_router_logging_path:
+  if $logging == 'file' {
+    file { $logging_path:
       ensure => directory,
       owner  => 'qdrouterd',
     }
   }
 
-  $output_real = $foreman_proxy_content::qpid_router_logging ? {
-    'file'   => "${foreman_proxy_content::qpid_router_logging_path}/qdrouterd.log",
+  $output_real = $logging ? {
+    'file'   => "${logging_path}/qdrouterd.log",
     'syslog' => 'syslog',
   }
 
   qpid::router::log { 'logging':
-    level  => $foreman_proxy_content::qpid_router_logging_level,
+    level  => $logging_level,
     output => $output_real,
-  }
-
-  # Act as hub if pulp master, otherwise connect to hub
-  if $foreman_proxy_content::pulp_master {
-    qpid::router::listener {'hub':
-      host        => $foreman_proxy_content::qpid_router_hub_addr,
-      port        => $foreman_proxy_content::qpid_router_hub_port,
-      role        => 'inter-router',
-      ssl_profile => 'server',
-    }
-
-    # Connect dispatch router to the local qpid
-    qpid::router::connector { 'broker':
-      host          => $foreman_proxy_content::qpid_router_broker_addr,
-      port          => $foreman_proxy_content::qpid_router_broker_port,
-      sasl_mech     => $foreman_proxy_content::qpid_router_sasl_mech,
-      sasl_username => $foreman_proxy_content::qpid_router_sasl_username,
-      sasl_password => $foreman_proxy_content::qpid_router_sasl_password,
-      ssl_profile   => 'client',
-      role          => 'route-container',
-      idle_timeout  => 0,
-    }
-
-    qpid::router::link_route { 'broker-pulp-route-out':
-      prefix     => 'pulp.',
-      direction  => 'out',
-      connection => 'broker',
-    }
-
-    qpid::router::link_route { 'broker-pulp-task-route-in':
-      prefix     => 'pulp.task',
-      direction  => 'in',
-      connection => 'broker',
-    }
-
-    qpid::router::link_route { 'broker-qmf-route-in':
-      prefix     => 'qmf.',
-      connection => 'broker',
-      direction  => 'in',
-    }
-
-    qpid::router::link_route { 'broker-qmf-route-out':
-      prefix     => 'qmf.',
-      connection => 'broker',
-      direction  => 'out',
-    }
-  } else {
-    qpid::router::connector { 'hub':
-      host         => $foreman_proxy_content::parent_fqdn,
-      port         => $foreman_proxy_content::qpid_router_hub_port,
-      ssl_profile  => 'client',
-      role         => 'inter-router',
-      idle_timeout => 0,
-    }
-
-    qpid::router::link_route { 'hub-pulp-route-in':
-      prefix    => 'pulp.',
-      direction => 'in',
-    }
-
-    qpid::router::link_route { 'hub-pulp-route-out':
-      prefix    => 'pulp.',
-      direction => 'out',
-    }
-
-    qpid::router::link_route { 'hub-qmf-route-in':
-      prefix    => 'qmf.',
-      direction => 'in',
-    }
-
-    qpid::router::link_route { 'hub-qmf-route-out':
-      prefix    => 'qmf.',
-      direction => 'out',
-    }
   }
 }

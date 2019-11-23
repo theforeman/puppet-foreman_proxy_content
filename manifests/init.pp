@@ -180,7 +180,35 @@ class foreman_proxy_content (
 
   if $pulp_master or $pulp {
     if $qpid_router {
+      class { 'foreman_proxy_content::dispatch_router':
+        agent_addr    => $qpid_router_agent_addr,
+        agent_port    => $qpid_router_agent_port,
+        ssl_ciphers   => $qpid_router_ssl_ciphers,
+        ssl_protocols => $qpid_router_ssl_protocols,
+        logging_level => $qpid_router_logging_level,
+        logging       => $qpid_router_logging,
+        logging_path  => $qpid_router_logging_path,
+      }
       contain foreman_proxy_content::dispatch_router
+
+      if $pulp_master {
+        class { 'foreman_proxy_content::dispatch_router::hub':
+          hub_addr      => $qpid_router_hub_addr,
+          hub_port      => $qpid_router_hub_port,
+          broker_addr   => $qpid_router_broker_addr,
+          broker_port   => $qpid_router_broker_port,
+          sasl_mech     => $qpid_router_sasl_mech,
+          sasl_username => $qpid_router_sasl_username,
+          sasl_password => $qpid_router_sasl_password,
+        }
+        contain foreman_proxy_content::dispatch_router::hub
+      } else {
+        class { 'foreman_proxy_content::dispatch_router::connector':
+          host => $parent_fqdn,
+          port => $qpid_router_hub_port,
+        }
+        contain foreman_proxy_content::dispatch_router::connector
+      }
     }
 
     include certs::apache
