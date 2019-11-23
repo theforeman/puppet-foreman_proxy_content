@@ -92,7 +92,7 @@ class foreman_proxy_content (
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
   Optional[Integer[1]] $pulp_num_workers = $foreman_proxy_content::params::pulp_num_workers,
   Optional[String] $pulp_proxy_password = $foreman_proxy_content::params::pulp_proxy_password,
-  Optional[Integer[0, 65535]] $pulp_proxy_port = $foreman_proxy_content::params::pulp_proxy_port,
+  Optional[Stdlib::Port] $pulp_proxy_port = $foreman_proxy_content::params::pulp_proxy_port,
   Optional[String] $pulp_proxy_url = $foreman_proxy_content::params::pulp_proxy_url,
   Optional[String] $pulp_proxy_username = $foreman_proxy_content::params::pulp_proxy_username,
   Optional[Integer[1]] $pulp_puppet_wsgi_processes = $foreman_proxy_content::params::pulp_puppet_wsgi_processes,
@@ -102,7 +102,7 @@ class foreman_proxy_content (
   Boolean $puppet = $foreman_proxy_content::params::puppet,
 
   Boolean $reverse_proxy = $foreman_proxy_content::params::reverse_proxy,
-  Integer[0, 65535] $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
+  Stdlib::Port $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
   Optional[String] $ssl_protocol = $foreman_proxy_content::params::ssl_protocol,
 
   Optional[String] $rhsm_hostname = $foreman_proxy_content::params::rhsm_hostname,
@@ -110,11 +110,11 @@ class foreman_proxy_content (
 
   Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
   Optional[String] $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
-  Integer[0, 65535] $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
+  Stdlib::Port $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
   Optional[String] $qpid_router_agent_addr = $foreman_proxy_content::params::qpid_router_agent_addr,
-  Integer[0, 65535] $qpid_router_agent_port = $foreman_proxy_content::params::qpid_router_agent_port,
+  Stdlib::Port $qpid_router_agent_port = $foreman_proxy_content::params::qpid_router_agent_port,
   String $qpid_router_broker_addr = $foreman_proxy_content::params::qpid_router_broker_addr,
-  Integer[0, 65535] $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
+  Stdlib::Port $qpid_router_broker_port = $foreman_proxy_content::params::qpid_router_broker_port,
   String $qpid_router_logging_level = $foreman_proxy_content::params::qpid_router_logging_level,
   Enum['file', 'syslog'] $qpid_router_logging = $foreman_proxy_content::params::qpid_router_logging,
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
