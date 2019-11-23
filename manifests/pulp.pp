@@ -105,8 +105,33 @@ class foreman_proxy_content::pulp {
   }
 
   if $foreman_proxy_content::qpid_router {
-    contain foreman_proxy_content::dispatch_router
-    Class['pulp'] -> Class['foreman_proxy_content::dispatch_router']
+    class { 'foreman_proxy_content::dispatch_router':
+      agent_addr    => $foreman_proxy_content::qpid_router_addr,
+      agent_port    => $foreman_proxy_content::qpid_router_agent_port,
+      ssl_ciphers   => $foreman_proxy_content::qpid_router_ssl_ciphers,
+      ssl_protocols => $foreman_proxy_content::qpid_router_ssl_protocols,
+      logging_level => $foreman_proxy_content::qpid_router_logging_level,
+      logging       => $foreman_proxy_content::qpid_router_logging,
+      logging_path  => $foreman_proxy_content::qpid_router_logging_path,
+      Require        => Class['pulp'],
+    }
+
+    if $foreman_proxy_content::pulp2_master {
+      class { 'foreman_proxy_content::dispatch_router::hub':
+        hub_addr      => $foreman_proxy_content::qpid_router_hub_addr,
+        hub_port      => $foreman_proxy_content::qpid_router_hub_port,
+        broker_addr   => $foreman_proxy_content::qpid_router_broker_addr,
+        broker_port   => $foreman_proxy_content::qpid_router_broker_port,
+        sasl_mech     => $foreman_proxy_content::qpid_router_sasl_mech,
+        sasl_username => $foreman_proxy_content::qpid_router_sasl_username,
+        sasl_password => $foreman_proxy_content::qpid_router_sasl_password,
+      }
+    } else {
+      class { 'foreman_proxy_content::dispatch_router::connector':
+        host => $foreman_proxy_content::parent_fqdn,
+        port => $foreman_proxy_content::qpid_router_hub_port,
+      }
+    }
   }
 
   include foreman_proxy_content::pub_dir
