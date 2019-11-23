@@ -4,7 +4,7 @@ class foreman_proxy_content::params {
   # when not specified, we expect all in one installation
   $parent_fqdn        = $facts['fqdn']
 
-  $reverse_proxy      = false
+  $reverse_proxy      = true
   $reverse_proxy_port = 8443
 
   $ssl_protocol = undef
@@ -31,16 +31,12 @@ class foreman_proxy_content::params {
   $qpid_router_agent_port    = 5647
   $qpid_router_broker_addr   = 'localhost'
   $qpid_router_broker_port   = 5671
-  $qpid_router_hub_addr      = undef
   $qpid_router_hub_port      = 5646
   $qpid_router_logging_level = 'info+'
   $qpid_router_logging       = 'syslog'
   $qpid_router_logging_path  = '/var/log/qdrouterd'
   $qpid_router_ssl_ciphers   = undef
   $qpid_router_ssl_protocols = undef
-  $qpid_router_sasl_mech   = 'PLAIN'
-  $qpid_router_sasl_username = 'katello_agent'
-  $qpid_router_sasl_password = extlib::cache_data('foreman_cache_data', 'qpid_router_sasl_password', extlib::random_password(16))
 
   $enable_ostree             = false
   $enable_yum                = true

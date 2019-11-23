@@ -52,8 +52,6 @@
 #
 # $qpid_router::                        Configure qpid dispatch router
 #
-# $qpid_router_hub_addr::               Address for dispatch router hub
-#
 # $qpid_router_hub_port::               Port for dispatch router hub
 #
 # $qpid_router_agent_addr::             Listener address for goferd agents
@@ -74,12 +72,6 @@
 #
 # $qpid_router_ssl_protocols::          Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
-# $qpid_router_sasl_mech::              SASL mechanism to be used from router to broker
-#
-# $qpid_router_sasl_username::          SASL username to be used from router to broker
-#
-# $qpid_router_sasl_password::          SASL password to be used from router to broker
-#
 # $manage_broker::                      Manage the qpid message broker when applicable
 #
 # $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
@@ -88,6 +80,7 @@
 #
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
+
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
   Optional[Integer[1]] $pulp_num_workers = $foreman_proxy_content::params::pulp_num_workers,
@@ -109,7 +102,6 @@ class foreman_proxy_content (
   String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
 
   Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
-  Optional[String] $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
   Stdlib::Port $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
   Optional[String] $qpid_router_agent_addr = $foreman_proxy_content::params::qpid_router_agent_addr,
   Stdlib::Port $qpid_router_agent_port = $foreman_proxy_content::params::qpid_router_agent_port,
@@ -120,9 +112,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $qpid_router_logging_path = $foreman_proxy_content::params::qpid_router_logging_path,
   Optional[String] $qpid_router_ssl_ciphers = $foreman_proxy_content::params::qpid_router_ssl_ciphers,
   Optional[Array[String]] $qpid_router_ssl_protocols = $foreman_proxy_content::params::qpid_router_ssl_protocols,
-  Optional[String] $qpid_router_sasl_mech = $foreman_proxy_content::params::qpid_router_sasl_mech,
-  Optional[String] $qpid_router_sasl_username = $foreman_proxy_content::params::qpid_router_sasl_username,
-  Optional[String] $qpid_router_sasl_password = $foreman_proxy_content::params::qpid_router_sasl_password,
+
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
@@ -132,58 +122,106 @@ class foreman_proxy_content (
 
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
 ) inherits foreman_proxy_content::params {
-  include certs
   include foreman_proxy
-  include foreman_proxy::plugin::pulp
-
-  $pulp2_master = $foreman_proxy::plugin::pulp::enabled
-  $pulp2_node = $foreman_proxy::plugin::pulp::pulpnode_enabled
 
   $foreman_proxy_fqdn = $facts['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
-  $reverse_proxy_real = $pulp2_node or $reverse_proxy
-
-  $rhsm_port = $reverse_proxy_real ? {
-    true  => $reverse_proxy_port,
-    false => '443'
-  }
 
   ensure_packages('katello-debug')
 
   class { 'certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
-    require  => Class['certs'],
     notify   => Service['foreman-proxy'],
   }
 
+  class { 'certs::apache':
+    hostname => $foreman_proxy_fqdn,
+  }
+
+  class { 'foreman_proxy_content::pulp':
+    is_mirror             => true,
+    enable_ostree         => $enable_ostree,
+    enable_yum            => $enable_yum,
+    enable_file           => $enable_file,
+    enable_puppet         => $enable_puppet,
+    enable_docker         => $enable_docker,
+    enable_deb            => $enable_deb,
+    default_password      => $pulp_admin_password,
+    yum_max_speed         => $pulp_max_speed,
+    num_workers           => $pulp_num_workers,
+    broker_host           => $qpid_router_broker_addr,
+    broker_port           => $qpid_router_broker_port,
+    proxy_password        => $pulp_proxy_password,
+    proxy_port            => $pulp_proxy_port,
+    proxy_host            => $pulp_proxy_url,
+    proxy_username        => $pulp_proxy_username,
+    puppet_wsgi_processes => $pulp_puppet_wsgi_processes,
+    ca_cert               => $pulp_ca_cert,
+    worker_timeout        => $pulp_worker_timeout,
+    ssl_protocol          => $ssl_protocol,
+  }
+  contain foreman_proxy_content::pulp
+
+  if $foreman_proxy_content::pulp2 {
+    if $qpid_router {
+      class { 'foreman_proxy_content::dispatch_router':
+        agent_addr    => $qpid_router_agent_addr,
+        agent_port    => $qpid_router_agent_port,
+        ssl_cipher    => $qpid_router_ssl_ciphers,
+        ssl_protocols => $qpid_router_ssl_protocols,
+        logging_level => $qpid_router_logging_level,
+        logging       => $qpid_router_logging,
+        logging_path  => $qpid_router_logging_path,
+      }
+
+      class { 'foreman_proxy_content::dispatch_router::connector':
+        host => $parent_fqdn,
+        port => $qpid_router_hub_port,
+      }
+    }
+
+    if $manage_broker {
+      contain foreman_proxy_content::broker
+    }
+  }
+
+  file {'/etc/httpd/conf.d/pulp_nodes.conf':
+    ensure  => file,
+    content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
+
+  pulp::apache::fragment{'gpg_key_proxy':
+    ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb', 'foreman_proxy_content/httpd_pub.erb'),
+  }
+
+  class { 'foreman_proxy_content::reverse_proxy':
+    path         => '/',
+    url          => "${foreman_url}/",
+    servername   => $foreman_proxy_fqdn,
+    port         => $reverse_proxy_port,
+    ssl_protocol => $ssl_protocol,
+  }
+
   class { 'certs::katello':
-    hostname       => $rhsm_hostname,
+    hostname       => $foreman_proxy_fqdn,
     deployment_url => $rhsm_url,
-    rhsm_port      => $rhsm_port,
+    rhsm_port      => $reverse_proxy_port,
     require        => Class['certs'],
   }
+  ensure_packages('katello-client-bootstrap')
 
-  if $pulp2_master or $reverse_proxy_real {
-    class { 'certs::apache':
-      hostname => $foreman_proxy_fqdn,
-    }
-  }
-
-  if $reverse_proxy_real {
-    class { 'foreman_proxy_content::reverse_proxy':
-      path         => '/',
-      url          => "${foreman_url}/",
-      servername   => $foreman_proxy_fqdn,
-      port         => $reverse_proxy_port,
-      ssl_protocol => $ssl_protocol,
-    }
-  }
-
-  if $pulp2_master or $pulp2_node {
-    if $pulp2_master and $pulp2_node {
-      fail("Can't be both a Pulp 2 master and node at the same time")
-    }
-    contain foreman_proxy_content::pulp
+  include apache
+  apache::vhost { 'foreman_proxy_content':
+    servername          => $foreman_proxy_fqdn,
+    port                => 80,
+    priority            => '05',
+    docroot             => '/var/www/html',
+    options             => ['SymLinksIfOwnerMatch'],
+    additional_includes => ["${apache::confd_dir}/pulp-vhosts80/*.conf"],
+    custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
   }
 
   if $puppet {
