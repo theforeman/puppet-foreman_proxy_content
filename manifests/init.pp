@@ -163,18 +163,17 @@ class foreman_proxy_content (
     require        => Class['certs'],
   }
 
-  if $pulp_master or $reverse_proxy_real {
+  if $pulp or $reverse_proxy_real {
     class { 'certs::apache':
       hostname => $foreman_proxy_fqdn,
+      require  => Class['certs'],
     }
-  }
-
-  if $reverse_proxy_real {
-    class { 'foreman_proxy_content::reverse_proxy':
+    ~> class { 'foreman_proxy_content::reverse_proxy':
       path         => '/',
       url          => "${foreman_url}/",
       servername   => $foreman_proxy_fqdn,
       port         => $reverse_proxy_port,
+      subscribe    => Class['certs::foreman_proxy'],
       ssl_protocol => $ssl_protocol,
     }
   }
@@ -184,6 +183,7 @@ class foreman_proxy_content (
       contain foreman_proxy_content::dispatch_router
     }
 
+    include certs::apache
     class { 'pulp::crane':
       cert         => $certs::apache::apache_cert,
       key          => $certs::apache::apache_key,
