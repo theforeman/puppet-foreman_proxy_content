@@ -30,12 +30,38 @@ describe 'foreman_proxy_content' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('pulp').with(manage_squid: true) }
         it { is_expected.not_to contain_class('foreman_proxy_content::dispatch_router') }
-
+        it { is_expected.not_to contain_class('pulpcore') }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
 
         it do
           is_expected.to contain_pulp__apache__fragment('gpg_key_proxy')
             .with_ssl_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
+        end
+      end
+
+      context 'with pulpcore' do
+        let(:params) do
+          {
+            qpid_router: false
+          }
+        end
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            pulp3_enabled    => true,
+            pulp3_mirror     => false,
+          }
+          PUPPET
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('pulpcore').with(manage_apache: false) }
+
+        it do
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore')
+		  .with_ssl_content(%r{ProxyPass /pulp/api http://127\.0\.0\.1:24817/pulp/api})
         end
       end
 
