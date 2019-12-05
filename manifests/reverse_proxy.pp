@@ -51,7 +51,7 @@ class foreman_proxy_content::reverse_proxy (
       {
         'path'         => $path,
         'url'          => $url,
-        'reverse_urls' => [$path, $url],
+        'reverse_urls' => [$url],
         'params'       => $proxy_pass_params,
       }
     ],
