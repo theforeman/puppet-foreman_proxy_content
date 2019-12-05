@@ -15,7 +15,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
             .with_proxy_pass([{
               'path' => '/',
               'url' => "https://#{facts[:fqdn]}/",
-              'reverse_urls' => ['/', "https://#{facts[:fqdn]}/"],
+              'reverse_urls' => ["https://#{facts[:fqdn]}/"],
               'params' => {},
             }])
         end
@@ -32,7 +32,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
             .with_proxy_pass([{
               'path' => '/',
               'url' => 'https://foreman.example.com/',
-              'reverse_urls' => ['/', 'https://foreman.example.com/'],
+              'reverse_urls' => ['https://foreman.example.com/'],
               'params' => {},
             }])
           is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
@@ -55,7 +55,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
               .with_proxy_pass([{
                 'path' => '/',
                 'url' => 'https://foreman.example.com/',
-                'reverse_urls' => ['/', 'https://foreman.example.com/'],
+                'reverse_urls' => ['https://foreman.example.com/'],
                 'params' => {'disablereuse' => 'on'},
               }])
             is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
