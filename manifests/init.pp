@@ -236,7 +236,6 @@ class foreman_proxy_content (
       puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
       num_workers            => $pulp_num_workers,
       repo_auth              => true,
-      node_server_ca_cert    => $certs::pulp_server_ca_cert,
       https_cert             => $certs::apache::apache_cert,
       https_key              => $certs::apache::apache_key,
       ssl_protocol           => $ssl_protocol,
