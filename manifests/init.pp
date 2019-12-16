@@ -263,6 +263,9 @@ class foreman_proxy_content (
       servername    => $foreman::servername,
     }
 
+    include pulpcore::plugin::container
+    include pulpcore::plugin::file
+
     foreman::config::apache::fragment { 'pulpcore':
       ssl_content => template('foreman_proxy_content/pulpcore-apache.conf.erb'),
     }
