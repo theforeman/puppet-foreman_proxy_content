@@ -138,8 +138,8 @@ class foreman_proxy_content (
 
   $pulp_master = $foreman_proxy::plugin::pulp::enabled
   $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
-  $pulp3_mirror = $foreman_proxy::plugin::pulp::pulp3_mirror
-  $pulp3 = $foreman_proxy::plugin::pulp::pulp3_enabled
+  $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
+  $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
 
   $foreman_proxy_fqdn = $facts['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
@@ -283,7 +283,7 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulp3 and !$pulp3_mirror {
+  if $pulpcore and !$pulpcore_mirror {
     include foreman
 
     class { 'pulpcore':

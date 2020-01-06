@@ -50,8 +50,8 @@ describe 'foreman_proxy_content' do
           <<-PUPPET
           include foreman_proxy
           class { 'foreman_proxy::plugin::pulp':
-            pulp3_enabled    => true,
-            pulp3_mirror     => false,
+            pulpcore_enabled    => true,
+            pulpcore_mirror     => false,
           }
           PUPPET
         end
