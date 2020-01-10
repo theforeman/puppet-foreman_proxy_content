@@ -40,6 +40,8 @@
 #
 # $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
 #
+# $proxy_pulp_isos_to_pulpcore::        Proxy /pulp/isos to pulpcore at /pulp/content
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -126,6 +128,7 @@ class foreman_proxy_content (
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
+  Boolean $proxy_pulp_isos_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_isos_to_pulpcore,
   Boolean $enable_puppet = $foreman_proxy_content::params::enable_puppet,
   Boolean $enable_docker = $foreman_proxy_content::params::enable_docker,
   Boolean $enable_deb = $foreman_proxy_content::params::enable_deb,
@@ -247,7 +250,7 @@ class foreman_proxy_content (
     ~> class { 'pulp':
       enable_ostree          => $enable_ostree,
       enable_rpm             => $enable_yum,
-      enable_iso             => $enable_file,
+      enable_iso             => $enable_file and !$proxy_pulp_isos_to_pulpcore,
       enable_deb             => $enable_deb,
       enable_puppet          => $enable_puppet,
       enable_docker          => $enable_docker,
@@ -296,6 +299,12 @@ class foreman_proxy_content (
 
     foreman::config::apache::fragment { 'pulpcore':
       ssl_content => template('foreman_proxy_content/pulpcore-apache.conf.erb'),
+    }
+
+    if $proxy_pulp_isos_to_pulpcore {
+      foreman::config::apache::fragment { 'pulpcore-iso':
+        ssl_content => template('foreman_proxy_content/pulpcore-iso.conf.erb'),
+      }
     }
   }
 

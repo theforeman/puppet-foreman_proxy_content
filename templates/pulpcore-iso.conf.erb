@@ -1,0 +1,2 @@
+ProxyPass /pulp/isos <%= scope['pulpcore::apache::content_url'] %>
+ProxyPassReverse /pulp/isos <%= scope['pulpcore::apache::content_url'] %>
