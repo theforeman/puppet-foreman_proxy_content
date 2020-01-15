@@ -4,5 +4,6 @@
   ProxyPassReverse <%= scope['pulpcore::apache::content_path'] %> <%= scope['pulpcore::apache::content_url'] %>
 
   <Location /pulp/api/v3>
+  RequestHeader set REMOTE_USER ""
   RequestHeader set REMOTE_USER "%{SSL_CLIENT_S_DN_CN}s" env=SSL_CLIENT_S_DN
   </Location>
