@@ -60,9 +60,13 @@ describe 'foreman_proxy_content' do
         it { is_expected.to contain_class('pulpcore').with(manage_apache: false) }
 
         it do
-          is_expected.to contain_foreman__config__apache__fragment('pulpcore')
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore-https')
             .with_ssl_content(%r{ProxyPass /pulp/api/v3 http://127\.0\.0\.1:24817/pulp/api/v3})
-          is_expected.to contain_foreman__config__apache__fragment('pulpcore-iso')
+            .with_ssl_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore-http')
+            .with_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore-isos')
+            .with_content(%r{ProxyPass /pulp/isos http://127\.0\.0\.1:24816/pulp/content})
         end
       end
 

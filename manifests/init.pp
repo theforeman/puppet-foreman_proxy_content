@@ -297,13 +297,17 @@ class foreman_proxy_content (
     include pulpcore::plugin::container
     include pulpcore::plugin::file
 
-    foreman::config::apache::fragment { 'pulpcore':
-      ssl_content => template('foreman_proxy_content/pulpcore-apache.conf.erb'),
+    foreman::config::apache::fragment { 'pulpcore-https':
+      ssl_content => template('foreman_proxy_content/pulpcore-api-apache.conf.erb', 'foreman_proxy_content/pulpcore-content-apache.conf.erb'),
+    }
+
+    foreman::config::apache::fragment { 'pulpcore-http':
+      content => template('foreman_proxy_content/pulpcore-content-apache.conf.erb'),
     }
 
     if $proxy_pulp_isos_to_pulpcore {
-      foreman::config::apache::fragment { 'pulpcore-iso':
-        ssl_content => template('foreman_proxy_content/pulpcore-iso.conf.erb'),
+      foreman::config::apache::fragment { 'pulpcore-isos':
+        content => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
       }
     }
   }
