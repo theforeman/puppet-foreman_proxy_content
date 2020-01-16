@@ -1,0 +1,2 @@
+  ProxyPass <%= scope['pulpcore::apache::content_path'] %> <%= scope['pulpcore::apache::content_url'] %>
+  ProxyPassReverse <%= scope['pulpcore::apache::content_path'] %> <%= scope['pulpcore::apache::content_url'] %>
