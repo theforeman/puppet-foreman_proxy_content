@@ -298,7 +298,11 @@ class foreman_proxy_content (
     include pulpcore::plugin::file
 
     foreman::config::apache::fragment { 'pulpcore-https':
-      ssl_content => template('foreman_proxy_content/pulpcore-api-apache.conf.erb', 'foreman_proxy_content/pulpcore-content-apache.conf.erb'),
+      ssl_content => template(
+        'foreman_proxy_content/pulpcore-api-apache.conf.erb',
+        'foreman_proxy_content/pulpcore-content-apache.conf.erb',
+        'foreman_proxy_content/pulpcore-docker-apache.conf.erb'
+      ),
     }
 
     foreman::config::apache::fragment { 'pulpcore-http':
