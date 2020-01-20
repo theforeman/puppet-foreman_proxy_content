@@ -245,9 +245,11 @@ class foreman_proxy_content (
     }
 
     class { 'certs::qpid_client':
-      require => Class['certs'],
+      require => Class['pulp::install'],
+      notify  => Class['pulp::service'],
     }
-    ~> class { 'pulp':
+
+    class { 'pulp':
       enable_ostree          => $enable_ostree,
       enable_rpm             => $enable_yum,
       enable_iso             => $enable_file and !$proxy_pulp_isos_to_pulpcore,
