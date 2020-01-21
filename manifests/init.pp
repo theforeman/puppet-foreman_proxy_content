@@ -274,7 +274,6 @@ class foreman_proxy_content (
       https_cert             => $certs::apache::apache_cert,
       https_key              => $certs::apache::apache_key,
       ssl_protocol           => $ssl_protocol,
-      ca_cert                => $certs::ca_cert,
       yum_max_speed          => $pulp_max_speed,
       proxy_port             => $pulp_proxy_port,
       proxy_url              => $pulp_proxy_url,
