@@ -293,8 +293,9 @@ class foreman_proxy_content (
     include foreman
 
     class { 'pulpcore':
-      manage_apache => false,
-      servername    => $foreman::servername,
+      remote_user_environ_name => 'HTTP_REMOTE_USER',
+      manage_apache            => false,
+      servername               => $foreman::servername,
     }
 
     include pulpcore::plugin::container
