@@ -298,6 +298,22 @@ class foreman_proxy_content (
       servername               => $foreman::servername,
     }
 
+    if $pulp_master {
+      include pulp
+      class { 'pulpcore::plugin::migration':
+        mongo_db_name         => $pulp::db_name,
+        mongo_db_seeds        => $pulp::db_seeds,
+        mongo_db_username     => $pulp::db_username,
+        mongo_db_password     => $pulp::db_password,
+        mongo_db_replica_set  => $pulp::db_replica_set,
+        mongo_db_ssl          => $pulp::db_ssl,
+        mongo_db_ssl_keyfile  => $pulp::db_ssl_keyfile,
+        mongo_db_ssl_certfile => $pulp::db_ssl_certfile,
+        mongo_db_verify_ssl   => $pulp::db_verify_ssl,
+        mongo_db_ca_path      => $pulp::db_ca_path,
+      }
+    }
+
     include pulpcore::plugin::container
     include pulpcore::plugin::file
 
