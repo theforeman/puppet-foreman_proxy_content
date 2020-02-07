@@ -42,6 +42,8 @@
 #
 # $proxy_pulp_isos_to_pulpcore::        Proxy /pulp/isos to pulpcore at /pulp/content
 #
+# $proxy_pulp_container_to_pulpcore::   Disable Crane so that Pulp 3 serves container content
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -216,14 +218,16 @@ class foreman_proxy_content (
       }
     }
 
-    include certs::apache
-    class { 'pulp::crane':
-      cert         => $certs::apache::apache_cert,
-      key          => $certs::apache::apache_key,
-      ca_cert      => $certs::katello_server_ca_cert,
-      data_dir     => '/var/lib/pulp/published/docker/v2/app',
-      ssl_protocol => $ssl_protocol,
-      require      => Class['certs::apache'],
+    if !$proxy_pulp_container_to_pulpcore {
+      include certs::apache
+      class { 'pulp::crane':
+        cert         => $certs::apache::apache_cert,
+        key          => $certs::apache::apache_key,
+        ca_cert      => $certs::katello_server_ca_cert,
+        data_dir     => '/var/lib/pulp/published/docker/v2/app',
+        ssl_protocol => $ssl_protocol,
+        require      => Class['certs::apache'],
+      }
     }
 
     include foreman_proxy_content::pub_dir
