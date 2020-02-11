@@ -88,6 +88,16 @@
 #                                       mongo database has slow I/O, then setting a higher number may resolve issues where workers are
 #                                       going missing incorrectly.
 #
+# $pulpcore_manage_postgresql::           Manage the pulpcore postgresql database
+#
+# $pulpcore_postgresql_host::             Host of the pulpcore postgresql database. Must be specified if external/unmanaged.
+#
+# $pulpcore_postgresql_port::             Port of the pulpcore postgresql database.
+#
+# $pulpcore_postgresql_user::             User of the pulpcore postgresql database.
+#
+# $pulpcore_postgresql_password::         Password of the pulpcore postgresql database.
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
@@ -134,6 +144,12 @@ class foreman_proxy_content (
   Boolean $enable_deb = $foreman_proxy_content::params::enable_deb,
 
   Boolean $manage_broker = $foreman_proxy_content::params::manage_broker,
+
+  Boolean $pulpcore_manage_postgresql = $foreman_proxy_content::params::pulpcore_manage_postgresql,
+  Stdlib::Host $pulpcore_postgresql_host = $foreman_proxy_content::params::pulpcore_postgresql_host,
+  Stdlib::Port $pulpcore_postgresql_port = $foreman_proxy_content::params::pulpcore_postgresql_port,
+  String $pulpcore_postgresql_user = $foreman_proxy_content::params::pulpcore_postgresql_user,
+  String $pulpcore_postgresql_password = $foreman_proxy_content::params::pulpcore_postgresql_password,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -296,6 +312,11 @@ class foreman_proxy_content (
       remote_user_environ_name => 'HTTP_REMOTE_USER',
       manage_apache            => false,
       servername               => $foreman::servername,
+      postgresql_manage_db     => $pulpcore_manage_postgresql,
+      postgresql_db_host       => $pulpcore_postgresql_host,
+      postgresql_db_port       => $pulpcore_postgresql_port,
+      postgresql_db_user       => $pulpcore_postgresql_user,
+      postgresql_db_password   => $pulpcore_postgresql_password,
     }
 
     if $pulp_master {
