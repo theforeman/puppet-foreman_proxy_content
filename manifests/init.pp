@@ -306,12 +306,12 @@ class foreman_proxy_content (
   }
 
   if $pulpcore and !$pulpcore_mirror {
-    include foreman
+    include foreman::config::apache
 
     class { 'pulpcore':
       remote_user_environ_name => 'HTTP_REMOTE_USER',
       manage_apache            => false,
-      servername               => $foreman::servername,
+      servername               => $foreman::config::apache::servername,
       postgresql_manage_db     => $pulpcore_manage_postgresql,
       postgresql_db_host       => $pulpcore_postgresql_host,
       postgresql_db_port       => $pulpcore_postgresql_port,
