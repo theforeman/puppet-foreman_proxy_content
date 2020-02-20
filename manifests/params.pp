@@ -52,9 +52,14 @@ class foreman_proxy_content::params {
 
   $manage_broker                = true
 
-  $pulpcore_manage_postgresql   = true
-  $pulpcore_postgresql_host     = 'localhost'
-  $pulpcore_postgresql_port     = 5432
-  $pulpcore_postgresql_user     = 'pulp'
-  $pulpcore_postgresql_password = extlib::cache_data('pulpcore_cache_data', 'db_password', extlib::random_password(32))
+  $pulpcore_manage_postgresql      = true
+  $pulpcore_postgresql_host        = 'localhost'
+  $pulpcore_postgresql_port        = 5432
+  $pulpcore_postgresql_user        = 'pulp'
+  $pulpcore_postgresql_password    = extlib::cache_data('pulpcore_cache_data', 'db_password', extlib::random_password(32))
+  $pulpcore_postgresql_ssl         = false
+  $pulpcore_postgresql_ssl_require = true
+  $pulpcore_postgresql_ssl_cert    = '/etc/pki/katello/certs/pulpcore-database.crt'
+  $pulpcore_postgresql_ssl_key     = '/etc/pki/katello/private/pulpcore-database.key'
+  $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt'
 }

@@ -101,8 +101,46 @@ describe 'foreman_proxy_content' do
             .with_postgresql_db_port(2345)
             .with_postgresql_db_user('pulpuser')
             .with_postgresql_db_password('sUpersEkret')
+            .with_postgresql_db_ssl(false)
         end
       end
+
+      context 'pulpcore with external postgres and SSL' do
+        let(:params) do
+          {
+            qpid_router: false,
+            pulpcore_manage_postgresql: false,
+            pulpcore_postgresql_ssl: true,
+            pulpcore_postgresql_ssl_require: true,
+            pulpcore_postgresql_ssl_cert: '/my/pulpcore-postgres.crt',
+            pulpcore_postgresql_ssl_key: '/my/pulpcore-postgres.key',
+            pulpcore_postgresql_ssl_root_ca: '/my/root/ca.crt',
+          }
+        end
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            pulpcore_enabled => true,
+            pulpcore_mirror  => false,
+          }
+          PUPPET
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it do
+          is_expected.to contain_class('pulpcore')
+            .with_postgresql_manage_db(false)
+            .with_postgresql_db_ssl(true)
+            .with_postgresql_db_ssl_require(true)
+            .with_postgresql_db_ssl_cert('/my/pulpcore-postgres.crt')
+            .with_postgresql_db_ssl_key('/my/pulpcore-postgres.key')
+            .with_postgresql_db_ssl_root_ca('/my/root/ca.crt')
+        end
+      end
+
 
       context 'pulp-2to3-migration' do
         let(:params) do
