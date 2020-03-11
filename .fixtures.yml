@@ -11,14 +11,20 @@ fixtures:
       repo: "https://github.com/puppetlabs/puppetlabs-cron_core"
       puppet_version: ">= 6.0.0"
     datacat:       "https://github.com/richardc/puppet-datacat"
-    foreman_proxy: "https://github.com/theforeman/puppet-foreman_proxy.git"
-    foreman:       "https://github.com/theforeman/puppet-foreman"
+    foreman_proxy:
+      repo:        "https://github.com/theforeman/puppet-foreman_proxy.git"
+      ref:         "12.1.0"
+    foreman:
+      repo:        "https://github.com/theforeman/puppet-foreman"
+      ref:         "13.1.0"
     puppet:        "https://github.com/theforeman/puppet-puppet"
     tftp:          "https://github.com/theforeman/puppet-tftp"
     xinetd:        "https://github.com/puppetlabs/puppetlabs-xinetd"
     certs:         "https://github.com/theforeman/puppet-certs.git"
     qpid:          "https://github.com/theforeman/puppet-qpid.git"
-    pulp:          "https://github.com/theforeman/puppet-pulp.git"
+    pulp:
+      repo:        "https://github.com/theforeman/puppet-pulp.git"
+      ref:         "6.2.0"
     mongodb:       "https://github.com/voxpupuli/puppet-mongodb.git"
     trusted_ca:    "https://github.com/voxpupuli/puppet-trusted_ca.git"
     squid:         "https://github.com/voxpupuli/puppet-squid.git"
