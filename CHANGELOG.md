@@ -1,5 +1,13 @@
 # Changelog
 
+## [9.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.1.1) (2020-03-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.1.0...9.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#29278](https://projects.theforeman.org/issues/29278): Use default CA for crane SSL chain [\#245](https://github.com/theforeman/puppet-foreman_proxy_content/pull/245) ([ehelms](https://github.com/ehelms))
+
 ## [9.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.1.0) (2019-10-25)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.2...9.1.0)
