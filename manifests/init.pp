@@ -186,6 +186,10 @@ class foreman_proxy_content (
 
   ensure_packages('katello-debug')
 
+  if ($pulp_master or $pulp) and $facts['os']['release']['major'] != '7' {
+    fail('Pulp 2 is only supported on CentOS 7')
+  }
+
   class { 'certs::foreman_proxy':
     hostname => $foreman_proxy_fqdn,
     require  => Class['certs'],
