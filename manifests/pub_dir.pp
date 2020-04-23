@@ -8,7 +8,7 @@
 # @param pub_dir_options
 #   The Directory options as Apache applies them
 class foreman_proxy_content::pub_dir (
-  String $servername = $facts['fqdn'],
+  String $servername = $facts['networking']['fqdn'],
   String $pub_dir_options = '+FollowSymLinks +Indexes',
 ) {
   include foreman_proxy_content

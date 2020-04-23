@@ -175,7 +175,7 @@ class foreman_proxy_content (
   $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
   $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
 
-  $foreman_proxy_fqdn = $facts['fqdn']
+  $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
   $reverse_proxy_real = $pulp or $reverse_proxy
 
