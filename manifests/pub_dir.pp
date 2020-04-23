@@ -1,6 +1,12 @@
-# Manages the pub httpd directory where
-# e.g. the katello ca certificate is available
-# for download
+# @summary Manages the pub httpd directory
+#
+# The HTTP public direction contains files like the katello ca certificate
+# for download by clients
+#
+# @param servername
+#   The servername to be used in the Apache vhost
+# @param pub_dir_options
+#   The Directory options as Apache applies them
 class foreman_proxy_content::pub_dir (
   String $servername = $facts['fqdn'],
   String $pub_dir_options = '+FollowSymLinks +Indexes',

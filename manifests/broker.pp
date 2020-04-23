@@ -1,8 +1,11 @@
-# Manages a standalone qpid broker for pulp
-# E.g. in Katello, the master pulp instance uses
-# Katello's main qpid message broker.
-# This can be used for a separate pulp instance
-# that also needs a broker of its own.
+# @summary Manages a standalone qpid broker for pulp
+#
+# In Katello, the master pulp instance uses Katello's main qpid message broker.
+# This can be used for a separate pulp instance that also needs a broker of its
+# own.
+#
+# @param interface
+#   The interface the broker listens on
 class foreman_proxy_content::broker (
   String $interface = 'lo',
 ) {
