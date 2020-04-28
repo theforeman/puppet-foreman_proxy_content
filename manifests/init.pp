@@ -296,6 +296,7 @@ class foreman_proxy_content (
       remote_user_environ_name => 'HTTP_REMOTE_USER',
       manage_apache            => false,
       servername               => $foreman::servername,
+      before                   => Class['foreman_proxy::plugin::pulp'],
     }
 
     if $pulp_master {

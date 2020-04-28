@@ -57,7 +57,7 @@ describe 'foreman_proxy_content' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('pulpcore').with(manage_apache: false) }
+        it { is_expected.to contain_class('pulpcore').with(manage_apache: false).that_comes_before('Class[foreman_proxy::plugin::pulp]') }
 
         it do
           is_expected.to contain_foreman__config__apache__fragment('pulpcore-https')
