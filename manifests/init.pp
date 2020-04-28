@@ -338,6 +338,7 @@ class foreman_proxy_content (
       postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
       postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
       postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
+      before                    => Class['foreman_proxy::plugin::pulp'],
     }
 
     if $pulp_master {
