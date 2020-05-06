@@ -6,11 +6,21 @@ describe 'foreman_proxy_content' do
       let(:facts) { facts }
 
       context 'without parameters' do
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+          }
+          PUPPET
+        end
+
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('katello-debug') }
       end
 
-      context 'with pulp' do
+      context 'with pulp', if: facts[:operatingsystemmajrelease] == '7' do
         let(:params) do
           {
             qpid_router: false
@@ -50,6 +60,8 @@ describe 'foreman_proxy_content' do
           <<-PUPPET
           include foreman_proxy
           class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
             pulpcore_enabled => true,
             pulpcore_mirror  => false,
           }
@@ -86,6 +98,8 @@ describe 'foreman_proxy_content' do
           <<-PUPPET
           include foreman_proxy
           class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
             pulpcore_enabled => true,
             pulpcore_mirror  => false,
           }
@@ -122,6 +136,8 @@ describe 'foreman_proxy_content' do
           <<-PUPPET
           include foreman_proxy
           class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
             pulpcore_enabled => true,
             pulpcore_mirror  => false,
           }
@@ -141,8 +157,7 @@ describe 'foreman_proxy_content' do
         end
       end
 
-
-      context 'pulp-2to3-migration' do
+      context 'pulp-2to3-migration', if: facts[:operatingsystemmajrelease] == '7' do
         let(:params) do
           {
             qpid_router: false
@@ -182,6 +197,18 @@ describe 'foreman_proxy_content' do
           }
         end
 
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+            pulpcore_enabled => true,
+            pulpcore_mirror  => false,
+          }
+          PUPPET
+        end
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_class('certs::katello')
@@ -204,6 +231,13 @@ describe 'foreman_proxy_content' do
               server         => true,
               server_foreman => true,
             }
+            include foreman_proxy
+            class { 'foreman_proxy::plugin::pulp':
+              enabled          => false,
+              pulpnode_enabled => false,
+              pulpcore_enabled => true,
+              pulpcore_mirror  => false,
+            }
             PUPPET
           end
 
@@ -215,6 +249,18 @@ describe 'foreman_proxy_content' do
         end
 
         describe 'with puppet server disabled' do
+          let(:pre_condition) do
+            <<-PUPPET
+            include foreman_proxy
+            class { 'foreman_proxy::plugin::pulp':
+              enabled          => false,
+              pulpnode_enabled => false,
+              pulpcore_enabled => true,
+              pulpcore_mirror  => false,
+            }
+            PUPPET
+          end
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_class('certs::puppet') }
         end
