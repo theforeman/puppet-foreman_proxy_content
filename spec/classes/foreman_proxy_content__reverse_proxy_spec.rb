@@ -6,7 +6,18 @@ describe 'foreman_proxy_content::reverse_proxy' do
       let(:facts) { facts }
 
       describe 'with inherited parameters' do
-        let(:pre_condition) { 'include foreman_proxy_content' }
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+          }
+          include foreman_proxy_content
+          PUPPET
+        end
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_apache__vhost('katello-reverse-proxy')
@@ -23,6 +34,17 @@ describe 'foreman_proxy_content::reverse_proxy' do
 
       describe 'with explicit parameters' do
         let(:params) { { url: 'https://foreman.example.com/', servername: 'proxy.example.com', port: 443 } }
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+          }
+          PUPPET
+        end
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_apache__vhost('katello-reverse-proxy')
