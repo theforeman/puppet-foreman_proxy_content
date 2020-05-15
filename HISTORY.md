@@ -1,3 +1,62 @@
+## [10.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/10.0.0) (2020-02-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.1.0...10.0.0)
+
+**Breaking changes:**
+
+- Do not configure Pulp CA certificate [\#235](https://github.com/theforeman/puppet-foreman_proxy_content/pull/235) ([ehelms](https://github.com/ehelms))
+- use pulpcore naming convention [\#226](https://github.com/theforeman/puppet-foreman_proxy_content/pull/226) ([wbclark](https://github.com/wbclark))
+- Drop node\_server\_ca\_cert parameter [\#224](https://github.com/theforeman/puppet-foreman_proxy_content/pull/224) ([ekohl](https://github.com/ekohl))
+- Derive $pulp\_master variable [\#217](https://github.com/theforeman/puppet-foreman_proxy_content/pull/217) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Refs [\#28904](https://projects.theforeman.org/issues/28904) - configure pulpcore django\_remote\_user [\#237](https://github.com/theforeman/puppet-foreman_proxy_content/pull/237) ([synkd](https://github.com/synkd))
+- Allow katello/certs 7.x [\#234](https://github.com/theforeman/puppet-foreman_proxy_content/pull/234) ([ekohl](https://github.com/ekohl))
+- Fixes [\#28696](https://projects.theforeman.org/issues/28696) - configures apache to serve docker content with pulp3 [\#233](https://github.com/theforeman/puppet-foreman_proxy_content/pull/233) ([wbclark](https://github.com/wbclark))
+- katello/certs 7.x compatibility & use certs::qpid\_client variables [\#232](https://github.com/theforeman/puppet-foreman_proxy_content/pull/232) ([ekohl](https://github.com/ekohl))
+- Fixes [\#28711](https://projects.theforeman.org/issues/28711) - Serve /pulp/content over http with pulp3 [\#231](https://github.com/theforeman/puppet-foreman_proxy_content/pull/231) ([wbclark](https://github.com/wbclark))
+- Fixes [\#28654](https://projects.theforeman.org/issues/28654) - support client cert auth with pulp3 [\#229](https://github.com/theforeman/puppet-foreman_proxy_content/pull/229) ([wbclark](https://github.com/wbclark))
+- fixes [\#28655](https://projects.theforeman.org/issues/28655) - support fetching files via /pulp/isos with pulp3 [\#228](https://github.com/theforeman/puppet-foreman_proxy_content/pull/228) ([wbclark](https://github.com/wbclark))
+- Install file and container plugins for Pulp 3 [\#225](https://github.com/theforeman/puppet-foreman_proxy_content/pull/225) ([ehelms](https://github.com/ehelms))
+- Add initial pulp3 support [\#222](https://github.com/theforeman/puppet-foreman_proxy_content/pull/222) ([wbclark](https://github.com/wbclark))
+- Make dispatch router standalone classes [\#221](https://github.com/theforeman/puppet-foreman_proxy_content/pull/221) ([ekohl](https://github.com/ekohl))
+- Use Stdlib::Port where appropriate [\#220](https://github.com/theforeman/puppet-foreman_proxy_content/pull/220) ([ekohl](https://github.com/ekohl))
+- Drop unused templates [\#216](https://github.com/theforeman/puppet-foreman_proxy_content/pull/216) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#28983](https://projects.theforeman.org/issues/28983) - Allow integers for $proxy\_pass\_params [\#240](https://github.com/theforeman/puppet-foreman_proxy_content/pull/240) ([ekohl](https://github.com/ekohl))
+- Pass https\_ca\_cert to pulp [\#236](https://github.com/theforeman/puppet-foreman_proxy_content/pull/236) ([ekohl](https://github.com/ekohl))
+- Refs [\#28761](https://projects.theforeman.org/issues/28761) - Always set an empty REMOTE\_USER for pulpcore API [\#230](https://github.com/theforeman/puppet-foreman_proxy_content/pull/230) ([pdudley](https://github.com/pdudley))
+
+**Merged pull requests:**
+
+- Refs [\#28720](https://projects.theforeman.org/issues/28720) - connect to mongo for content migrations [\#238](https://github.com/theforeman/puppet-foreman_proxy_content/pull/238) ([wbclark](https://github.com/wbclark))
+- remove redundant ProxyPassReverse url [\#223](https://github.com/theforeman/puppet-foreman_proxy_content/pull/223) ([wbclark](https://github.com/wbclark))
+- Match author casing to name in metadata [\#213](https://github.com/theforeman/puppet-foreman_proxy_content/pull/213) ([ekohl](https://github.com/ekohl))
+
+## [9.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.1.0) (2019-10-25)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.2...9.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#27687](https://projects.theforeman.org/issues/27687) - Add vhost\_params and proxy\_pass\_params [\#210](https://github.com/theforeman/puppet-foreman_proxy_content/pull/210) ([ekohl](https://github.com/ekohl))
+- Fixes [\#27689](https://projects.theforeman.org/issues/27689) - Allow customization of pub dir on foreman proxy server [\#207](https://github.com/theforeman/puppet-foreman_proxy_content/pull/207) ([snagoor](https://github.com/snagoor))
+
+**Fixed bugs:**
+
+- Fixes [\#28043](https://projects.theforeman.org/issues/28043) - Crane uses the Katello server CA [\#211](https://github.com/theforeman/puppet-foreman_proxy_content/pull/211) ([ekohl](https://github.com/ekohl))
+
+## [9.0.2](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.2) (2019-07-31)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.1...9.0.2)
+
+**Merged pull requests:**
+
+- Allow theforeman/foreman\_proxy 12.x [\#208](https://github.com/theforeman/puppet-foreman_proxy_content/pull/208) ([ekohl](https://github.com/ekohl))
+
 ## [9.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.1) (2019-06-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.0.0...9.0.1)
@@ -8,6 +67,7 @@
 
 **Merged pull requests:**
 
+- Allow katello/qpid 6.x [\#206](https://github.com/theforeman/puppet-foreman_proxy_content/pull/206) ([ekohl](https://github.com/ekohl))
 - allow newer versions of dependencies [\#203](https://github.com/theforeman/puppet-foreman_proxy_content/pull/203) ([mmoll](https://github.com/mmoll))
 
 ## [9.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/9.0.0) (2019-04-18)
