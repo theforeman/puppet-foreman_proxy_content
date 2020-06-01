@@ -332,7 +332,8 @@ class foreman_proxy_content (
 
     if $proxy_pulp_isos_to_pulpcore {
       foreman::config::apache::fragment { 'pulpcore-isos':
-        content => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
+        content     => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
+        ssl_content => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
       }
     }
   }
