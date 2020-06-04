@@ -42,6 +42,8 @@
 #
 # $proxy_pulp_isos_to_pulpcore::        Proxy /pulp/isos to Pulpcore at /pulp/content
 #
+# $proxy_pulp_yum_to_pulpcore::         Proxy /pulp/yum to Pulpcore at /pulp/content
+#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -149,6 +151,7 @@ class foreman_proxy_content (
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
   Boolean $proxy_pulp_isos_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_isos_to_pulpcore,
+  Boolean $proxy_pulp_yum_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_yum_to_pulpcore,
   Boolean $enable_puppet = $foreman_proxy_content::params::enable_puppet,
   Boolean $enable_docker = $foreman_proxy_content::params::enable_docker,
   Boolean $enable_deb = $foreman_proxy_content::params::enable_deb,
@@ -287,7 +290,7 @@ class foreman_proxy_content (
 
     class { 'pulp':
       enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_yum,
+      enable_rpm             => $enable_yum and !$proxy_pulp_yum_to_pulpcore,
       enable_iso             => $enable_file and !$proxy_pulp_isos_to_pulpcore,
       enable_deb             => $enable_deb,
       enable_puppet          => $enable_puppet,
@@ -363,6 +366,7 @@ class foreman_proxy_content (
 
     include pulpcore::plugin::container
     include pulpcore::plugin::file
+    include pulpcore::plugin::rpm
 
     foreman::config::apache::fragment { 'pulpcore':
       content     => template('foreman_proxy_content/pulpcore-content-apache.conf.erb'),
@@ -377,6 +381,13 @@ class foreman_proxy_content (
       foreman::config::apache::fragment { 'pulpcore-isos':
         content     => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
         ssl_content => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
+      }
+    }
+
+    if $proxy_pulp_yum_to_pulpcore {
+      foreman::config::apache::fragment { 'pulpcore-yum':
+        content     => template('foreman_proxy_content/pulpcore-yum-apache.conf.erb'),
+        ssl_content => template('foreman_proxy_content/pulpcore-yum-apache.conf.erb'),
       }
     }
   }

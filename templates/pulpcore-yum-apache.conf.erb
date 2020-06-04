@@ -1,0 +1,2 @@
+ProxyPass /pulp/repos <%= scope['pulpcore::apache::content_url'] %>
+ProxyPassReverse /pulp/repos <%= scope['pulpcore::apache::content_url'] %>
