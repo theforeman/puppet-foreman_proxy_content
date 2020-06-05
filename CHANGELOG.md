@@ -1,5 +1,14 @@
 # Changelog
 
+## [10.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/10.0.1) (2020-06-05)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...10.0.1)
+
+**Fixed bugs:**
+
+- Fixes [\#29660](https://projects.theforeman.org/issues/29660) - Serve Pulpcore ISO via HTTPS [\#260](https://github.com/theforeman/puppet-foreman_proxy_content/pull/260) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29589](https://projects.theforeman.org/issues/29589) - Ensure pulpcore before proxy [\#252](https://github.com/theforeman/puppet-foreman_proxy_content/pull/252) ([ekohl](https://github.com/ekohl))
+
 ## [10.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/10.0.0) (2020-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.1.0...10.0.0)
