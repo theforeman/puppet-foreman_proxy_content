@@ -18,6 +18,26 @@
 #
 # $enable_deb::                         Enable debian content plugin
 #
+# $pulpcore_manage_postgresql::         Manage the Pulpcore PostgreSQL database.
+#
+# $pulpcore_postgresql_host::           Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
+#
+# $pulpcore_postgresql_port::           Port of the Pulpcore PostgreSQL database.
+#
+# $pulpcore_postgresql_user::           User of the Pulpcore PostgreSQL database.
+#
+# $pulpcore_postgresql_password::       Password of the Pulpcore PostgreSQL database.
+#
+# $pulpcore_postgresql_ssl::            Enable SSL connection to the Pulpcore PostgreSQL database. Only meaningful for external/unmanaged DB.
+#
+# $pulpcore_postgresql_ssl_require::    Configure Pulpcore to require an encrypted connection to the PostgreSQL database.
+#
+# $pulpcore_postgresql_ssl_cert::       Path to SSL certificate to use for Pulpcore connection to PostgreSQL database.
+#
+# $pulpcore_postgresql_ssl_key::        Path to key file to use for Pulpcore connection to PostgreSQL database.
+#
+# $pulpcore_postgresql_ssl_root_ca::    Path to the root certificate authority to validate the certificate supplied by the PostgreSQL database server.
+#
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
@@ -89,26 +109,6 @@
 # $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
 #                                       mongo database has slow I/O, then setting a higher number may resolve issues where workers are
 #                                       going missing incorrectly.
-#
-# $pulpcore_manage_postgresql::         Manage the Pulpcore PostgreSQL database.
-#
-# $pulpcore_postgresql_host::           Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
-#
-# $pulpcore_postgresql_port::           Port of the Pulpcore PostgreSQL database.
-#
-# $pulpcore_postgresql_user::           User of the Pulpcore PostgreSQL database.
-#
-# $pulpcore_postgresql_password::       Password of the Pulpcore PostgreSQL database.
-#
-# $pulpcore_postgresql_ssl::            Enable SSL connection to the Pulpcore PostgreSQL database. Only meaningful for external/unmanaged DB.
-#
-# $pulpcore_postgresql_ssl_require::    Configure Pulpcore to require an encrypted connection to the PostgreSQL database.
-#
-# $pulpcore_postgresql_ssl_cert::       Path to SSL certificate to use for Pulpcore connection to PostgreSQL database.
-#
-# $pulpcore_postgresql_ssl_key::        Path to key file to use for Pulpcore connection to PostgreSQL database.
-#
-# $pulpcore_postgresql_ssl_root_ca::    Path to the root certificate authority to validate the certificate supplied by the PostgreSQL database server.
 #
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
