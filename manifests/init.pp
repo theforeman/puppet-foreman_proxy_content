@@ -367,6 +367,7 @@ class foreman_proxy_content (
     include pulpcore::plugin::container
     include pulpcore::plugin::file
     include pulpcore::plugin::rpm
+    include pulpcore::plugin::certguard
 
     foreman::config::apache::fragment { 'pulpcore':
       content     => template('foreman_proxy_content/pulpcore-content-apache.conf.erb'),
