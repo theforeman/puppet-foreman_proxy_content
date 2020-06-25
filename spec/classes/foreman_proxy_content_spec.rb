@@ -90,7 +90,8 @@ describe 'foreman_proxy_content' do
             pulpcore_postgresql_host: 'postgres-pulpcore.example.com',
             pulpcore_postgresql_port: 2345,
             pulpcore_postgresql_user: 'pulpuser',
-            pulpcore_postgresql_password: 'sUpersEkret'
+            pulpcore_postgresql_password: 'sUpersEkret',
+            pulpcore_postgresql_db_name: 'pulpcore1'
           }
         end
 
@@ -115,6 +116,7 @@ describe 'foreman_proxy_content' do
             .with_postgresql_db_port(2345)
             .with_postgresql_db_user('pulpuser')
             .with_postgresql_db_password('sUpersEkret')
+            .with_postgresql_db_name('pulpcore1')
             .with_postgresql_db_ssl(false)
         end
       end
