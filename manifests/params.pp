@@ -58,6 +58,7 @@ class foreman_proxy_content::params {
   $pulpcore_postgresql_port        = 5432
   $pulpcore_postgresql_user        = 'pulp'
   $pulpcore_postgresql_password    = extlib::cache_data('pulpcore_cache_data', 'db_password', extlib::random_password(32))
+  $pulpcore_postgresql_db_name     = 'pulpcore'
   $pulpcore_postgresql_ssl         = false
   $pulpcore_postgresql_ssl_require = true
   $pulpcore_postgresql_ssl_cert    = '/etc/pki/katello/certs/pulpcore-database.crt'

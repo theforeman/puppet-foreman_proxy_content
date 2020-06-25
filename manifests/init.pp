@@ -100,6 +100,8 @@
 #
 # $pulpcore_postgresql_password::       Password of the Pulpcore PostgreSQL database.
 #
+# $pulpcore_postgresql_db_name::        Name of the Pulpcore database in PostgreSQL.
+#
 # $pulpcore_postgresql_ssl::            Enable SSL connection to the Pulpcore PostgreSQL database. Only meaningful for external/unmanaged DB.
 #
 # $pulpcore_postgresql_ssl_require::    Configure Pulpcore to require an encrypted connection to the PostgreSQL database.
@@ -163,6 +165,7 @@ class foreman_proxy_content (
   Stdlib::Port $pulpcore_postgresql_port = $foreman_proxy_content::params::pulpcore_postgresql_port,
   String $pulpcore_postgresql_user = $foreman_proxy_content::params::pulpcore_postgresql_user,
   String $pulpcore_postgresql_password = $foreman_proxy_content::params::pulpcore_postgresql_password,
+  String $pulpcore_postgresql_db_name = $foreman_proxy_content::params::pulpcore_postgresql_db_name,
   Boolean $pulpcore_postgresql_ssl = $foreman_proxy_content::params::pulpcore_postgresql_ssl,
   Boolean $pulpcore_postgresql_ssl_require = $foreman_proxy_content::params::pulpcore_postgresql_ssl_require,
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_cert = $foreman_proxy_content::params::pulpcore_postgresql_ssl_cert,
@@ -340,6 +343,7 @@ class foreman_proxy_content (
       postgresql_db_port        => $pulpcore_postgresql_port,
       postgresql_db_user        => $pulpcore_postgresql_user,
       postgresql_db_password    => $pulpcore_postgresql_password,
+      postgresql_db_name        => $pulpcore_postgresql_db_name,
       postgresql_db_ssl         => $pulpcore_postgresql_ssl,
       postgresql_db_ssl_require => $pulpcore_postgresql_ssl_require,
       postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
