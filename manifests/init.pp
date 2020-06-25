@@ -181,6 +181,9 @@ class foreman_proxy_content (
   $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
   $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
 
+  $enable_pulp2_rpm = $enable_yum and !($pulpcore and $proxy_pulp_yum_to_pulpcore)
+  $enable_pulp2_iso = $enable_file and !($pulpcore and $proxy_pulp_isos_to_pulpcore)
+
   $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
   $reverse_proxy_real = $pulp or $reverse_proxy
@@ -293,8 +296,8 @@ class foreman_proxy_content (
 
     class { 'pulp':
       enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_yum and !$proxy_pulp_yum_to_pulpcore,
-      enable_iso             => $enable_file and !$proxy_pulp_isos_to_pulpcore,
+      enable_rpm             => $enable_pulp2_rpm,
+      enable_iso             => $enable_pulp2_iso,
       enable_deb             => $enable_deb,
       enable_puppet          => $enable_puppet,
       enable_docker          => $enable_docker,
