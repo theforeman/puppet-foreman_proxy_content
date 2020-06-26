@@ -1,7 +1,0 @@
-ProxyPass /pulp/isos <%= scope['pulpcore::apache::content_url'] %>
-ProxyPassReverse /pulp/isos <%= scope['pulpcore::apache::content_url'] %>
-
-<Location /pulp/isos>
-RequestHeader unset X-CLIENT-CERT
-RequestHeader set X-CLIENT-CERT "%{SSL_CLIENT_CERT}s"
-</Location>

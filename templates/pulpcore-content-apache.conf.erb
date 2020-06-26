@@ -1,7 +1,0 @@
-ProxyPass <%= scope['pulpcore::apache::content_path'] %> <%= scope['pulpcore::apache::content_url'] %>
-ProxyPassReverse <%= scope['pulpcore::apache::content_path'] %> <%= scope['pulpcore::apache::content_url'] %>
-
-<Location <%= scope['pulpcore::apache::content_path'] %>>
-RequestHeader unset X-CLIENT-CERT
-RequestHeader set X-CLIENT-CERT "%{SSL_CLIENT_CERT}s"
-</Location>
