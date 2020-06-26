@@ -333,11 +333,18 @@ class foreman_proxy_content (
 
   if $pulpcore and !$pulpcore_mirror {
     include foreman::config::apache
+    $servername = $foreman::config::apache::servername
+    $priority = $foreman::config::apache::priority
+    $apache_http_vhost = 'foreman'
+    $apache_https_vhost = 'foreman-ssl'
+    Class['foreman::config::apache'] -> Class['pulpcore::apache']
 
     class { 'pulpcore':
-      remote_user_environ_name  => 'HTTP_REMOTE_USER',
-      manage_apache             => false,
-      servername                => $foreman::config::apache::servername,
+      apache_http_vhost         => $apache_http_vhost,
+      apache_https_vhost        => $apache_https_vhost,
+      apache_vhost_priority     => $priority,
+      servername                => $servername,
+      static_url                => '/pulp/assets/',
       postgresql_manage_db      => $pulpcore_manage_postgresql,
       postgresql_db_host        => $pulpcore_postgresql_host,
       postgresql_db_port        => $pulpcore_postgresql_port,
@@ -370,32 +377,13 @@ class foreman_proxy_content (
     }
 
     include pulpcore::plugin::container
-    include pulpcore::plugin::file
-    include pulpcore::plugin::rpm
+    class { 'pulpcore::plugin::file':
+      use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
+    }
+    class { 'pulpcore::plugin::rpm':
+      use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+    }
     include pulpcore::plugin::certguard
-
-    foreman::config::apache::fragment { 'pulpcore':
-      content     => template('foreman_proxy_content/pulpcore-content-apache.conf.erb'),
-      ssl_content => template(
-        'foreman_proxy_content/pulpcore-api-apache.conf.erb',
-        'foreman_proxy_content/pulpcore-content-apache.conf.erb',
-        'foreman_proxy_content/pulpcore-docker-apache.conf.erb'
-      ),
-    }
-
-    if $proxy_pulp_isos_to_pulpcore {
-      foreman::config::apache::fragment { 'pulpcore-isos':
-        content     => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
-        ssl_content => template('foreman_proxy_content/pulpcore-isos-apache.conf.erb'),
-      }
-    }
-
-    if $proxy_pulp_yum_to_pulpcore {
-      foreman::config::apache::fragment { 'pulpcore-yum':
-        content     => template('foreman_proxy_content/pulpcore-yum-apache.conf.erb'),
-        ssl_content => template('foreman_proxy_content/pulpcore-yum-apache.conf.erb'),
-      }
-    }
   }
 
   if $puppet {

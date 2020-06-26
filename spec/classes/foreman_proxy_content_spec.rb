@@ -71,17 +71,11 @@ describe 'foreman_proxy_content' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
-        it { is_expected.to contain_class('pulpcore').with(manage_apache: false).that_comes_before('Class[foreman_proxy::plugin::pulp]') }
-
         it do
-          is_expected.to contain_foreman__config__apache__fragment('pulpcore')
-            .with_ssl_content(%r{ProxyPass /pulp/api/v3 http://127\.0\.0\.1:24817/pulp/api/v3})
-            .with_ssl_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
-            .with_ssl_content(%r{ProxyPass /pulpcore_registry/v2/ http://127\.0\.0\.1:24817/v2/})
-            .with_ssl_content(%r{ProxyPass /pulp/container/ http://127\.0\.0\.1:24816/pulp/container/})
-            .with_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
-          is_expected.to contain_foreman__config__apache__fragment('pulpcore-isos')
-            .with_content(%r{ProxyPass /pulp/isos http://127\.0\.0\.1:24816/pulp/content})
+          is_expected.to contain_class('pulpcore')
+            .with(apache_http_vhost: 'foreman')
+            .with(apache_https_vhost: 'foreman-ssl')
+            .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
       end
 
@@ -182,7 +176,7 @@ describe 'foreman_proxy_content' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('pulpcore').with(manage_apache: false) }
+        it { is_expected.to contain_class('pulpcore') }
 
         it do
           is_expected.to contain_class('pulpcore::plugin::migration')
