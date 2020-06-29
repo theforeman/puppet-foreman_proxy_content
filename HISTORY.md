@@ -1,3 +1,41 @@
+## [11.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.0) (2020-06-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#30217](https://projects.theforeman.org/issues/30217) - configure pulpcore db name [\#266](https://github.com/theforeman/puppet-foreman_proxy_content/pull/266) ([wbclark](https://github.com/wbclark))
+- Fixes [\#30059](https://projects.theforeman.org/issues/30059) - Add config for protected content [\#263](https://github.com/theforeman/puppet-foreman_proxy_content/pull/263) ([sjha4](https://github.com/sjha4))
+- Refs [\#30023](https://projects.theforeman.org/issues/30023): Enable Pulpcore RPM plugin [\#261](https://github.com/theforeman/puppet-foreman_proxy_content/pull/261) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Use the correct variables in pulpcore templates [\#267](https://github.com/theforeman/puppet-foreman_proxy_content/pull/267) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29660](https://projects.theforeman.org/issues/29660) - Serve Pulpcore ISO via HTTPS [\#260](https://github.com/theforeman/puppet-foreman_proxy_content/pull/260) ([ekohl](https://github.com/ekohl))
+
+## [11.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.0.0) (2020-05-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.0.0)
+
+**Breaking changes:**
+
+- Use modern facts [\#258](https://github.com/theforeman/puppet-foreman_proxy_content/issues/258)
+
+**Implemented enhancements:**
+
+- Allow EL8 supported versions of dependencies [\#257](https://github.com/theforeman/puppet-foreman_proxy_content/pull/257) ([wbclark](https://github.com/wbclark))
+- Fixes [\#29214](https://projects.theforeman.org/issues/29214): Add EL8 support to metadata [\#255](https://github.com/theforeman/puppet-foreman_proxy_content/pull/255) ([ehelms](https://github.com/ehelms))
+- Refs [\#29211](https://projects.theforeman.org/issues/29211): Use extlib 5.x for EL8 support [\#254](https://github.com/theforeman/puppet-foreman_proxy_content/pull/254) ([ehelms](https://github.com/ehelms))
+- Refs [\#29214](https://projects.theforeman.org/issues/29214): Only install Pulp and Qpid on El7 [\#251](https://github.com/theforeman/puppet-foreman_proxy_content/pull/251) ([ehelms](https://github.com/ehelms))
+- Fixes [\#29278](https://projects.theforeman.org/issues/29278): Use default CA for crane SSL chain [\#246](https://github.com/theforeman/puppet-foreman_proxy_content/pull/246) ([ekohl](https://github.com/ekohl))
+- Fixes [\#28901](https://projects.theforeman.org/issues/28901) - Support SSL connection for external Pulpcore PostgreSQL [\#244](https://github.com/theforeman/puppet-foreman_proxy_content/pull/244) ([wbclark](https://github.com/wbclark))
+- Use loose coupling to Foreman's Apache config [\#243](https://github.com/theforeman/puppet-foreman_proxy_content/pull/243) ([ekohl](https://github.com/ekohl))
+- Refs [\#28901](https://projects.theforeman.org/issues/28901) - support external postgres database in pulpcore [\#241](https://github.com/theforeman/puppet-foreman_proxy_content/pull/241) ([wbclark](https://github.com/wbclark))
+
+**Fixed bugs:**
+
+- Fixes [\#29589](https://projects.theforeman.org/issues/29589) - Ensure pulpcore before proxy [\#252](https://github.com/theforeman/puppet-foreman_proxy_content/pull/252) ([ekohl](https://github.com/ekohl))
+
 ## [10.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/10.0.0) (2020-02-12)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/9.1.0...10.0.0)

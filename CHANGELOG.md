@@ -1,5 +1,20 @@
 # Changelog
 
+## [11.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.0) (2020-06-30)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#30217](https://projects.theforeman.org/issues/30217) - configure pulpcore db name [\#266](https://github.com/theforeman/puppet-foreman_proxy_content/pull/266) ([wbclark](https://github.com/wbclark))
+- Fixes [\#30059](https://projects.theforeman.org/issues/30059) - Add config for protected content [\#263](https://github.com/theforeman/puppet-foreman_proxy_content/pull/263) ([sjha4](https://github.com/sjha4))
+- Refs [\#30023](https://projects.theforeman.org/issues/30023): Enable Pulpcore RPM plugin [\#261](https://github.com/theforeman/puppet-foreman_proxy_content/pull/261) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Use the correct variables in pulpcore templates [\#267](https://github.com/theforeman/puppet-foreman_proxy_content/pull/267) ([ekohl](https://github.com/ekohl))
+- Fixes [\#29660](https://projects.theforeman.org/issues/29660) - Serve Pulpcore ISO via HTTPS [\#260](https://github.com/theforeman/puppet-foreman_proxy_content/pull/260) ([ekohl](https://github.com/ekohl))
+
 ## [11.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.0.0) (2020-05-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.0.0)
