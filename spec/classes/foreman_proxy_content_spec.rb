@@ -191,34 +191,6 @@ describe 'foreman_proxy_content' do
         end
       end
 
-      context 'with rhsm_hostname and rhsm_url' do
-        let(:params) do
-          {
-            rhsm_hostname: 'katello.example.com',
-            rhsm_url: '/abc/rhsm'
-          }
-        end
-
-        let(:pre_condition) do
-          <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
-            pulpcore_enabled => true,
-            pulpcore_mirror  => false,
-          }
-          PUPPET
-        end
-
-        it { is_expected.to compile.with_all_deps }
-        it do
-          is_expected.to contain_class('certs::katello')
-            .with_hostname('katello.example.com')
-            .with_deployment_url('/abc/rhsm')
-        end
-      end
-
       context 'with puppet' do
         let(:params) do
           {

@@ -48,10 +48,6 @@
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
 #
-# $rhsm_hostname::                      The hostname that the RHSM API is rooted at
-#
-# $rhsm_url::                           The URL path that the RHSM API is rooted at
-#
 # $ssl_protocol::                       Apache SSLProtocol configuration to use
 #
 # $qpid_router::                        Configure qpid dispatch router
@@ -131,9 +127,6 @@ class foreman_proxy_content (
   Stdlib::Port $reverse_proxy_port = $foreman_proxy_content::params::reverse_proxy_port,
   Optional[String] $ssl_protocol = $foreman_proxy_content::params::ssl_protocol,
 
-  Optional[String] $rhsm_hostname = $foreman_proxy_content::params::rhsm_hostname,
-  String $rhsm_url = $foreman_proxy_content::params::rhsm_url,
-
   Boolean $qpid_router = $foreman_proxy_content::params::qpid_router,
   Optional[String] $qpid_router_hub_addr = $foreman_proxy_content::params::qpid_router_hub_addr,
   Stdlib::Port $qpid_router_hub_port = $foreman_proxy_content::params::qpid_router_hub_port,
@@ -190,7 +183,7 @@ class foreman_proxy_content (
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
-    false => '443'
+    false => 443
   }
 
   ensure_packages('katello-debug')
@@ -205,11 +198,8 @@ class foreman_proxy_content (
     notify   => Service['foreman-proxy'],
   }
 
-  class { 'certs::katello':
-    hostname       => $rhsm_hostname,
-    deployment_url => $rhsm_url,
-    rhsm_port      => $rhsm_port,
-    require        => Class['certs'],
+  class { 'foreman_proxy_content::bootstrap_rpm':
+    rhsm_port => $rhsm_port,
   }
 
   if $pulp or $reverse_proxy_real {
