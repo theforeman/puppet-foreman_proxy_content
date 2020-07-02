@@ -112,6 +112,11 @@
 #
 # $pulpcore_postgresql_ssl_root_ca::    Path to the root certificate authority to validate the certificate supplied by the PostgreSQL database server.
 #
+# $pulpcore_worker_count::              Number of pulpcore workers. Defaults to 8 or the number of CPU cores, whichever is smaller.
+#                                       Enabling more than 8 workers, even with additional CPU cores available, likely results in performance
+#                                       degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
+#                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
@@ -171,6 +176,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_cert = $foreman_proxy_content::params::pulpcore_postgresql_ssl_cert,
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = $foreman_proxy_content::params::pulpcore_postgresql_ssl_key,
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = $foreman_proxy_content::params::pulpcore_postgresql_ssl_root_ca,
+  Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -352,6 +358,7 @@ class foreman_proxy_content (
       postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
       postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
       postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
+      worker_count              => $pulpcore_worker_count,
       before                    => Class['foreman_proxy::plugin::pulp'],
     }
 
