@@ -34,7 +34,7 @@
     },
     {
       "name": "katello/certs",
-      "version_requirement": ">= 6.0.0 < 9.0.0"
+      "version_requirement": ">= 6.0.0 < 10.0.0"
     },
     {
       "name": "theforeman/pulpcore",
