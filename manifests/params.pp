@@ -65,4 +65,5 @@ class foreman_proxy_content::params {
   $pulpcore_postgresql_ssl_key     = '/etc/pki/katello/private/pulpcore-database.key'
   $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt'
   $pulpcore_worker_count           = min(8, $facts['processors']['count'])
+  $pulpcore_media_root             = '/var/lib/pulp'
 }

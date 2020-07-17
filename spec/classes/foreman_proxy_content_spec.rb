@@ -69,7 +69,52 @@ describe 'foreman_proxy_content' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('pulpcore').with(manage_apache: false).that_comes_before('Class[foreman_proxy::plugin::pulp]') }
+
+        it do
+          is_expected.to contain_class('pulpcore')
+            .with(manage_apache: false)
+            .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+
+        it do
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore')
+            .with_ssl_content(%r{ProxyPass /pulp/api/v3 http://127\.0\.0\.1:24817/pulp/api/v3})
+            .with_ssl_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
+            .with_ssl_content(%r{ProxyPass /pulpcore_registry/v2/ http://127\.0\.0\.1:24816/v2/})
+            .with_content(%r{ProxyPass /pulp/content http://127\.0\.0\.1:24816/pulp/content})
+          is_expected.to contain_foreman__config__apache__fragment('pulpcore-isos')
+            .with_content(%r{ProxyPass /pulp/isos http://127\.0\.0\.1:24816/pulp/content})
+        end
+      end
+
+      context 'pulpcore with custom media root' do
+        let(:params) do
+          {
+            qpid_router: false,
+            pulpcore_media_root: '/var/lib/pulp/docroot'
+          }
+        end
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+            pulpcore_enabled => true,
+            pulpcore_mirror  => false,
+          }
+          PUPPET
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it do
+          is_expected.to contain_class('pulpcore')
+            .with(manage_apache: false)
+            .with(pulpcore_media_root: '/var/lib/pulp/docroot')
+            .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
 
         it do
           is_expected.to contain_foreman__config__apache__fragment('pulpcore')

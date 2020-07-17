@@ -113,6 +113,8 @@
 #                                       degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
+# $pulpcore_media_root::                Pulpcore MEDIA_ROOT directory for uploaded content.
+#
 class foreman_proxy_content (
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
@@ -170,6 +172,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = $foreman_proxy_content::params::pulpcore_postgresql_ssl_key,
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = $foreman_proxy_content::params::pulpcore_postgresql_ssl_root_ca,
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
+  Stdlib::Absolutepath $pulpcore_media_root = $foreman_proxy_content::params::pulpcore_media_root,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -335,6 +338,7 @@ class foreman_proxy_content (
 
     class { 'pulpcore':
       remote_user_environ_name  => 'HTTP_REMOTE_USER',
+      pulpcore_media_root       => $pulpcore_media_root,
       manage_apache             => false,
       servername                => $foreman::config::apache::servername,
       postgresql_manage_db      => $pulpcore_manage_postgresql,
