@@ -1,4 +1,4 @@
-## [11.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.0) (2020-06-29)
+## [11.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.0) (2020-06-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.1.0)
 
