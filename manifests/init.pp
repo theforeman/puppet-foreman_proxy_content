@@ -325,6 +325,8 @@ class foreman_proxy_content (
       worker_timeout         => $pulp_worker_timeout,
     }
 
+    $pub_dir_options = '+FollowSymLinks +Indexes'
+
     pulp::apache::fragment{'gpg_key_proxy':
       ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb', 'foreman_proxy_content/httpd_pub.erb'),
     }
