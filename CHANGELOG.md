@@ -1,8 +1,16 @@
 # Changelog
 
+## [11.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.1) (2020-08-27)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/11.1.0...11.1.1)
+
+**Fixed bugs:**
+
+- Fixes [\#30716](https://projects.theforeman.org/issues/30716) - Ensure /pub on foreman proxy can be browsed by default [\#278](https://github.com/theforeman/puppet-foreman_proxy_content/pull/278) ([ehelms](https://github.com/ehelms))
+
 ## [11.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/11.1.0) (2020-06-30)
 
-[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/10.0.0...11.1.0)
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/11.0.0...11.1.0)
 
 **Implemented enhancements:**
 
