@@ -104,6 +104,15 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
         cpio('-idmv', '--file', 'srpm.cpio')
       end
 
+      # Prior implementation of bootstrap RPM created a tarball with
+      # the source script in it. If an RPM is detected with a tarball
+      # source, assume this is an upgrade and generate a new bootstrap
+      # RPM to be based on the new system from this point forward.
+      # This if condition can then be dropped in the next release.
+      if Dir[File.join(dir, '*.tar.gz')].any?
+        return true
+      end
+
       old_spec = File.read(Dir.glob("#{dir}/*.spec")[0])
       old_source = File.read(Dir.glob("#{dir}/#{File.basename(resource[:script])}")[0])
 
