@@ -267,6 +267,8 @@ class foreman_proxy_content (
       require      => Class['certs::apache'],
     }
 
+    ensure_packages('katello-client-bootstrap')
+  } else {
     include foreman_proxy_content::pub_dir
   }
 

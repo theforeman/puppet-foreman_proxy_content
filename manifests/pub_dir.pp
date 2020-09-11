@@ -17,12 +17,11 @@ class foreman_proxy_content::pub_dir (
   ensure_packages('katello-client-bootstrap')
 
   apache::vhost { 'foreman_proxy_content':
-    servername          => $servername,
-    port                => 80,
-    priority            => '05',
-    docroot             => '/var/www/html',
-    options             => ['SymLinksIfOwnerMatch'],
-    additional_includes => ["${apache::confd_dir}/pulp-vhosts80/*.conf"],
-    custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
+    servername      => $servername,
+    port            => 80,
+    priority        => '05',
+    docroot         => '/var/www/html',
+    options         => ['SymLinksIfOwnerMatch'],
+    custom_fragment => template('foreman_proxy_content/httpd_pub.erb'),
   }
 }
