@@ -1,5 +1,19 @@
 # Changelog
 
+## [13.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/13.0.0) (2020-09-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/11.1.1...13.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#30780](https://projects.theforeman.org/issues/30780) - support pulp\_container 2.0 registry [\#281](https://github.com/theforeman/puppet-foreman_proxy_content/pull/281) ([jlsherrill](https://github.com/jlsherrill))
+- Fixes [\#30363](https://projects.theforeman.org/issues/30363): Rewrite bootstrap creation to use RPM [\#274](https://github.com/theforeman/puppet-foreman_proxy_content/pull/274) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Refs [\#30363](https://projects.theforeman.org/issues/30363): Generate new bootstrap RPM if old style is detected [\#280](https://github.com/theforeman/puppet-foreman_proxy_content/pull/280) ([ehelms](https://github.com/ehelms))
+- Fixes [\#30716](https://projects.theforeman.org/issues/30716): Ensure /pub on foreman proxy can be browsed by default [\#277](https://github.com/theforeman/puppet-foreman_proxy_content/pull/277) ([ehelms](https://github.com/ehelms))
+
 ## [12.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/12.0.0) (2020-08-07)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/11.1.0...12.0.0)
