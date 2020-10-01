@@ -23,7 +23,7 @@ class foreman_proxy_content::pub_dir (
       content     => template('foreman_proxy_content/httpd_pub.erb'),
       ssl_content => template('foreman_proxy_content/httpd_pub.erb'),
     }
-  } elsif ($foreman_proxy_content::pulp) {
+  } elsif $foreman_proxy_content::pulp {
     pulp::apache::fragment { 'pub_dir':
       ssl_content => template('foreman_proxy_content/httpd_pub.erb'),
     }
