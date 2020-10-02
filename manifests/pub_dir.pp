@@ -16,13 +16,34 @@ class foreman_proxy_content::pub_dir (
 
   ensure_packages('katello-client-bootstrap')
 
-  apache::vhost { 'foreman_proxy_content':
-    servername          => $servername,
-    port                => 80,
-    priority            => '05',
-    docroot             => '/var/www/html',
-    options             => ['SymLinksIfOwnerMatch'],
-    additional_includes => ["${apache::confd_dir}/pulp-vhosts80/*.conf"],
-    custom_fragment     => template('foreman_proxy_content/httpd_pub.erb'),
+  if ($foreman_proxy_content::pulpcore or $foreman_proxy_content::pulp_master) {
+    include foreman::config::apache
+
+    foreman::config::apache::fragment { 'pub_dir':
+      content     => template('foreman_proxy_content/httpd_pub.erb'),
+      ssl_content => template('foreman_proxy_content/httpd_pub.erb'),
+    }
+  } elsif $foreman_proxy_content::pulp {
+    pulp::apache::fragment { 'pub_dir':
+      ssl_content => template('foreman_proxy_content/httpd_pub.erb'),
+    }
+
+    file { "${apache::confd_dir}/pulp-vhosts80/pub_dir.conf":
+      ensure  => file,
+      content => template('foreman_proxy_content/httpd_pub.erb'),
+      owner   => 'apache',
+      group   => 'apache',
+      mode    => '0600',
+      notify  => Service['httpd'],
+    }
+  } else {
+    apache::vhost { 'foreman_proxy_content':
+      servername      => $servername,
+      port            => 80,
+      priority        => '05',
+      docroot         => '/var/www/html',
+      options         => ['SymLinksIfOwnerMatch'],
+      custom_fragment => template('foreman_proxy_content/httpd_pub.erb'),
+    }
   }
 }
