@@ -16,7 +16,7 @@ class foreman_proxy_content::pub_dir (
 
   ensure_packages('katello-client-bootstrap')
 
-  if ($foreman_proxy_content::pulpcore or $foreman_proxy_content::pulp_master) {
+  if $foreman_proxy_content::shared_with_foreman_vhost {
     include foreman::config::apache
 
     foreman::config::apache::fragment { 'pub_dir':

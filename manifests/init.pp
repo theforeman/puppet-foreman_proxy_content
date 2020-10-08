@@ -187,6 +187,9 @@ class foreman_proxy_content (
   $foreman_url = $foreman_proxy::foreman_base_url
   $reverse_proxy_real = $pulp or $reverse_proxy
 
+  # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
+  $shared_with_foreman_vhost = ($pulpcore and !$pulpcore_mirror) or $pulp_master
+
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
     false => 443
@@ -331,13 +334,26 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulpcore and !$pulpcore_mirror {
-    include foreman::config::apache
-    $servername = $foreman::config::apache::servername
-    $priority = $foreman::config::apache::priority
-    $apache_http_vhost = 'foreman'
-    $apache_https_vhost = 'foreman-ssl'
-    Class['foreman::config::apache'] -> Class['pulpcore::apache']
+  if $pulpcore {
+    if $shared_with_foreman_vhost {
+      include foreman::config::apache
+      $servername = $foreman::config::apache::servername
+      $priority = $foreman::config::apache::priority
+      $apache_http_vhost = 'foreman'
+      $apache_https_vhost = 'foreman-ssl'
+      Class['foreman::config::apache'] -> Class['pulpcore::apache']
+    } elsif $pulp and $pulp::manage_httpd {
+      $servername = $facts['networking']['fqdn']
+      $priority = '05'
+      $apache_http_vhost = 'pulp-http'
+      $apache_https_vhost = 'pulp-https'
+      Class['pulp::apache'] -> Class['pulpcore::apache']
+    } else {
+      $servername = undef
+      $priority = undef
+      $apache_http_vhost = undef
+      $apache_https_vhost = undef
+    }
 
     class { 'pulpcore':
       apache_http_vhost         => $apache_http_vhost,
