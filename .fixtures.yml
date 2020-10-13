@@ -19,9 +19,7 @@ fixtures:
     certs:         "https://github.com/theforeman/puppet-certs.git"
     qpid:          "https://github.com/theforeman/puppet-qpid.git"
     pulp:          "https://github.com/theforeman/puppet-pulp.git"
-    pulpcore:
-      repo: "https://github.com/ekohl/puppet-pulpcore.git"
-      branch: "apache-management"
+    pulpcore:      "https://github.com/theforeman/puppet-pulpcore.git"
     postgresql:    "https://github.com/puppetlabs/puppetlabs-postgresql"
     redis:         "https://github.com/voxpupuli/puppet-redis"
     mongodb:       "https://github.com/voxpupuli/puppet-mongodb.git"
