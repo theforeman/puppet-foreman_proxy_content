@@ -12,6 +12,7 @@ describe 'foreman_proxy_content' do
           class { 'foreman_proxy::plugin::pulp':
             enabled          => false,
             pulpnode_enabled => false,
+            pulpcore_enabled => false,
           }
           PUPPET
         end
@@ -34,6 +35,7 @@ describe 'foreman_proxy_content' do
           class { 'foreman_proxy::plugin::pulp':
             enabled          => false,
             pulpnode_enabled => true,
+            pulpcore_enabled => false,
           }
           PUPPET
         end
@@ -246,7 +248,7 @@ describe 'foreman_proxy_content' do
             class { 'foreman_proxy::plugin::pulp':
               enabled          => false,
               pulpnode_enabled => false,
-              pulpcore_enabled => true,
+              pulpcore_enabled => false,
               pulpcore_mirror  => false,
             }
             PUPPET
@@ -266,7 +268,7 @@ describe 'foreman_proxy_content' do
             class { 'foreman_proxy::plugin::pulp':
               enabled          => false,
               pulpnode_enabled => false,
-              pulpcore_enabled => true,
+              pulpcore_enabled => false,
               pulpcore_mirror  => false,
             }
             PUPPET
