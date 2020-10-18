@@ -13,6 +13,7 @@ describe 'foreman_proxy_content::pub_dir' do
         class { 'foreman_proxy::plugin::pulp':
           enabled          => false,
           pulpnode_enabled => false,
+          pulpcore_enabled => false,
         }
         PUPPET
       end
