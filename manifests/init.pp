@@ -219,7 +219,6 @@ class foreman_proxy_content (
     ~> class { 'foreman_proxy_content::reverse_proxy':
       path         => '/',
       url          => "${foreman_url}/",
-      servername   => $foreman_proxy_fqdn,
       port         => $reverse_proxy_port,
       subscribe    => Class['certs::foreman_proxy'],
       ssl_protocol => $ssl_protocol,
