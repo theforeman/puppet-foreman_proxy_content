@@ -341,23 +341,41 @@ class foreman_proxy_content (
       $priority = $foreman::config::apache::priority
       $apache_http_vhost = 'foreman'
       $apache_https_vhost = 'foreman-ssl'
+      $apache_https_cert = undef
+      $apache_https_key = undef
+      $apache_https_ca = undef
+      $apache_https_chain = undef
       Class['foreman::config::apache'] -> Class['pulpcore::apache']
     } elsif $pulp and $pulp::manage_httpd {
       $servername = $facts['networking']['fqdn']
       $priority = '05'
       $apache_http_vhost = 'pulp-http'
       $apache_https_vhost = 'pulp-https'
+      $apache_https_cert = undef
+      $apache_https_key = undef
+      $apache_https_ca = undef
+      $apache_https_chain = undef
       Class['pulp::apache'] -> Class['pulpcore::apache']
     } else {
-      $servername = undef
+      include certs::apache
+      Class['certs::apache'] ~> Class['pulpcore::apache']
+      $servername = $certs::apache::hostname
       $priority = undef
       $apache_http_vhost = undef
       $apache_https_vhost = undef
+      $apache_https_cert = $certs::apache::apache_cert
+      $apache_https_key = $certs::apache::apache_key
+      $apache_https_ca = $certs::katello_default_ca_cert
+      $apache_https_chain = $certs::katello_server_ca_cert
     }
 
     class { 'pulpcore':
       apache_http_vhost         => $apache_http_vhost,
       apache_https_vhost        => $apache_https_vhost,
+      apache_https_cert         => $apache_https_cert,
+      apache_https_key          => $apache_https_key,
+      apache_https_ca           => $apache_https_ca,
+      apache_https_chain        => $apache_https_chain,
       apache_vhost_priority     => $priority,
       servername                => $servername,
       static_url                => '/pulp/assets/',
