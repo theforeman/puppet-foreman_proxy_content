@@ -1,3 +1,17 @@
+## [14.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.0.0) (2020-10-30)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/13.0.0...14.0.0)
+
+**Breaking changes:**
+
+- Rely on pulpcore to set up Apache fragments [\#268](https://github.com/theforeman/puppet-foreman_proxy_content/pull/268) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Deploy Apache certificates for standalone Pulpcore [\#287](https://github.com/theforeman/puppet-foreman_proxy_content/pull/287) ([ekohl](https://github.com/ekohl))
+- Set reverse proxy servername via certs [\#286](https://github.com/theforeman/puppet-foreman_proxy_content/pull/286) ([ekohl](https://github.com/ekohl))
+- deploy pub\_dir also when not deploying pulp2 [\#282](https://github.com/theforeman/puppet-foreman_proxy_content/pull/282) ([evgeni](https://github.com/evgeni))
+
 ## [13.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/13.0.0) (2020-09-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/11.1.1...13.0.0)
