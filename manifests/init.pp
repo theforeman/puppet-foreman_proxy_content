@@ -40,6 +40,8 @@
 #
 # $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
 #
+# $proxy_pulp_deb_to_pulpcore::         Proxy /pulp/deb to Pulpcore at /pulp/content
+#
 # $proxy_pulp_isos_to_pulpcore::        Proxy /pulp/isos to Pulpcore at /pulp/content
 #
 # $proxy_pulp_yum_to_pulpcore::         Proxy /pulp/yum to Pulpcore at /pulp/content
@@ -150,6 +152,7 @@ class foreman_proxy_content (
   Boolean $enable_ostree = $foreman_proxy_content::params::enable_ostree,
   Boolean $enable_yum = $foreman_proxy_content::params::enable_yum,
   Boolean $enable_file = $foreman_proxy_content::params::enable_file,
+  Boolean $proxy_pulp_deb_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_deb_to_pulpcore,
   Boolean $proxy_pulp_isos_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_isos_to_pulpcore,
   Boolean $proxy_pulp_yum_to_pulpcore = $foreman_proxy_content::params::proxy_pulp_yum_to_pulpcore,
   Boolean $enable_puppet = $foreman_proxy_content::params::enable_puppet,
@@ -182,6 +185,7 @@ class foreman_proxy_content (
 
   $enable_pulp2_rpm = $enable_yum and !($pulpcore and $proxy_pulp_yum_to_pulpcore)
   $enable_pulp2_iso = $enable_file and !($pulpcore and $proxy_pulp_isos_to_pulpcore)
+  $enable_pulp2_deb = $enable_deb and !($pulpcore and $proxy_pulp_deb_to_pulpcore)
 
   $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
@@ -415,6 +419,9 @@ class foreman_proxy_content (
     }
     class { 'pulpcore::plugin::rpm':
       use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+    }
+    class { 'pulpcore::plugin::deb':
+      use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
     }
     include pulpcore::plugin::certguard
   }
