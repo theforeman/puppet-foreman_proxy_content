@@ -185,7 +185,7 @@ class foreman_proxy_content (
 
   $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
-  $reverse_proxy_real = ($pulp or pulpcore_mirror) or $reverse_proxy
+  $reverse_proxy_real = ($pulp or $pulpcore_mirror) or $reverse_proxy
 
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
   $shared_with_foreman_vhost = ($pulpcore and !$pulpcore_mirror) or $pulp_master

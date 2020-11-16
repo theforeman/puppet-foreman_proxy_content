@@ -48,6 +48,12 @@ describe 'foreman_proxy_content' do
           is_expected.to contain_pulp__apache__fragment('gpg_key_proxy')
             .with_ssl_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
         end
+
+        it do
+          is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
+            .with(path: '/')
+            .with(port: 8443)
+        end
       end
 
       context 'with pulpcore' do
@@ -76,6 +82,40 @@ describe 'foreman_proxy_content' do
             .with(apache_http_vhost: 'foreman')
             .with(apache_https_vhost: 'foreman-ssl')
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+      end
+
+      context 'with pulpcore mirror' do
+        let(:params) do
+          {
+            qpid_router: false
+          }
+        end
+
+        let(:pre_condition) do
+          <<-PUPPET
+          include foreman_proxy
+          class { 'foreman_proxy::plugin::pulp':
+            enabled          => false,
+            pulpnode_enabled => false,
+            pulpcore_enabled => true,
+            pulpcore_mirror  => true,
+          }
+          PUPPET
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
+        it do
+          is_expected.to contain_class('pulpcore')
+            .with(apache_http_vhost: true)
+            .with(apache_https_vhost: true)
+            .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+        it do
+          is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
+            .with(path: '/')
+            .with(port: 8443)
         end
       end
 
