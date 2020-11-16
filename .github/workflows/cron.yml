@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '4 4 * * *'
 
+env:
+  BUNDLE_PATH: vendor/bundle
+  BUNDLE_JOBS: 4
+  BUNDLE_RETRY: 3
+
 jobs:
   unit:
     if: github.repository == 'theforeman/puppet-foreman_proxy_content'
@@ -23,6 +28,7 @@ jobs:
           - ruby: "2.4"
             puppet: "6"
     env:
+      BUNDLE_WITHOUT: development:system_tests
       PUPPET_VERSION: "${{ matrix.puppet }}.0"
     name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
@@ -40,15 +46,20 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
-          bundle config path vendor/bundle
-          bundle config without 'development system_tests'
-          bundle install --jobs 4 --retry 3
+          bundle install
+          bundle clean
       - name: Run tests
         run: bundle exec rake
 
-  build_cache:
+  setup_matrix:
+    name: 'Setup Test Matrix'
     if: github.repository == 'theforeman/puppet-foreman_proxy_content'
     runs-on: ubuntu-latest
+    outputs:
+      setfiles: ${{ steps.get-setfiles.outputs.setfiles }}
+      puppet_major_versions: ${{ steps.get-setfiles.outputs.puppet_major_versions }}
+    env:
+      BUNDLE_WITHOUT: development:test
     steps:
       - name: Enable IPv6 on docker
         run: |
@@ -68,24 +79,27 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
-          bundle config path vendor/bundle
-          bundle config without 'development test'
-          bundle install --jobs 4 --retry 3
+          bundle install
+          bundle clean
+      - name: Setup Acceptance Test Matrix
+        id: get-setfiles
+        run: bundle exec metadata2gha-beaker --use-fqdn --pidfile-workaround false
 
   acceptance:
     if: github.repository == 'theforeman/puppet-foreman_proxy_content'
     needs: build_cache
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITHOUT: development:test
     strategy:
       fail-fast: false
       matrix:
-        setfile:
-          - centos7-64{hostname=centos7-64.example.com}
-          - centos8-64{hostname=centos8-64.example.com}
+        setfile: ${{fromJson(needs.setup_matrix.outputs.setfiles)}}
+        puppet: ${{fromJson(needs.setup_matrix.outputs.puppet_major_versions)}}
         puppet:
           - "6"
           - "5"
-    name: Puppet ${{ matrix.puppet }} - ${{ matrix.setfile }}
+    name: Puppet ${{ matrix.puppet }} - ${{ matrix.setfile.name }}
     steps:
       - name: Enable IPv6 on docker
         run: |
@@ -105,11 +119,9 @@ jobs:
       - name: Install dependencies
         run: |
           gem install bundler
-          bundle config path vendor/bundle
-          bundle config without 'development test'
-          bundle install --jobs 4 --retry 3
+          bundle install
       - name: Run tests
         run: bundle exec rake beaker
         env:
           BEAKER_PUPPET_COLLECTION: puppet${{ matrix.puppet }}
-          BEAKER_setfile: ${{ matrix.setfile }}
+          BEAKER_setfile: ${{ matrix.setfile.value }}

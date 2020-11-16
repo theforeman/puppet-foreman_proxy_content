@@ -16,6 +16,7 @@ gem 'puppet-lint-undef_in_function-check', {"groups"=>["test"]}
 gem 'voxpupuli-test', '~> 1.4'
 gem 'github_changelog_generator', '>= 1.15.0', {"groups"=>["development"]}
 gem 'puppet-blacksmith', '>= 6.0.0', {"groups"=>["development"]}
-gem 'voxpupuli-acceptance', '~> 0.2', {"groups"=>["system_tests"]}
+gem 'voxpupuli-acceptance', '~> 0.3', {"groups"=>["system_tests"]}
+gem 'puppet_metadata', {"git"=>"https://github.com/ekohl/puppet_metadata", "branch"=>"metadata2gha-beaker", "groups"=>["system_tests"]}
 
 # vim:ft=ruby
