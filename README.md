@@ -1,5 +1,5 @@
 [![Puppet Forge](https://img.shields.io/puppetforge/v/katello/foreman_proxy_content.svg)](https://forge.puppetlabs.com/katello/foreman_proxy_content)
-[![Build Status](https://travis.ci.org/theforeman/puppet-foreman_proxy_content.svg?branch=master)](https://travis-ci.org/Katello/puppet-foreman_proxy_content)
+![Nightly tests](https://github.com/theforeman/puppet-foreman_proxy_content/workflows/Nightly%20tests/badge.svg)
 
 #### Table of Contents
 
@@ -19,6 +19,7 @@ This module is designed to configure a Foreman proxy server for Katello content 
 ## Limitations
 
 * EL7 (RHEL7 / CentOS 7)
+* EL8 (RHEL8 / CentOS 8)
 
 ## Development
 
