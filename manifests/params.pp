@@ -45,6 +45,7 @@ class foreman_proxy_content::params {
   $enable_ostree                = false
   $enable_yum                   = true
   $enable_file                  = true
+  $proxy_pulp_deb_to_pulpcore   = true
   $proxy_pulp_isos_to_pulpcore  = true
   $proxy_pulp_yum_to_pulpcore   = true
   $enable_puppet                = true
