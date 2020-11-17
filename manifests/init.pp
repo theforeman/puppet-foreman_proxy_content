@@ -338,6 +338,13 @@ class foreman_proxy_content (
   }
 
   if $pulpcore {
+    if $pulpcore_mirror {
+      $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports']
+      $pulpcore_allowed_export_path    = []
+    } else {
+      $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
+      $pulpcore_allowed_export_path    = ['/var/lib/pulp/exports']
+    }
     if $shared_with_foreman_vhost {
       include foreman::config::apache
       $servername = $foreman::config::apache::servername
@@ -373,6 +380,8 @@ class foreman_proxy_content (
     }
 
     class { 'pulpcore':
+      allowed_import_path       => $pulpcore_allowed_import_path,
+      allowed_export_path       => $pulpcore_allowed_export_path,
       apache_http_vhost         => $apache_http_vhost,
       apache_https_vhost        => $apache_https_vhost,
       apache_https_cert         => $apache_https_cert,
