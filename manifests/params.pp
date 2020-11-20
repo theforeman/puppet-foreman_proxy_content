@@ -9,10 +9,6 @@ class foreman_proxy_content::params {
 
   $ssl_protocol                 = undef
 
-  $certs_tar                    = undef
-  $rhsm_hostname                = undef
-  $rhsm_url                     = '/rhsm'
-
   $puppet                       = true
 
   $pulp_admin_password          = extlib::cache_data('foreman_cache_data', 'pulp_node_admin_password', extlib::random_password(32))
