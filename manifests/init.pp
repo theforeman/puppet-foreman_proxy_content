@@ -20,11 +20,20 @@
 #
 # === Advanced parameters:
 #
+# $enable_pulpcore::                    Enables Pulpcore deployment
+#
+# $enable_pulpcore_mirror::             Whether this pulpcore deployment acts as a mirror.
+#                                       A pulpcore mirror is the pulpcore equivalent of a pulpnode.
+#
+# $enable_pulp2::                       Enables Pulp 2 deployment
+#
+# $enable_pulp2_mirror::                Enables Pulp 2 deployment as a mirror, known in Pulp 2 as a pulpnode
+#
 # $puppet::                             Enable puppet
 #
 # $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
 #
-# $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
+# $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB)
 #
 # $pulp_num_workers::                   Number of Pulp workers to use.
 #
@@ -116,6 +125,10 @@
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
 class foreman_proxy_content (
+  Boolean $enable_pulpcore = true,
+  Boolean $enable_pulpcore_mirror = false,
+  Boolean $enable_pulp2 = true,
+  Boolean $enable_pulp2_mirror = false,
   String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = $foreman_proxy_content::params::pulp_max_speed,
@@ -176,23 +189,17 @@ class foreman_proxy_content (
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
-  include foreman_proxy::plugin::pulp
 
-  $pulp_master = $foreman_proxy::plugin::pulp::enabled
-  $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
-  $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
-  $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
-
-  $enable_pulp2_rpm = $enable_yum and !($pulpcore and $proxy_pulp_yum_to_pulpcore)
-  $enable_pulp2_iso = $enable_file and !($pulpcore and $proxy_pulp_isos_to_pulpcore)
-  $enable_pulp2_deb = $enable_deb and !($pulpcore and $proxy_pulp_deb_to_pulpcore)
+  $enable_pulp2_rpm = $enable_yum and ($enable_pulp2 and !$proxy_pulp_yum_to_pulpcore)
+  $enable_pulp2_iso = $enable_file and ($enable_pulp2 and !$proxy_pulp_isos_to_pulpcore)
+  $enable_pulp2_deb = $enable_deb and ($enable_pulp2 and !$proxy_pulp_deb_to_pulpcore)
 
   $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
-  $reverse_proxy_real = ($pulp or $pulpcore_mirror) or $reverse_proxy
+  $reverse_proxy_real = ($enable_pulp2_mirror or $enable_pulpcore_mirror) or $reverse_proxy
 
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
-  $shared_with_foreman_vhost = ($pulpcore and !$pulpcore_mirror) or $pulp_master
+  $shared_with_foreman_vhost = ($enable_pulpcore and !$enable_pulpcore_mirror) or ($enable_pulp2 and !enable_pulp2_mirror)
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
@@ -201,8 +208,15 @@ class foreman_proxy_content (
 
   ensure_packages('katello-debug')
 
-  if ($pulp_master or $pulp) and $facts['os']['release']['major'] != '7' {
+  if $enable_pulp2 and $facts['os']['release']['major'] != '7' {
     fail('Pulp 2 is only supported on CentOS 7')
+  }
+
+  class { 'foreman_proxy::plugin::pulp':
+    enabled          => $enable_pulp2,
+    pulpnode_enabled => $enable_pulp2_mirror,
+    pulpcore_enabled => $enable_pulpcore,
+    pulpcore_mirror  => $enable_pulpcore_mirror,
   }
 
   class { 'certs::foreman_proxy':
@@ -215,7 +229,7 @@ class foreman_proxy_content (
     rhsm_port => $rhsm_port,
   }
 
-  if $pulp or $reverse_proxy_real {
+  if $reverse_proxy_real {
     class { 'certs::apache':
       hostname => $foreman_proxy_fqdn,
       require  => Class['certs'],
@@ -229,7 +243,9 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulp_master or $pulp {
+  include foreman_proxy_content::pub_dir
+
+  if $enable_pulp2 {
     if $qpid_router {
       class { 'foreman_proxy_content::dispatch_router':
         agent_addr    => $qpid_router_agent_addr,
@@ -242,7 +258,7 @@ class foreman_proxy_content (
       }
       contain foreman_proxy_content::dispatch_router
 
-      if $pulp_master {
+      unless $enable_pulp2_mirror {
         class { 'foreman_proxy_content::dispatch_router::hub':
           hub_addr      => $qpid_router_hub_addr,
           hub_port      => $qpid_router_hub_port,
@@ -273,11 +289,6 @@ class foreman_proxy_content (
       require      => Class['certs::apache'],
     }
 
-  }
-
-  include foreman_proxy_content::pub_dir
-
-  if $pulp {
     include apache
 
     file {'/etc/httpd/conf.d/pulp_nodes.conf':
@@ -337,7 +348,7 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulpcore {
+  if $enable_pulpcore {
     if $shared_with_foreman_vhost {
       include foreman::config::apache
       $servername = $foreman::config::apache::servername
@@ -349,7 +360,7 @@ class foreman_proxy_content (
       $apache_https_ca = undef
       $apache_https_chain = undef
       Class['foreman::config::apache'] -> Class['pulpcore::apache']
-    } elsif $pulp and $pulp::manage_httpd {
+    } elsif $enable_pulp2 and $pulp::manage_httpd {
       $servername = $facts['networking']['fqdn']
       $priority = '05'
       $apache_http_vhost = 'pulp-http'
@@ -397,7 +408,7 @@ class foreman_proxy_content (
       before                    => Class['foreman_proxy::plugin::pulp'],
     }
 
-    if $pulp_master {
+    if $enable_pulp2 and !$enable_pulp2_mirror {
       include pulp
       class { 'pulpcore::plugin::migration':
         mongo_db_name         => $pulp::db_name,

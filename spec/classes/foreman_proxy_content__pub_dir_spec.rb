@@ -9,10 +9,9 @@ describe 'foreman_proxy_content::pub_dir' do
 
       let(:pre_condition) do
         <<-PUPPET
-        include foreman_proxy
-        class { 'foreman_proxy::plugin::pulp':
-          enabled          => false,
-          pulpnode_enabled => false,
+        class { 'foreman_proxy_content':
+          enable_pulp2    => false,
+          enable_pulpcore => false
         }
         PUPPET
       end

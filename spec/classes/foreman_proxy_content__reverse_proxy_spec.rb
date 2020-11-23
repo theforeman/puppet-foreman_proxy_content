@@ -9,12 +9,10 @@ describe 'foreman_proxy_content::reverse_proxy' do
 
         let(:pre_condition) do
           <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
+          class { 'foreman_proxy_content':
+            enable_pulp2    => false,
+            enable_pulpcore => false,
           }
-          include foreman_proxy_content
           PUPPET
         end
 
