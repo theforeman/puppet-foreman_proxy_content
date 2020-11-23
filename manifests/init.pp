@@ -301,7 +301,7 @@ class foreman_proxy_content (
       enable_ostree          => $enable_ostree,
       enable_rpm             => $enable_pulp2_rpm,
       enable_iso             => $enable_pulp2_iso,
-      enable_deb             => $enable_deb,
+      enable_deb             => $enable_pulp2_deb,
       enable_puppet          => $enable_puppet,
       enable_docker          => $enable_docker,
       default_password       => $pulp_admin_password,
