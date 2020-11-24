@@ -141,7 +141,7 @@ class foreman_proxy_content (
   String $qpid_router_logging_level = 'info+',
   Enum['file', 'syslog'] $qpid_router_logging = 'syslog',
   Stdlib::Absolutepath $qpid_router_logging_path = '/var/log/qdrouterd',
-  Optional[String] $qpid_router_ssl_ciphers = undef,
+  String $qpid_router_ssl_ciphers = 'ALL:!aNULL:+HIGH:-SSLv3:!IDEA-CBC-SHA',
   Optional[Array[String]] $qpid_router_ssl_protocols = undef,
   Optional[String] $qpid_router_sasl_mech = 'PLAIN',
   Optional[String] $qpid_router_sasl_username = 'katello_agent',
