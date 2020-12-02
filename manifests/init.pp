@@ -50,8 +50,6 @@
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
 #
-# $ssl_protocol::                       Apache SSLProtocol configuration to use
-#
 # $qpid_router::                        Configure qpid dispatch router
 #
 # $qpid_router_hub_addr::               Address for dispatch router hub
@@ -132,7 +130,6 @@ class foreman_proxy_content (
 
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
-  Optional[String] $ssl_protocol = undef,
 
   Boolean $qpid_router = true,
   Optional[String] $qpid_router_hub_addr = undef,
@@ -221,11 +218,10 @@ class foreman_proxy_content (
       require  => Class['certs'],
     }
     ~> class { 'foreman_proxy_content::reverse_proxy':
-      path         => '/',
-      url          => "${foreman_url}/",
-      port         => $reverse_proxy_port,
-      subscribe    => Class['certs::foreman_proxy'],
-      ssl_protocol => $ssl_protocol,
+      path      => '/',
+      url       => "${foreman_url}/",
+      port      => $reverse_proxy_port,
+      subscribe => Class['certs::foreman_proxy'],
     }
   }
 
@@ -264,13 +260,12 @@ class foreman_proxy_content (
 
     include certs::apache
     class { 'pulp::crane':
-      cert         => $certs::apache::apache_cert,
-      key          => $certs::apache::apache_key,
-      ssl_chain    => $certs::katello_server_ca_cert,
-      ca_cert      => $certs::katello_default_ca_cert,
-      data_dir     => '/var/lib/pulp/published/docker/v2/app',
-      ssl_protocol => $ssl_protocol,
-      require      => Class['certs::apache'],
+      cert      => $certs::apache::apache_cert,
+      key       => $certs::apache::apache_key,
+      ssl_chain => $certs::katello_server_ca_cert,
+      ca_cert   => $certs::katello_default_ca_cert,
+      data_dir  => '/var/lib/pulp/published/docker/v2/app',
+      require   => Class['certs::apache'],
     }
 
   }
@@ -323,7 +318,6 @@ class foreman_proxy_content (
       https_key              => $certs::apache::apache_key,
       https_chain            => $certs::apache::apache_ca_cert,
       https_ca_cert          => $certs::ca_cert,
-      ssl_protocol           => $ssl_protocol,
       yum_max_speed          => $pulp_max_speed,
       proxy_port             => $pulp_proxy_port,
       proxy_url              => $pulp_proxy_url,
