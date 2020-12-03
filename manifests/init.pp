@@ -413,7 +413,11 @@ class foreman_proxy_content (
       }
     }
 
-    include pulpcore::plugin::container
+    unless $pulpcore_mirror {
+      class { 'pulpcore::plugin::container':
+        registry_base_url => $foreman::config::apache::_proxy_backend,
+      }
+    }
     class { 'pulpcore::plugin::file':
       use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
     }
