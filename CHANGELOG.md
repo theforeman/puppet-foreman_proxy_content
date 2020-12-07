@@ -1,5 +1,13 @@
 # Changelog
 
+## [14.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.1.0) (2020-12-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.0.0...14.1.0)
+
+**Implemented enhancements:**
+
+- Refs [\#30436](https://projects.theforeman.org/issues/30436) - Add import/export params [\#304](https://github.com/theforeman/puppet-foreman_proxy_content/pull/304) ([jeremylenz](https://github.com/jeremylenz))
+
 ## [14.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.0.0) (2020-10-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/13.0.0...14.0.0)
