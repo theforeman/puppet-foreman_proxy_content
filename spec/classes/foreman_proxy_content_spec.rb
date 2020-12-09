@@ -47,11 +47,6 @@ describe 'foreman_proxy_content' do
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
 
         it do
-          is_expected.to contain_pulp__apache__fragment('gpg_key_proxy')
-            .with_ssl_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
-        end
-
-        it do
           is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
             .with(path: '/')
             .with(port: 8443)
@@ -111,6 +106,10 @@ describe 'foreman_proxy_content' do
             is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
               .with(path: '/')
               .with(port: 8443)
+          end
+          it do
+            is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
+              .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
           end
         end
 
