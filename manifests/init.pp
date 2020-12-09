@@ -246,17 +246,6 @@ class foreman_proxy_content (
         contain foreman_proxy_content::dispatch_router::connector
       }
     }
-
-    include certs::apache
-    class { 'pulp::crane':
-      cert      => $certs::apache::apache_cert,
-      key       => $certs::apache::apache_key,
-      ssl_chain => $certs::katello_server_ca_cert,
-      ca_cert   => $certs::katello_default_ca_cert,
-      data_dir  => '/var/lib/pulp/published/docker/v2/app',
-      require   => Class['certs::apache'],
-    }
-
   }
 
   include foreman_proxy_content::pub_dir
@@ -280,6 +269,8 @@ class foreman_proxy_content (
       require => Class['pulp::install'],
       notify  => Class['pulp::service'],
     }
+
+    include certs::apache
 
     class { 'pulp':
       enable_ostree          => $enable_ostree,
