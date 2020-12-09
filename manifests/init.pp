@@ -38,12 +38,6 @@
 #
 # $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
 #
-# $proxy_pulp_deb_to_pulpcore::         Proxy /pulp/deb to Pulpcore at /pulp/content
-#
-# $proxy_pulp_isos_to_pulpcore::        Proxy /pulp/isos to Pulpcore at /pulp/content
-#
-# $proxy_pulp_yum_to_pulpcore::         Proxy /pulp/yum to Pulpcore at /pulp/content
-#
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                 Reverse proxy listening port
@@ -143,15 +137,6 @@ class foreman_proxy_content (
   Optional[String] $qpid_router_sasl_mech = 'PLAIN',
   Optional[String] $qpid_router_sasl_username = 'katello_agent',
   Optional[String] $qpid_router_sasl_password = $foreman_proxy_content::params::qpid_router_sasl_password,
-  Boolean $enable_ostree = false,
-  Boolean $enable_yum = true,
-  Boolean $enable_file = true,
-  Boolean $proxy_pulp_deb_to_pulpcore = true,
-  Boolean $proxy_pulp_isos_to_pulpcore = true,
-  Boolean $proxy_pulp_yum_to_pulpcore = true,
-  Boolean $enable_puppet = true,
-  Boolean $enable_docker = true,
-  Boolean $enable_deb = true,
 
   Boolean $manage_broker = true,
 
@@ -176,10 +161,6 @@ class foreman_proxy_content (
   $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
   $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
   $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
-
-  $enable_pulp2_rpm = $enable_yum and !($pulpcore and $proxy_pulp_yum_to_pulpcore)
-  $enable_pulp2_iso = $enable_file and !($pulpcore and $proxy_pulp_isos_to_pulpcore)
-  $enable_pulp2_deb = $enable_deb and !($pulpcore and $proxy_pulp_deb_to_pulpcore)
 
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
@@ -273,13 +254,12 @@ class foreman_proxy_content (
     include certs::apache
 
     class { 'pulp':
-      enable_ostree          => $enable_ostree,
-      enable_rpm             => $enable_pulp2_rpm,
-      enable_iso             => $enable_pulp2_iso,
-      enable_deb             => $enable_pulp2_deb,
-      enable_puppet          => $enable_puppet,
-      enable_docker          => $enable_docker,
-      enable_http            => true,
+      enable_ostree          => false,
+      enable_rpm             => false,
+      enable_iso             => false,
+      enable_deb             => false,
+      enable_puppet          => false,
+      enable_docker          => false,
       default_password       => $pulp_admin_password,
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
@@ -396,7 +376,7 @@ class foreman_proxy_content (
   }
   if $enable_deb {
     class { 'pulpcore::plugin::deb':
-      use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
+      use_pulp2_content_route => true,
     }
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
