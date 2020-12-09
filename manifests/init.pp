@@ -306,16 +306,16 @@ class foreman_proxy_content (
       proxy_password         => $pulp_proxy_password,
       worker_timeout         => $pulp_worker_timeout,
     }
-
-    pulp::apache::fragment{'gpg_key_proxy':
-      ssl_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
-    }
   }
 
   if $pulpcore {
     if $pulpcore_mirror {
       $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports']
       $pulpcore_allowed_export_path    = []
+
+      pulpcore::apache::fragment{'gpg_key_proxy':
+        https_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
+      }
     } else {
       $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
       $pulpcore_allowed_export_path    = ['/var/lib/pulp/exports']
