@@ -308,115 +308,98 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulpcore {
-    if $pulpcore_mirror {
-      $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports']
-      $pulpcore_allowed_export_path    = []
+  if $pulpcore_mirror {
+    $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports']
+    $pulpcore_allowed_export_path    = []
 
-      pulpcore::apache::fragment{'gpg_key_proxy':
-        https_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
-      }
-    } else {
-      $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
-      $pulpcore_allowed_export_path    = ['/var/lib/pulp/exports']
+    pulpcore::apache::fragment{'gpg_key_proxy':
+      https_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
     }
-    if $shared_with_foreman_vhost {
-      include foreman::config::apache
-      $servername = $foreman::config::apache::servername
-      $priority = $foreman::config::apache::priority
-      $apache_http_vhost = 'foreman'
-      $apache_https_vhost = 'foreman-ssl'
-      $apache_https_cert = undef
-      $apache_https_key = undef
-      $apache_https_ca = undef
-      $apache_https_chain = undef
-      Class['foreman::config::apache'] -> Class['pulpcore::apache']
-    } elsif $pulp and $pulp::manage_httpd {
-      $servername = $pulp::server_name
-      $priority = '05'
-      $apache_http_vhost = 'pulp-http'
-      $apache_https_vhost = 'pulp-https'
-      $apache_https_cert = undef
-      $apache_https_key = undef
-      $apache_https_ca = undef
-      $apache_https_chain = undef
-      Class['pulp::apache'] -> Class['pulpcore::apache']
-    } else {
-      include certs::apache
-      Class['certs::apache'] ~> Class['pulpcore::apache']
-      $servername = $certs::apache::hostname
-      $priority = undef
-      $apache_http_vhost = undef
-      $apache_https_vhost = undef
-      $apache_https_cert = $certs::apache::apache_cert
-      $apache_https_key = $certs::apache::apache_key
-      $apache_https_ca = $certs::katello_default_ca_cert
-      $apache_https_chain = $certs::katello_server_ca_cert
-    }
-
-    class { 'pulpcore':
-      allowed_import_path       => $pulpcore_allowed_import_path,
-      allowed_export_path       => $pulpcore_allowed_export_path,
-      apache_http_vhost         => $apache_http_vhost,
-      apache_https_vhost        => $apache_https_vhost,
-      apache_https_cert         => $apache_https_cert,
-      apache_https_key          => $apache_https_key,
-      apache_https_ca           => $apache_https_ca,
-      apache_https_chain        => $apache_https_chain,
-      apache_vhost_priority     => $priority,
-      servername                => $servername,
-      static_url                => '/pulp/assets/',
-      postgresql_manage_db      => $pulpcore_manage_postgresql,
-      postgresql_db_host        => $pulpcore_postgresql_host,
-      postgresql_db_port        => $pulpcore_postgresql_port,
-      postgresql_db_user        => $pulpcore_postgresql_user,
-      postgresql_db_password    => $pulpcore_postgresql_password,
-      postgresql_db_name        => $pulpcore_postgresql_db_name,
-      postgresql_db_ssl         => $pulpcore_postgresql_ssl,
-      postgresql_db_ssl_require => $pulpcore_postgresql_ssl_require,
-      postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
-      postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
-      postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
-      worker_count              => $pulpcore_worker_count,
-      before                    => Class['foreman_proxy::plugin::pulp'],
-    }
-
-    if $pulp_master {
-      include pulp
-      class { 'pulpcore::plugin::migration':
-        mongo_db_name         => $pulp::db_name,
-        mongo_db_seeds        => $pulp::db_seeds,
-        mongo_db_username     => $pulp::db_username,
-        mongo_db_password     => $pulp::db_password,
-        mongo_db_replica_set  => $pulp::db_replica_set,
-        mongo_db_ssl          => $pulp::db_ssl,
-        mongo_db_ssl_keyfile  => $pulp::db_ssl_keyfile,
-        mongo_db_ssl_certfile => $pulp::db_ssl_certfile,
-        mongo_db_verify_ssl   => $pulp::db_verify_ssl,
-        mongo_db_ca_path      => $pulp::db_ca_path,
-      }
-    }
-
-    if $enable_docker {
-      include pulpcore::plugin::container
-    }
-    if $enable_file {
-      class { 'pulpcore::plugin::file':
-        use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
-      }
-    }
-    if $enable_yum {
-      class { 'pulpcore::plugin::rpm':
-        use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
-      }
-    }
-    if $enable_deb {
-      class { 'pulpcore::plugin::deb':
-        use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
-      }
-    }
-    include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
+  } else {
+    $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
+    $pulpcore_allowed_export_path    = ['/var/lib/pulp/exports']
   }
+
+  if $shared_with_foreman_vhost {
+    include foreman::config::apache
+    $servername = $foreman::config::apache::servername
+    $priority = $foreman::config::apache::priority
+    $apache_http_vhost = 'foreman'
+    $apache_https_vhost = 'foreman-ssl'
+    $apache_https_cert = undef
+    $apache_https_key = undef
+    $apache_https_ca = undef
+    $apache_https_chain = undef
+    Class['foreman::config::apache'] -> Class['pulpcore::apache']
+  } elsif $pulp and $pulp::manage_httpd {
+    $servername = $pulp::server_name
+    $priority = '05'
+    $apache_http_vhost = 'pulp-http'
+    $apache_https_vhost = 'pulp-https'
+    $apache_https_cert = undef
+    $apache_https_key = undef
+    $apache_https_ca = undef
+    $apache_https_chain = undef
+    Class['pulp::apache'] -> Class['pulpcore::apache']
+  } else {
+    include certs::apache
+    Class['certs::apache'] ~> Class['pulpcore::apache']
+    $servername = $certs::apache::hostname
+    $priority = undef
+    $apache_http_vhost = undef
+    $apache_https_vhost = undef
+    $apache_https_cert = $certs::apache::apache_cert
+    $apache_https_key = $certs::apache::apache_key
+    $apache_https_ca = $certs::katello_default_ca_cert
+    $apache_https_chain = $certs::katello_server_ca_cert
+  }
+
+  class { 'pulpcore':
+    allowed_import_path       => $pulpcore_allowed_import_path,
+    allowed_export_path       => $pulpcore_allowed_export_path,
+    apache_http_vhost         => $apache_http_vhost,
+    apache_https_vhost        => $apache_https_vhost,
+    apache_https_cert         => $apache_https_cert,
+    apache_https_key          => $apache_https_key,
+    apache_https_ca           => $apache_https_ca,
+    apache_https_chain        => $apache_https_chain,
+    apache_vhost_priority     => $priority,
+    servername                => $servername,
+    static_url                => '/pulp/assets/',
+    postgresql_manage_db      => $pulpcore_manage_postgresql,
+    postgresql_db_host        => $pulpcore_postgresql_host,
+    postgresql_db_port        => $pulpcore_postgresql_port,
+    postgresql_db_user        => $pulpcore_postgresql_user,
+    postgresql_db_password    => $pulpcore_postgresql_password,
+    postgresql_db_name        => $pulpcore_postgresql_db_name,
+    postgresql_db_ssl         => $pulpcore_postgresql_ssl,
+    postgresql_db_ssl_require => $pulpcore_postgresql_ssl_require,
+    postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
+    postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
+    postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
+    worker_count              => $pulpcore_worker_count,
+    before                    => Class['foreman_proxy::plugin::pulp'],
+  }
+
+  if $enable_docker {
+    include pulpcore::plugin::container
+  }
+  if $enable_file {
+    class { 'pulpcore::plugin::file':
+      use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
+    }
+  }
+  if $enable_yum {
+    class { 'pulpcore::plugin::rpm':
+      use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+    }
+  }
+  if $enable_deb {
+    class { 'pulpcore::plugin::deb':
+      use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
+    }
+  }
+  include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
 
   if $puppet {
     # We can't pull the certs out to the top level, because of how it gets the default

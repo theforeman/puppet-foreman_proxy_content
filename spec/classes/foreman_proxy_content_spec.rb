@@ -43,7 +43,7 @@ describe 'foreman_proxy_content' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('pulp').with(manage_squid: true) }
         it { is_expected.not_to contain_class('foreman_proxy_content::dispatch_router') }
-        it { is_expected.not_to contain_class('pulpcore') }
+        it { is_expected.to contain_class('pulpcore') }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
 
         it do
