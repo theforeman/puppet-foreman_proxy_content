@@ -176,10 +176,6 @@ class foreman_proxy_content (
 
   ensure_packages('katello-debug')
 
-  if ($pulp_master or $pulp) and $facts['os']['release']['major'] != '7' {
-    fail('Pulp 2 is only supported on CentOS 7')
-  }
-
   class { 'certs::foreman_proxy':
     notify => Service['foreman-proxy'],
   }
@@ -195,7 +191,9 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulp_master or $pulp {
+  include foreman_proxy_content::pub_dir
+
+  if $facts['os']['release']['major'] == '7' {
     if $qpid_router {
       class { 'foreman_proxy_content::dispatch_router':
         agent_addr    => $qpid_router_agent_addr,
@@ -227,20 +225,8 @@ class foreman_proxy_content (
         contain foreman_proxy_content::dispatch_router::connector
       }
     }
-  }
 
-  include foreman_proxy_content::pub_dir
-
-  if $pulp {
     include apache
-
-    file {'/etc/httpd/conf.d/pulp_nodes.conf':
-      ensure  => file,
-      content => template('foreman_proxy_content/pulp_nodes.conf.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
 
     if $manage_broker {
       include foreman_proxy_content::broker
