@@ -22,37 +22,6 @@ describe 'foreman_proxy_content' do
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
       end
 
-      context 'with pulp', if: facts[:operatingsystemmajrelease] == '7' do
-        let(:params) do
-          {
-            qpid_router: false
-          }
-        end
-
-        let(:pre_condition) do
-          <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => true,
-            pulpcore_enabled => false,
-          }
-          PUPPET
-        end
-
-        it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('pulp').with(manage_squid: true) }
-        it { is_expected.not_to contain_class('foreman_proxy_content::dispatch_router') }
-        it { is_expected.to contain_class('pulpcore') }
-        it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
-
-        it do
-          is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
-            .with(path: '/')
-            .with(port: 8443)
-        end
-      end
-
       context 'with pulpcore' do
         let(:params) do
           {
