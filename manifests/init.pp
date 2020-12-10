@@ -4,13 +4,9 @@
 #
 # === Parameters:
 #
-# $enable_ostree::                      Enable ostree content plugin, this requires an ostree install
-#
 # $enable_yum::                         Enable rpm content plugin, including syncing of yum content
 #
 # $enable_file::                        Enable file content plugin
-#
-# $enable_puppet::                      Enable puppet content plugin
 #
 # $enable_docker::                      Enable docker content plugin
 #
@@ -19,24 +15,6 @@
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
-#
-# $pulp_admin_password::                Password for the Pulp admin user. It should be left blank so that a random password is generated
-#
-# $pulp_max_speed::                     The maximum download speed per second for a Pulp task, such as a sync. (e.g. "4 Kb" (Uses SI KB), 4MB, or 1GB" )
-#
-# $pulp_num_workers::                   Number of Pulp workers to use.
-#
-# $pulp_proxy_port::                    Port of the http proxy server
-#
-# $pulp_proxy_url::                     URL of the http proxy server
-#
-# $pulp_proxy_username::                Proxy username for authentication
-#
-# $pulp_proxy_password::                Proxy password for authentication
-#
-# $pulp_puppet_wsgi_processes::         Number of WSGI processes to spawn for the puppet webapp
-#
-# $pulp_ca_cert::                       Absolute path to PEM encoded CA certificate file, used by Pulp to validate the identity of the broker using SSL.
 #
 # $reverse_proxy::                      Add reverse proxy to the parent
 #
@@ -72,12 +50,6 @@
 #
 # $qpid_router_sasl_password::          SASL password to be used from router to broker
 #
-# $manage_broker::                      Manage the qpid message broker when applicable
-#
-# $pulp_worker_timeout::                The amount of time (in seconds) before considering a worker as missing. If Pulp's
-#                                       mongo database has slow I/O, then setting a higher number may resolve issues where workers are
-#                                       going missing incorrectly.
-#
 # $pulpcore_manage_postgresql::         Manage the Pulpcore PostgreSQL database.
 #
 # $pulpcore_postgresql_host::           Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
@@ -106,17 +78,6 @@
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
 class foreman_proxy_content (
-  String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
-  Optional[String] $pulp_max_speed = undef,
-  Optional[Integer[1]] $pulp_num_workers = undef,
-  Optional[String] $pulp_proxy_password = undef,
-  Optional[Stdlib::Port] $pulp_proxy_port = undef,
-  Optional[String] $pulp_proxy_url = undef,
-  Optional[String] $pulp_proxy_username = undef,
-  Integer[1] $pulp_puppet_wsgi_processes = 1,
-  Optional[Stdlib::Absolutepath] $pulp_ca_cert = undef,
-  Integer[0] $pulp_worker_timeout = 60,
-
   Boolean $puppet = true,
 
   Boolean $reverse_proxy = false,
@@ -138,7 +99,10 @@ class foreman_proxy_content (
   Optional[String] $qpid_router_sasl_username = 'katello_agent',
   Optional[String] $qpid_router_sasl_password = $foreman_proxy_content::params::qpid_router_sasl_password,
 
-  Boolean $manage_broker = true,
+  Boolean $enable_yum = true,
+  Boolean $enable_file = true,
+  Boolean $enable_docker = true,
+  Boolean $enable_deb = true,
 
   Boolean $pulpcore_manage_postgresql = true,
   Stdlib::Host $pulpcore_postgresql_host = 'localhost',
@@ -157,17 +121,15 @@ class foreman_proxy_content (
   include foreman_proxy
   include foreman_proxy::plugin::pulp
 
-  $pulp_master = $foreman_proxy::plugin::pulp::enabled
-  $pulp = $foreman_proxy::plugin::pulp::pulpnode_enabled
   $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
   $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
 
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
-  $reverse_proxy_real = ($pulp or $pulpcore_mirror) or $reverse_proxy
+  $reverse_proxy_real = $pulpcore_mirror or $reverse_proxy
 
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
-  $shared_with_foreman_vhost = ($pulpcore and !$pulpcore_mirror) or $pulp_master
+  $shared_with_foreman_vhost = $pulpcore and !$pulpcore_mirror
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
@@ -206,7 +168,13 @@ class foreman_proxy_content (
       }
       contain foreman_proxy_content::dispatch_router
 
-      if $pulp_master {
+      if $pulpcore_mirror {
+        class { 'foreman_proxy_content::dispatch_router::connector':
+          host => $foreman_host,
+          port => $qpid_router_hub_port,
+        }
+        contain foreman_proxy_content::dispatch_router::connector
+      } else {
         class { 'foreman_proxy_content::dispatch_router::hub':
           hub_addr      => $qpid_router_hub_addr,
           hub_port      => $qpid_router_hub_port,
@@ -217,60 +185,7 @@ class foreman_proxy_content (
           sasl_password => $qpid_router_sasl_password,
         }
         contain foreman_proxy_content::dispatch_router::hub
-      } else {
-        class { 'foreman_proxy_content::dispatch_router::connector':
-          host => $foreman_host,
-          port => $qpid_router_hub_port,
-        }
-        contain foreman_proxy_content::dispatch_router::connector
       }
-    }
-
-    include apache
-
-    if $manage_broker {
-      include foreman_proxy_content::broker
-    }
-
-    class { 'certs::qpid_client':
-      require => Class['pulp::install'],
-      notify  => Class['pulp::service'],
-    }
-
-    include certs::apache
-
-    class { 'pulp':
-      enable_ostree          => false,
-      enable_rpm             => false,
-      enable_iso             => false,
-      enable_deb             => false,
-      enable_puppet          => false,
-      enable_docker          => false,
-      default_password       => $pulp_admin_password,
-      messaging_transport    => 'qpid',
-      messaging_auth_enabled => false,
-      messaging_ca_cert      => pick($pulp_ca_cert, $certs::qpid_client::qpid_client_ca_cert),
-      messaging_client_cert  => $certs::qpid_client::qpid_client_cert,
-      messaging_url          => "ssl://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_url             => "qpid://${qpid_router_broker_addr}:${qpid_router_broker_port}",
-      broker_use_ssl         => true,
-      manage_broker          => false,
-      manage_httpd           => true,
-      manage_plugins_httpd   => true,
-      manage_squid           => true,
-      puppet_wsgi_processes  => $pulp_puppet_wsgi_processes,
-      num_workers            => $pulp_num_workers,
-      repo_auth              => true,
-      https_cert             => $certs::apache::apache_cert,
-      https_key              => $certs::apache::apache_key,
-      https_chain            => $certs::apache::apache_ca_cert,
-      https_ca_cert          => $certs::ca_cert,
-      yum_max_speed          => $pulp_max_speed,
-      proxy_port             => $pulp_proxy_port,
-      proxy_url              => $pulp_proxy_url,
-      proxy_username         => $pulp_proxy_username,
-      proxy_password         => $pulp_proxy_password,
-      worker_timeout         => $pulp_worker_timeout,
     }
   }
 
@@ -297,16 +212,6 @@ class foreman_proxy_content (
     $apache_https_ca = undef
     $apache_https_chain = undef
     Class['foreman::config::apache'] -> Class['pulpcore::apache']
-  } elsif $pulp and $pulp::manage_httpd {
-    $servername = $pulp::server_name
-    $priority = '05'
-    $apache_http_vhost = 'pulp-http'
-    $apache_https_vhost = 'pulp-https'
-    $apache_https_cert = undef
-    $apache_https_key = undef
-    $apache_https_ca = undef
-    $apache_https_chain = undef
-    Class['pulp::apache'] -> Class['pulpcore::apache']
   } else {
     include certs::apache
     Class['certs::apache'] ~> Class['pulpcore::apache']
