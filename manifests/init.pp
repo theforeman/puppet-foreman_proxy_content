@@ -352,12 +352,12 @@ class foreman_proxy_content (
   }
   if $enable_file {
     class { 'pulpcore::plugin::file':
-      use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
+      use_pulp2_content_route => true,
     }
   }
   if $enable_yum {
     class { 'pulpcore::plugin::rpm':
-      use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+      use_pulp2_content_route => true,
     }
   }
   if $enable_deb {

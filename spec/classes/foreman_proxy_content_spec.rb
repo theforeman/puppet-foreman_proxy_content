@@ -162,32 +162,6 @@ describe 'foreman_proxy_content' do
             end
           end
         end
-
-        context 'pulp-2to3-migration', if: facts[:operatingsystemmajrelease] == '7' do
-          let(:pre_condition) do
-            <<-PUPPET
-            include foreman_proxy
-            class { 'foreman_proxy::plugin::pulp':
-              enabled          => true,
-              pulpnode_enabled => false,
-              pulpcore_enabled => true,
-              pulpcore_mirror  => false,
-            }
-            PUPPET
-          end
-
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_class('pulpcore') }
-
-          it do
-            is_expected.to contain_class('pulpcore::plugin::migration')
-              .with_mongo_db_name('pulp_database')
-              .with_mongo_db_seeds('localhost:27017')
-              .with_mongo_db_ssl(false)
-              .with_mongo_db_verify_ssl(true)
-              .with_mongo_db_ca_path('/etc/pki/tls/certs/ca-bundle.crt')
-          end
-        end
       end
 
       context 'with puppet' do
