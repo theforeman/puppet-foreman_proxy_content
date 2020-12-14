@@ -184,7 +184,6 @@ class foreman_proxy_content (
   $enable_pulp2_iso = $enable_file and !($pulpcore and $proxy_pulp_isos_to_pulpcore)
   $enable_pulp2_deb = $enable_deb and !($pulpcore and $proxy_pulp_deb_to_pulpcore)
 
-  $foreman_proxy_fqdn = $facts['networking']['fqdn']
   $foreman_url = $foreman_proxy::foreman_base_url
   $reverse_proxy_real = ($pulp or $pulpcore_mirror) or $reverse_proxy
 
@@ -203,9 +202,7 @@ class foreman_proxy_content (
   }
 
   class { 'certs::foreman_proxy':
-    hostname => $foreman_proxy_fqdn,
-    require  => Class['certs'],
-    notify   => Service['foreman-proxy'],
+    notify => Service['foreman-proxy'],
   }
 
   class { 'foreman_proxy_content::bootstrap_rpm':
@@ -213,11 +210,7 @@ class foreman_proxy_content (
   }
 
   if $pulp or $reverse_proxy_real {
-    class { 'certs::apache':
-      hostname => $foreman_proxy_fqdn,
-      require  => Class['certs'],
-    }
-    ~> class { 'foreman_proxy_content::reverse_proxy':
+    class { 'foreman_proxy_content::reverse_proxy':
       path      => '/',
       url       => "${foreman_url}/",
       port      => $reverse_proxy_port,
@@ -351,7 +344,7 @@ class foreman_proxy_content (
       $apache_https_chain = undef
       Class['foreman::config::apache'] -> Class['pulpcore::apache']
     } elsif $pulp and $pulp::manage_httpd {
-      $servername = $facts['networking']['fqdn']
+      $servername = $pulp::server_name
       $priority = '05'
       $apache_http_vhost = 'pulp-http'
       $apache_https_vhost = 'pulp-https'
@@ -436,7 +429,7 @@ class foreman_proxy_content (
     include puppet
     if $puppet::server and $puppet::server::foreman {
       class { 'certs::puppet':
-        hostname => $foreman_proxy_fqdn,
+        hostname => $certs::foreman_proxy::hostname,
         before   => Class['foreman::puppetmaster'],
       }
     }
