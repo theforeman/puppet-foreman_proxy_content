@@ -209,12 +209,10 @@ class foreman_proxy_content (
     rhsm_port => $rhsm_port,
   }
 
-  if $pulp or $reverse_proxy_real {
+  if $reverse_proxy_real {
     class { 'foreman_proxy_content::reverse_proxy':
-      path      => '/',
-      url       => "${foreman_url}/",
-      port      => $reverse_proxy_port,
-      subscribe => Class['certs::foreman_proxy'],
+      url  => "${foreman_url}/",
+      port => $reverse_proxy_port,
     }
   }
 
