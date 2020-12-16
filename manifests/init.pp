@@ -4,8 +4,6 @@
 #
 # === Parameters:
 #
-# $parent_fqdn::                        FQDN of the parent node.
-#
 # $enable_ostree::                      Enable ostree content plugin, this requires an ostree install
 #
 # $enable_yum::                         Enable rpm content plugin, including syncing of yum content
@@ -114,7 +112,6 @@
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
 class foreman_proxy_content (
-  String[1] $parent_fqdn = $foreman_proxy_content::params::parent_fqdn,
   String $pulp_admin_password = $foreman_proxy_content::params::pulp_admin_password,
   Optional[String] $pulp_max_speed = undef,
   Optional[Integer[1]] $pulp_num_workers = undef,
@@ -185,6 +182,7 @@ class foreman_proxy_content (
   $enable_pulp2_deb = $enable_deb and !($pulpcore and $proxy_pulp_deb_to_pulpcore)
 
   $foreman_url = $foreman_proxy::foreman_base_url
+  $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
   $reverse_proxy_real = ($pulp or $pulpcore_mirror) or $reverse_proxy
 
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
@@ -242,7 +240,7 @@ class foreman_proxy_content (
         contain foreman_proxy_content::dispatch_router::hub
       } else {
         class { 'foreman_proxy_content::dispatch_router::connector':
-          host => $parent_fqdn,
+          host => $foreman_host,
           port => $qpid_router_hub_port,
         }
         contain foreman_proxy_content::dispatch_router::connector
