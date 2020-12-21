@@ -412,8 +412,10 @@ class foreman_proxy_content (
     class { 'pulpcore::plugin::rpm':
       use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
     }
-    class { 'pulpcore::plugin::deb':
-      use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
+    if $enable_deb {
+      class { 'pulpcore::plugin::deb':
+        use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
+      }
     }
     include pulpcore::plugin::certguard
   }
