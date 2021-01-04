@@ -405,12 +405,18 @@ class foreman_proxy_content (
       }
     }
 
-    include pulpcore::plugin::container
-    class { 'pulpcore::plugin::file':
-      use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
+    if $enable_docker {
+      include pulpcore::plugin::container
     }
-    class { 'pulpcore::plugin::rpm':
-      use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+    if $enable_file {
+      class { 'pulpcore::plugin::file':
+        use_pulp2_content_route => $proxy_pulp_isos_to_pulpcore,
+      }
+    }
+    if $enable_yum {
+      class { 'pulpcore::plugin::rpm':
+        use_pulp2_content_route => $proxy_pulp_yum_to_pulpcore,
+      }
     }
     if $enable_deb {
       class { 'pulpcore::plugin::deb':
