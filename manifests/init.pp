@@ -12,6 +12,8 @@
 #
 # $enable_deb::                         Enable debian content plugin
 #
+# $pulpcore_mirror::                    Deploy Pulp to be used as a mirror
+#
 # === Advanced parameters:
 #
 # $puppet::                             Enable puppet
@@ -78,6 +80,8 @@
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
 class foreman_proxy_content (
+  Boolean $pulpcore_mirror = false,
+
   Boolean $puppet = true,
 
   Boolean $reverse_proxy = false,
@@ -119,17 +123,13 @@ class foreman_proxy_content (
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
-  include foreman_proxy::plugin::pulp
-
-  $pulpcore_mirror = $foreman_proxy::plugin::pulp::pulpcore_mirror
-  $pulpcore = $foreman_proxy::plugin::pulp::pulpcore_enabled
 
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
   $reverse_proxy_real = $pulpcore_mirror or $reverse_proxy
 
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
-  $shared_with_foreman_vhost = $pulpcore and !$pulpcore_mirror
+  $shared_with_foreman_vhost = !$pulpcore_mirror
 
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
@@ -271,6 +271,16 @@ class foreman_proxy_content (
     }
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
+
+  class { 'foreman_proxy::plugin::pulp':
+    enabled              => !$pulpcore_mirror,
+    pulpnode_enabled     => false,
+    pulpcore_enabled     => true,
+    pulpcore_mirror      => $pulpcore_mirror,
+    pulpcore_api_url     => "https://${servername}",
+    pulpcore_content_url => "https://${servername}${pulpcore::apache::content_path}",
+    require              => Class['pulpcore'],
+  }
 
   if $puppet {
     # We can't pull the certs out to the top level, because of how it gets the default

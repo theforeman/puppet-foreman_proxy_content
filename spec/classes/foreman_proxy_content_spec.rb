@@ -6,17 +6,6 @@ describe 'foreman_proxy_content' do
       let(:facts) { facts }
 
       context 'without parameters' do
-        let(:pre_condition) do
-          <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
-            pulpcore_enabled => false,
-          }
-          PUPPET
-        end
-
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('katello-debug') }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
@@ -29,18 +18,6 @@ describe 'foreman_proxy_content' do
           }
         end
 
-        let(:pre_condition) do
-          <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
-            pulpcore_enabled => true,
-            pulpcore_mirror  => false,
-          }
-          PUPPET
-        end
-
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
         it do
@@ -48,38 +25,6 @@ describe 'foreman_proxy_content' do
             .with(apache_http_vhost: 'foreman')
             .with(apache_https_vhost: 'foreman-ssl')
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
-        end
-
-        context 'as mirror' do
-          let(:pre_condition) do
-            <<-PUPPET
-            include foreman_proxy
-            class { 'foreman_proxy::plugin::pulp':
-              enabled          => false,
-              pulpnode_enabled => false,
-              pulpcore_enabled => true,
-              pulpcore_mirror  => true,
-            }
-            PUPPET
-          end
-
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
-          it do
-            is_expected.to contain_class('pulpcore')
-              .with(apache_http_vhost: true)
-              .with(apache_https_vhost: true)
-              .that_comes_before('Class[foreman_proxy::plugin::pulp]')
-          end
-          it do
-            is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
-              .with(path: '/')
-              .with(port: 8443)
-          end
-          it do
-            is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
-              .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
-          end
         end
 
         context 'with external postgres' do
@@ -133,6 +78,32 @@ describe 'foreman_proxy_content' do
         end
       end
 
+      context 'as mirror' do
+        let(:params) do
+          {
+            pulpcore_mirror: true
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
+        it do
+          is_expected.to contain_class('pulpcore')
+            .with(apache_http_vhost: true)
+            .with(apache_https_vhost: true)
+            .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+        it do
+          is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
+            .with(path: '/')
+            .with(port: 8443)
+        end
+        it do
+          is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
+            .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
+        end
+      end
+
       context 'with puppet' do
         let(:params) do
           {
@@ -147,13 +118,6 @@ describe 'foreman_proxy_content' do
               server         => true,
               server_foreman => true,
             }
-            include foreman_proxy
-            class { 'foreman_proxy::plugin::pulp':
-              enabled          => false,
-              pulpnode_enabled => false,
-              pulpcore_enabled => false,
-              pulpcore_mirror  => false,
-            }
             PUPPET
           end
 
@@ -165,18 +129,6 @@ describe 'foreman_proxy_content' do
         end
 
         describe 'with puppet server disabled' do
-          let(:pre_condition) do
-            <<-PUPPET
-            include foreman_proxy
-            class { 'foreman_proxy::plugin::pulp':
-              enabled          => false,
-              pulpnode_enabled => false,
-              pulpcore_enabled => false,
-              pulpcore_mirror  => false,
-            }
-            PUPPET
-          end
-
           it { is_expected.to compile.with_all_deps }
           it { is_expected.not_to contain_class('certs::puppet') }
         end

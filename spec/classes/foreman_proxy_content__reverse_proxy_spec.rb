@@ -9,12 +9,6 @@ describe 'foreman_proxy_content::reverse_proxy' do
 
         let(:pre_condition) do
           <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
-            pulpcore_enabled => false,
-          }
           include foreman_proxy_content
           PUPPET
         end
@@ -36,17 +30,6 @@ describe 'foreman_proxy_content::reverse_proxy' do
 
       describe 'with explicit parameters' do
         let(:params) { { url: 'https://foreman.example.com/', port: 443 } }
-
-        let(:pre_condition) do
-          <<-PUPPET
-          include foreman_proxy
-          class { 'foreman_proxy::plugin::pulp':
-            enabled          => false,
-            pulpnode_enabled => false,
-            pulpcore_enabled => false,
-          }
-          PUPPET
-        end
 
         it { is_expected.to compile.with_all_deps }
         it do
