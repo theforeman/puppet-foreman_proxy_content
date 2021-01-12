@@ -417,7 +417,7 @@ class foreman_proxy_content (
         use_pulp2_content_route => $proxy_pulp_deb_to_pulpcore,
       }
     }
-    include pulpcore::plugin::certguard
+    include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
   }
 
   if $puppet {
