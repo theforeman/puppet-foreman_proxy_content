@@ -1,5 +1,13 @@
 # Changelog
 
+## [14.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.2.0) (2020-12-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.1.0...14.2.0)
+
+**Implemented enhancements:**
+
+- Refs [\#31539](https://projects.theforeman.org/issues/31539) - Support deb content with Pulpcore [\#313](https://github.com/theforeman/puppet-foreman_proxy_content/pull/313) ([ekohl](https://github.com/ekohl))
+
 ## [14.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.1.0) (2020-12-07)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.0.0...14.1.0)
