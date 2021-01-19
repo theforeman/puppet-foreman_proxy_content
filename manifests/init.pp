@@ -288,6 +288,7 @@ class foreman_proxy_content (
       enable_deb             => $enable_pulp2_deb,
       enable_puppet          => $enable_puppet,
       enable_docker          => $enable_docker,
+      enable_http            => true,
       default_password       => $pulp_admin_password,
       messaging_transport    => 'qpid',
       messaging_auth_enabled => false,
