@@ -254,6 +254,12 @@ class foreman_proxy_content (
 
   if $enable_docker {
     include pulpcore::plugin::container
+    unless $shared_with_foreman_vhost {
+      include foreman_proxy_content::container
+      class { 'foreman_proxy::plugin::container_gateway':
+        pulp_endpoint => "https://${servername}",
+      }
+    }
   }
   if $enable_file {
     class { 'pulpcore::plugin::file':

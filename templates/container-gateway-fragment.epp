@@ -1,0 +1,37 @@
+<%- |
+  Array[Struct[{
+    provider => Enum['directory', 'directorymatch', 'location', 'locationmatch', 'files', 'filesmatch', 'proxy', 'proxymatch'],
+    path => String[1],
+    Optional[request_headers] => Array[String[1]],
+    Optional[requires] => Array[String[1]],
+  }]] $directories,
+  Array[Hash[String, String]] $proxy_pass = [],
+  Array[String] $misc_options = [],
+| -%>
+
+  ## Container Gateway
+<%- $directories.each |$directory| { -%>
+  <%-
+    if $directory['provider'] =~ /^(.*)match$/ {
+      $provider = $1.capitalize + 'Match'
+    } else {
+      $provider = $directory['provider'].capitalize
+    }
+  -%>
+  <<%= $provider %> "<%= $directory['path'] %>">
+    <%- if $directory['requires'] { -%>
+    <%-   $directory['requires'].each |$requires_statement| { -%>
+    Require <%= $requires_statement %>
+    <%-   } -%>
+    <%- } -%>
+    <%- if $directory['request_headers'] { -%>
+    <%-   $directory['request_headers'].each |$request_statement| { -%>
+    RequestHeader <%= $request_statement %>
+    <%-   } -%>
+    <%- } -%>
+  </<%= $provider %>>
+<% } -%>
+<% $proxy_pass.each |$proxy| { -%>
+  ProxyPass <%= $proxy['path'] %> <%= $proxy['url'] %>
+  ProxyPassReverse <%= $proxy['path'] %> <%= $proxy['url'] %>
+<% } -%>
