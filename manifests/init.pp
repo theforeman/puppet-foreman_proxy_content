@@ -273,7 +273,7 @@ class foreman_proxy_content (
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
 
   class { 'foreman_proxy::plugin::pulp':
-    enabled              => !$pulpcore_mirror and $facts['os']['release']['major'] == '7',
+    enabled              => false,
     pulpnode_enabled     => false,
     pulpcore_enabled     => true,
     pulpcore_mirror      => $pulpcore_mirror,
