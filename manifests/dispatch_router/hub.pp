@@ -62,6 +62,12 @@ class foreman_proxy_content::dispatch_router::hub (
     connection => 'broker',
   }
 
+  qpid::router::link_route { 'broker-katello-agent-route-in':
+    prefix     => 'katello.agent',
+    direction  => 'in',
+    connection => 'broker',
+  }
+
   qpid::router::link_route { 'broker-qmf-route-in':
     prefix     => 'qmf.',
     connection => 'broker',
