@@ -1,5 +1,19 @@
 # Changelog
 
+## [16.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/16.0.0) (2021-02-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/15.0.0...16.0.0)
+
+**Breaking changes:**
+
+- Refs [\#30360](https://projects.theforeman.org/issues/30360): Disable Pulp 2 foreman\_proxy plugin [\#321](https://github.com/theforeman/puppet-foreman_proxy_content/pull/321) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Configure qpid dispatch router on EL8 [\#323](https://github.com/theforeman/puppet-foreman_proxy_content/pull/323) ([ehelms](https://github.com/ehelms))
+- Fixes [\#31800](https://projects.theforeman.org/issues/31800) - Create qdrouter inbound link for katello.agent queue [\#322](https://github.com/theforeman/puppet-foreman_proxy_content/pull/322) ([jturel](https://github.com/jturel))
+- Fixes [\#31642](https://projects.theforeman.org/issues/31642) - Add container gateway support [\#319](https://github.com/theforeman/puppet-foreman_proxy_content/pull/319) ([ianballou](https://github.com/ianballou))
+
 ## [15.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/15.0.0) (2021-02-01)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.2.0...15.0.0)
