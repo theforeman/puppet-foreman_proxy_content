@@ -12,12 +12,6 @@ describe 'foreman_proxy_content' do
       end
 
       context 'with pulpcore' do
-        let(:params) do
-          {
-            qpid_router: false
-          }
-        end
-
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
         it do
@@ -29,14 +23,14 @@ describe 'foreman_proxy_content' do
 
         context 'with external postgres' do
           let(:params) do
-            super().merge(
+            {
               pulpcore_manage_postgresql: false,
               pulpcore_postgresql_host: 'postgres-pulpcore.example.com',
               pulpcore_postgresql_port: 2345,
               pulpcore_postgresql_user: 'pulpuser',
               pulpcore_postgresql_password: 'sUpersEkret',
               pulpcore_postgresql_db_name: 'pulpcore1'
-            )
+            }
           end
 
           it { is_expected.to compile.with_all_deps }
