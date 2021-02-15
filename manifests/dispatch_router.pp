@@ -34,21 +34,15 @@ class foreman_proxy_content::dispatch_router (
 
   contain qpid::router
 
-  # SSL Certificate Configuration
-  class { 'certs::qpid_router':
-    require => Class['qpid::router::install'],
-  }
-  ~> qpid::router::ssl_profile { 'client':
-    ca   => $certs::ca_cert,
-    cert => $certs::qpid_router::client_cert,
-    key  => $certs::qpid_router::client_key,
-  }
-  ~> qpid::router::ssl_profile { 'server':
+  include certs::qpid_router::server
+
+  qpid::router::ssl_profile { 'server':
     ca        => $certs::ca_cert,
-    cert      => $certs::qpid_router::server_cert,
-    key       => $certs::qpid_router::server_key,
+    cert      => $certs::qpid_router::server::cert,
+    key       => $certs::qpid_router::server::key,
     ciphers   => $ssl_ciphers,
     protocols => $ssl_protocols,
+    subscribe => Class['certs::qpid_router::server'],
   }
 
   # Listen for katello-agent clients

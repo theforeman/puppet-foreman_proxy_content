@@ -11,25 +11,23 @@
 #
 # @param broker_port
 #   Port of qpidd broker to connect to
-#
-# @param sasl_mech
-#   SASL mechanism to be used from router to broker
-#
-# @param sasl_username
-#   SASL username to be used from router to broker
-#
-# @param sasl_password
-#   SASL password to be used from router to broker
 class foreman_proxy_content::dispatch_router::hub (
   Optional[String] $hub_addr = undef,
   Stdlib::Port $hub_port = 5646,
   String $broker_addr = undef,
   Stdlib::Port $broker_port = 5671,
-  String $sasl_mech = 'PLAIN',
-  String $sasl_username = 'katello_agent',
-  String $sasl_password = extlib::cache_data('foreman_cache_data', 'qpid_router_sasl_password', extlib::random_password(16)),
 ) {
   include foreman_proxy_content::dispatch_router
+
+  class { 'certs::qpid_router::client':
+    hostname => 'qpid_router_katello_agent',
+  }
+  ~> qpid::router::ssl_profile { 'client':
+    ca     => $certs::ca_cert,
+    cert   => $certs::qpid_router::client::cert,
+    key    => $certs::qpid_router::client::key,
+    notify => Service['qdrouterd'],
+  }
 
   qpid::router::listener {'hub':
     host        => $hub_addr,
@@ -40,14 +38,12 @@ class foreman_proxy_content::dispatch_router::hub (
 
   # Connect dispatch router to the local qpid
   qpid::router::connector { 'broker':
-    host          => $broker_addr,
-    port          => $broker_port,
-    sasl_mech     => $sasl_mech,
-    sasl_username => $sasl_username,
-    sasl_password => $sasl_password,
-    ssl_profile   => 'client',
-    role          => 'route-container',
-    idle_timeout  => 0,
+    host         => $broker_addr,
+    port         => $broker_port,
+    sasl_mech    => 'EXTERNAL',
+    ssl_profile  => 'client',
+    role         => 'route-container',
+    idle_timeout => 0,
   }
 
   qpid::router::link_route { 'broker-pulp-route-out':

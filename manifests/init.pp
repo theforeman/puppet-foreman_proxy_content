@@ -46,12 +46,6 @@
 #
 # $qpid_router_ssl_protocols::          Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
-# $qpid_router_sasl_mech::              SASL mechanism to be used from router to broker
-#
-# $qpid_router_sasl_username::          SASL username to be used from router to broker
-#
-# $qpid_router_sasl_password::          SASL password to be used from router to broker
-#
 # $pulpcore_manage_postgresql::         Manage the Pulpcore PostgreSQL database.
 #
 # $pulpcore_postgresql_host::           Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
@@ -99,9 +93,6 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $qpid_router_logging_path = '/var/log/qdrouterd',
   String $qpid_router_ssl_ciphers = 'ALL:!aNULL:+HIGH:-SSLv3:!IDEA-CBC-SHA',
   Optional[Array[String]] $qpid_router_ssl_protocols = undef,
-  Optional[String] $qpid_router_sasl_mech = 'PLAIN',
-  Optional[String] $qpid_router_sasl_username = 'katello_agent',
-  Optional[String] $qpid_router_sasl_password = $foreman_proxy_content::params::qpid_router_sasl_password,
 
   Boolean $enable_yum = true,
   Boolean $enable_file = true,
@@ -175,13 +166,10 @@ class foreman_proxy_content (
       contain foreman_proxy_content::dispatch_router::connector
     } else {
       class { 'foreman_proxy_content::dispatch_router::hub':
-        hub_addr      => $qpid_router_hub_addr,
-        hub_port      => $qpid_router_hub_port,
-        broker_addr   => $qpid_router_broker_addr,
-        broker_port   => $qpid_router_broker_port,
-        sasl_mech     => $qpid_router_sasl_mech,
-        sasl_username => $qpid_router_sasl_username,
-        sasl_password => $qpid_router_sasl_password,
+        hub_addr    => $qpid_router_hub_addr,
+        hub_port    => $qpid_router_hub_port,
+        broker_addr => $qpid_router_broker_addr,
+        broker_port => $qpid_router_broker_port,
       }
       contain foreman_proxy_content::dispatch_router::hub
     }

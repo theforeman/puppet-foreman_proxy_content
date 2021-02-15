@@ -10,6 +10,15 @@ class foreman_proxy_content::dispatch_router::connector (
   Stdlib::Port $port = 5646,
 ) {
   include foreman_proxy_content::dispatch_router
+  include certs::qpid_router::client
+
+  qpid::router::ssl_profile { 'client':
+    ca        => $certs::ca_cert,
+    cert      => $certs::qpid_router::client::cert,
+    key       => $certs::qpid_router::client::key,
+    notify    => Service['qdrouterd'],
+    subscribe => Class['certs::qpid_router::server'],
+  }
 
   qpid::router::connector { 'hub':
     host         => $host,
