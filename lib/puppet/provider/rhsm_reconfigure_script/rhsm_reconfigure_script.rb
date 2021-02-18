@@ -99,7 +99,7 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
           --rhsm.baseurl="$BASEURL"
       else
         # rhel setup
-        BASEURL=https://$KATELLO_SERVER/pulp/repos
+        BASEURL=https://$KATELLO_SERVER/pulp/content/
 
         # Get version of RHSM
         RHSM_V="$((rpm -q --queryformat='%{VERSION}' subscription-manager 2> /dev/null || echo 0.0.0) | tail -n1 | tr . ' ')"

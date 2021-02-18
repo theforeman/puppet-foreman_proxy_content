@@ -66,7 +66,7 @@ describe 'bootstrap_rpm', :order => :defined do
       its(:content) { should match /full_refresh_on_yum = 1/ }
       its(:content) { should match /package_profile_on_trans = 1/ }
       its(:content) { should match /hostname = #{host_inventory['fqdn']}/ }
-      its(:content) { should match /baseurl = https:\/\/#{host_inventory['fqdn']}\/pulp\/repos/ }
+      its(:content) { should match %r{baseurl = https://#{host_inventory['fqdn']}/pulp/content/} }
       its(:content) { should match /port = 443/ }
     end
   end
@@ -153,7 +153,7 @@ describe 'bootstrap_rpm', :order => :defined do
       its(:content) { should match /full_refresh_on_yum = 1/ }
       its(:content) { should match /package_profile_on_trans = 1/ }
       its(:content) { should match /hostname = #{host_inventory['fqdn']}/ }
-      its(:content) { should match /baseurl = https:\/\/#{host_inventory['fqdn']}\/pulp\/repos/ }
+      its(:content) { should match %r{baseurl = https://#{host_inventory['fqdn']}/pulp/content/} }
       its(:content) { should match /port = 443/ }
     end
   end
