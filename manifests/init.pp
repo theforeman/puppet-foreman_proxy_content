@@ -12,6 +12,8 @@
 #
 # $enable_deb::                                Enable debian content plugin
 #
+# $enable_katello_agent::                      Enable katello-agent for remote yum actions
+#
 # $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
 #
 # === Advanced parameters:
@@ -21,8 +23,6 @@
 # $reverse_proxy::                             Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                        Reverse proxy listening port
-#
-# $qpid_router::                               Configure qpid dispatch router
 #
 # $qpid_router_hub_addr::                      Address for dispatch router hub
 #
@@ -87,7 +87,6 @@ class foreman_proxy_content (
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
 
-  Boolean $qpid_router = true,
   Optional[String] $qpid_router_hub_addr = undef,
   Stdlib::Port $qpid_router_hub_port = 5646,
   Optional[String] $qpid_router_agent_addr = undef,
@@ -104,6 +103,8 @@ class foreman_proxy_content (
   Boolean $enable_file = true,
   Boolean $enable_docker = true,
   Boolean $enable_deb = true,
+
+  Boolean $enable_katello_agent = false,
 
   Boolean $pulpcore_manage_postgresql = true,
   Stdlib::Host $pulpcore_postgresql_host = 'localhost',
@@ -155,18 +156,19 @@ class foreman_proxy_content (
 
   include foreman_proxy_content::pub_dir
 
-  if $qpid_router {
-    class { 'foreman_proxy_content::dispatch_router':
-      agent_addr    => $qpid_router_agent_addr,
-      agent_port    => $qpid_router_agent_port,
-      ssl_ciphers   => $qpid_router_ssl_ciphers,
-      ssl_protocols => $qpid_router_ssl_protocols,
-      logging_level => $qpid_router_logging_level,
-      logging       => $qpid_router_logging,
-      logging_path  => $qpid_router_logging_path,
-    }
-    contain foreman_proxy_content::dispatch_router
+  class { 'foreman_proxy_content::dispatch_router':
+    ensure        => bool2str($enable_katello_agent, 'present', 'absent'),
+    agent_addr    => $qpid_router_agent_addr,
+    agent_port    => $qpid_router_agent_port,
+    ssl_ciphers   => $qpid_router_ssl_ciphers,
+    ssl_protocols => $qpid_router_ssl_protocols,
+    logging_level => $qpid_router_logging_level,
+    logging       => $qpid_router_logging,
+    logging_path  => $qpid_router_logging_path,
+  }
+  contain foreman_proxy_content::dispatch_router
 
+  if $enable_katello_agent {
     if $pulpcore_mirror {
       class { 'foreman_proxy_content::dispatch_router::connector':
         host => $foreman_host,
