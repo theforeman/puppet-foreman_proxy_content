@@ -20,7 +20,12 @@
 #
 # @param ssl_protocols
 #   Protocols to support in dispatch router (e.g. TLSv1.2, etc)
+#
+# @param ensure
+#   Specify to explicitly enable Qpid installs or absent to remove all packages and configs
+#
 class foreman_proxy_content::dispatch_router (
+  Enum['present', 'absent'] $ensure = 'present',
   Optional[Stdlib::Host] $agent_addr = undef,
   Stdlib::Port $agent_port = 5647,
 
@@ -32,41 +37,46 @@ class foreman_proxy_content::dispatch_router (
   Stdlib::Absolutepath $logging_path = '/var/log/qdrouterd',
 ) {
 
+  class { 'qpid::router':
+    ensure => $ensure,
+  }
   contain qpid::router
 
-  include certs::qpid_router::server
+  if $ensure == 'present' {
+    include certs::qpid_router::server
 
-  qpid::router::ssl_profile { 'server':
-    ca        => $certs::ca_cert,
-    cert      => $certs::qpid_router::server::cert,
-    key       => $certs::qpid_router::server::key,
-    ciphers   => $ssl_ciphers,
-    protocols => $ssl_protocols,
-    subscribe => Class['certs::qpid_router::server'],
-  }
-
-  # Listen for katello-agent clients
-  qpid::router::listener { 'clients':
-    host        => $agent_addr,
-    port        => $agent_port,
-    ssl_profile => 'server',
-  }
-
-  # Enable logging to syslog or file
-  if $logging == 'file' {
-    file { $logging_path:
-      ensure => directory,
-      owner  => 'qdrouterd',
+    qpid::router::ssl_profile { 'server':
+      ca        => $certs::ca_cert,
+      cert      => $certs::qpid_router::server::cert,
+      key       => $certs::qpid_router::server::key,
+      ciphers   => $ssl_ciphers,
+      protocols => $ssl_protocols,
+      subscribe => Class['certs::qpid_router::server'],
     }
-  }
 
-  $output_real = $logging ? {
-    'file'   => "${logging_path}/qdrouterd.log",
-    'syslog' => 'syslog',
-  }
+    # Listen for katello-agent clients
+    qpid::router::listener { 'clients':
+      host        => $agent_addr,
+      port        => $agent_port,
+      ssl_profile => 'server',
+    }
 
-  qpid::router::log { 'logging':
-    level  => $logging_level,
-    output => $output_real,
+    # Enable logging to syslog or file
+    if $logging == 'file' {
+      file { $logging_path:
+        ensure => directory,
+        owner  => 'qdrouterd',
+      }
+    }
+
+    $output_real = $logging ? {
+      'file'   => "${logging_path}/qdrouterd.log",
+      'syslog' => 'syslog',
+    }
+
+    qpid::router::log { 'logging':
+      level  => $logging_level,
+      output => $output_real,
+    }
   }
 }
