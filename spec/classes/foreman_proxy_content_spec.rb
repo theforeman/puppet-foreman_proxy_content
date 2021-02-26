@@ -65,6 +65,21 @@ describe 'foreman_proxy_content' do
             end
           end
         end
+
+        context 'with django_secret_key' do
+          let(:params) do
+            {
+              pulpcore_django_secret_key: 'abcdefg'
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with_django_secret_key('abcdefg')
+          end
+        end
       end
 
       context 'as mirror' do
