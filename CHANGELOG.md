@@ -1,5 +1,21 @@
 # Changelog
 
+## [17.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.0.0) (2021-03-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/16.0.0...17.0.0)
+
+**Breaking changes:**
+
+- Refs [\#31878](https://projects.theforeman.org/issues/31878): Use client certificate auth to talk from qpid-dispatch t… [\#327](https://github.com/theforeman/puppet-foreman_proxy_content/pull/327) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Fixes [\#31868](https://projects.theforeman.org/issues/31868): Switch to /pulp/content/ by default for clients [\#328](https://github.com/theforeman/puppet-foreman_proxy_content/pull/328) ([ehelms](https://github.com/ehelms))
+
+**Merged pull requests:**
+
+- Allow katello/qpid 7.x [\#332](https://github.com/theforeman/puppet-foreman_proxy_content/pull/332) ([ekohl](https://github.com/ekohl))
+
 ## [16.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/16.0.0) (2021-02-10)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/15.0.0...16.0.0)
@@ -59,7 +75,6 @@
 **Implemented enhancements:**
 
 - Refs [\#30436](https://projects.theforeman.org/issues/30436) - Add import/export params [\#304](https://github.com/theforeman/puppet-foreman_proxy_content/pull/304) ([jeremylenz](https://github.com/jeremylenz))
-
 ## [14.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.0.0) (2020-10-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/13.0.0...14.0.0)

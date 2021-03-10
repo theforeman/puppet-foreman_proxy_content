@@ -1,3 +1,62 @@
+## [16.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/16.0.0) (2021-02-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/15.0.0...16.0.0)
+
+**Breaking changes:**
+
+- Refs [\#30360](https://projects.theforeman.org/issues/30360): Disable Pulp 2 foreman\_proxy plugin [\#321](https://github.com/theforeman/puppet-foreman_proxy_content/pull/321) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Configure qpid dispatch router on EL8 [\#323](https://github.com/theforeman/puppet-foreman_proxy_content/pull/323) ([ehelms](https://github.com/ehelms))
+- Fixes [\#31800](https://projects.theforeman.org/issues/31800) - Create qdrouter inbound link for katello.agent queue [\#322](https://github.com/theforeman/puppet-foreman_proxy_content/pull/322) ([jturel](https://github.com/jturel))
+- Fixes [\#31642](https://projects.theforeman.org/issues/31642) - Add container gateway support [\#319](https://github.com/theforeman/puppet-foreman_proxy_content/pull/319) ([ianballou](https://github.com/ianballou))
+
+## [15.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/15.0.0) (2021-02-01)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.2.0...15.0.0)
+
+**Breaking changes:**
+
+- Drop unused Pulp dependency and pulp\_nodes template [\#318](https://github.com/theforeman/puppet-foreman_proxy_content/pull/318) ([ekohl](https://github.com/ekohl))
+- Drop parent\_fqdn in favor of deriving from foreman\_url [\#309](https://github.com/theforeman/puppet-foreman_proxy_content/pull/309) ([ehelms](https://github.com/ehelms))
+- Refs [\#31614](https://projects.theforeman.org/issues/31614): Drop Pulp 2, Pulpcore only [\#306](https://github.com/theforeman/puppet-foreman_proxy_content/pull/306) ([ehelms](https://github.com/ehelms))
+- Fixes [\#31435](https://projects.theforeman.org/issues/31435) - Drop ssl\_protocol parameter [\#302](https://github.com/theforeman/puppet-foreman_proxy_content/pull/302) ([ekohl](https://github.com/ekohl))
+- Fixes [\#31385](https://projects.theforeman.org/issues/31385) - Default to strict qpid-router ciphers [\#301](https://github.com/theforeman/puppet-foreman_proxy_content/pull/301) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- include all pulpcore plugins conditionally [\#311](https://github.com/theforeman/puppet-foreman_proxy_content/pull/311) ([evgeni](https://github.com/evgeni))
+- Simplify reverse proxy definition [\#308](https://github.com/theforeman/puppet-foreman_proxy_content/pull/308) ([ekohl](https://github.com/ekohl))
+- Fixes [\#31509](https://projects.theforeman.org/issues/31509) - Allow changing node FQDN [\#307](https://github.com/theforeman/puppet-foreman_proxy_content/pull/307) ([ekohl](https://github.com/ekohl))
+- Move static defaults from params to init [\#298](https://github.com/theforeman/puppet-foreman_proxy_content/pull/298) ([ekohl](https://github.com/ekohl))
+- Refs [\#30436](https://projects.theforeman.org/issues/30436) - add import/export params [\#297](https://github.com/theforeman/puppet-foreman_proxy_content/pull/297) ([jeremylenz](https://github.com/jeremylenz))
+- Deploy reverse proxy in Pulp 3 only scenarios [\#293](https://github.com/theforeman/puppet-foreman_proxy_content/pull/293) ([ehelms](https://github.com/ehelms))
+- Proxy pulp/deb to pulpcore support [\#292](https://github.com/theforeman/puppet-foreman_proxy_content/pull/292) ([jlsherrill](https://github.com/jlsherrill))
+
+**Fixed bugs:**
+
+- Ensure foreman\_proxy::plugin::pulp does not enable Pulp 2 on EL8 [\#316](https://github.com/theforeman/puppet-foreman_proxy_content/pull/316) ([ehelms](https://github.com/ehelms))
+- Fixes [\#31662](https://projects.theforeman.org/issues/31662): Set enable\_http to ensure pub dir is deployed to Pulp v… [\#315](https://github.com/theforeman/puppet-foreman_proxy_content/pull/315) ([ehelms](https://github.com/ehelms))
+- enable pulpcore deb only if enabled [\#310](https://github.com/theforeman/puppet-foreman_proxy_content/pull/310) ([jlsherrill](https://github.com/jlsherrill))
+- Don't enable Pulp2 Deb with Pulpcore [\#300](https://github.com/theforeman/puppet-foreman_proxy_content/pull/300) ([wbclark](https://github.com/wbclark))
+- Fix missing variable scoping on reverse\_proxy and add tests for pulpcore [\#294](https://github.com/theforeman/puppet-foreman_proxy_content/pull/294) ([ehelms](https://github.com/ehelms))
+
+## [14.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.2.0) (2020-12-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.1.0...14.2.0)
+
+**Implemented enhancements:**
+
+- Refs [\#31539](https://projects.theforeman.org/issues/31539) - Support deb content with Pulpcore [\#313](https://github.com/theforeman/puppet-foreman_proxy_content/pull/313) ([ekohl](https://github.com/ekohl))
+
+## [14.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.1.0) (2020-12-07)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/14.0.0...14.1.0)
+
+**Implemented enhancements:**
+
+- Refs [\#30436](https://projects.theforeman.org/issues/30436) - Add import/export params [\#304](https://github.com/theforeman/puppet-foreman_proxy_content/pull/304) ([jeremylenz](https://github.com/jeremylenz))
 ## [14.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/14.0.0) (2020-10-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/13.0.0...14.0.0)
