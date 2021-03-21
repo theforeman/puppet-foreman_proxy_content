@@ -7,4 +7,7 @@ class foreman_proxy_content::params {
 
   $pulpcore_postgresql_password = extlib::cache_data('pulpcore_cache_data', 'db_password', extlib::random_password(32))
   $pulpcore_worker_count        = min(8, $facts['processors']['count'])
+
+  $pulpcore_content_service_worker_timeout = 90
+  $pulpcore_api_service_worker_timeout     = 90
 }
