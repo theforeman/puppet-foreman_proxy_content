@@ -43,7 +43,7 @@ describe 'foreman_proxy_content' do
               pulpcore_postgresql_port: 2345,
               pulpcore_postgresql_user: 'pulpuser',
               pulpcore_postgresql_password: 'sUpersEkret',
-              pulpcore_postgresql_db_name: 'pulpcore1'
+              pulpcore_postgresql_db_name: 'pulpcore1',
             }
           end
 
