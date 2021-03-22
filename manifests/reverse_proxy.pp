@@ -18,7 +18,7 @@ class foreman_proxy_content::reverse_proxy (
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
-  Hash[String, Variant[String, Integer]] $proxy_pass_params = {},
+  Hash[String, Variant[String, Integer]] $proxy_pass_params = {'disablereuse' => 'on', 'retry' => '0'},
 ) {
   include apache
   include certs::apache
