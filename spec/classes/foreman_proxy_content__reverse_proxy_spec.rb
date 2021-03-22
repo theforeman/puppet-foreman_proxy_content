@@ -23,7 +23,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
               'path' => '/',
               'url' => "https://#{facts[:fqdn]}/",
               'reverse_urls' => ["https://#{facts[:fqdn]}/"],
-              'params' => {},
+              'params' => {'disablereuse' => 'on', 'retry' => '0'},
             }])
         end
       end
@@ -42,10 +42,10 @@ describe 'foreman_proxy_content::reverse_proxy' do
               'path' => '/',
               'url' => 'https://foreman.example.com/',
               'reverse_urls' => ['https://foreman.example.com/'],
-              'params' => {},
+              'params' => {'disablereuse' => 'on', 'retry' => '0'},
             }])
           is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
-            .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/$})
+            .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=on retry=0$})
         end
 
         describe 'with custom servername and cnames' do
@@ -74,7 +74,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
         end
 
         describe 'with proxy_pass_params' do
-          let(:params) { super().merge(proxy_pass_params: {disablereuse: 'on'}) }
+          let(:params) { super().merge(proxy_pass_params: {disablereuse: 'off'}) }
 
           it { is_expected.to compile.with_all_deps }
           it do
@@ -83,10 +83,10 @@ describe 'foreman_proxy_content::reverse_proxy' do
                 'path' => '/',
                 'url' => 'https://foreman.example.com/',
                 'reverse_urls' => ['https://foreman.example.com/'],
-                'params' => {'disablereuse' => 'on'},
+                'params' => {'disablereuse' => 'off'},
               }])
             is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
-              .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=on$})
+              .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=off$})
           end
         end
       end
