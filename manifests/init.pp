@@ -113,7 +113,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = '/etc/pki/katello/private/pulpcore-database.key',
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
-  Optional[String] $pulpcore_django_secret_key = undef,
+  Optional[String[50]] $pulpcore_django_secret_key = undef,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy

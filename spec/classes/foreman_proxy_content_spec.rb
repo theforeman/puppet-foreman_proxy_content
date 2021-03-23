@@ -69,7 +69,7 @@ describe 'foreman_proxy_content' do
         context 'with django_secret_key' do
           let(:params) do
             {
-              pulpcore_django_secret_key: 'abcdefg'
+              pulpcore_django_secret_key: 'randomsecretkeyfordjangowithatleast50characters123'
             }
           end
 
@@ -77,7 +77,7 @@ describe 'foreman_proxy_content' do
 
           it do
             is_expected.to contain_class('pulpcore')
-              .with_django_secret_key('abcdefg')
+              .with_django_secret_key('randomsecretkeyfordjangowithatleast50characters123')
           end
         end
       end
