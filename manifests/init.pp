@@ -73,6 +73,8 @@
 #                                       degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
 #                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
+# $pulpcore_django_secret_key::         Secret key used for cryptographic operations by Pulpcore's django runtime
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -111,6 +113,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = '/etc/pki/katello/private/pulpcore-database.key',
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
+  Optional[String[50]] $pulpcore_django_secret_key = undef,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -235,6 +238,7 @@ class foreman_proxy_content (
     postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
     postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
     worker_count              => $pulpcore_worker_count,
+    django_secret_key         => $pulpcore_django_secret_key,
     before                    => Class['foreman_proxy::plugin::pulp'],
   }
 
