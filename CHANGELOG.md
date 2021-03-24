@@ -1,5 +1,15 @@
 # Changelog
 
+## [17.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.1.0) (2021-03-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.0.0...17.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#32161](https://projects.theforeman.org/issues/32161): Set disablereuse=on and retry=0 on reverse proxy [\#337](https://github.com/theforeman/puppet-foreman_proxy_content/pull/337) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32149](https://projects.theforeman.org/issues/32149) - Expose pulpcore-{content,api} gunicorn worker timeouts [\#335](https://github.com/theforeman/puppet-foreman_proxy_content/pull/335) ([wbclark](https://github.com/wbclark))
+- Add pulpcore\_django\_secret\_key parameter [\#331](https://github.com/theforeman/puppet-foreman_proxy_content/pull/331) ([laugmanuel](https://github.com/laugmanuel))
+
 ## [17.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.0.0) (2021-03-10)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/16.0.0...17.0.0)
