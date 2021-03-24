@@ -13,7 +13,26 @@ describe 'foreman_proxy_content' do
           is_expected.to contain_class('pulpcore')
             .with(apache_http_vhost: 'foreman')
             .with(apache_https_vhost: 'foreman-ssl')
+            .with(content_service_worker_timeout: 90)
+            .with(api_service_worker_timeout: 90)
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+
+        context 'with custom service worker timeouts' do
+          let(:params) do
+            {
+              pulpcore_content_service_worker_timeout: 0,
+              pulpcore_api_service_worker_timeout: 120,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with(content_service_worker_timeout: 0)
+              .with(api_service_worker_timeout: 120)
+          end
         end
 
         context 'with external postgres' do
@@ -24,7 +43,7 @@ describe 'foreman_proxy_content' do
               pulpcore_postgresql_port: 2345,
               pulpcore_postgresql_user: 'pulpuser',
               pulpcore_postgresql_password: 'sUpersEkret',
-              pulpcore_postgresql_db_name: 'pulpcore1'
+              pulpcore_postgresql_db_name: 'pulpcore1',
             }
           end
 

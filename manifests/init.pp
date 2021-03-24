@@ -4,76 +4,80 @@
 #
 # === Parameters:
 #
-# $enable_yum::                         Enable rpm content plugin, including syncing of yum content
+# $enable_yum::                                Enable rpm content plugin, including syncing of yum content
 #
-# $enable_file::                        Enable file content plugin
+# $enable_file::                               Enable file content plugin
 #
-# $enable_docker::                      Enable docker content plugin
+# $enable_docker::                             Enable docker content plugin
 #
-# $enable_deb::                         Enable debian content plugin
+# $enable_deb::                                Enable debian content plugin
 #
-# $pulpcore_mirror::                    Deploy Pulp to be used as a mirror
+# $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
 #
 # === Advanced parameters:
 #
-# $puppet::                             Enable puppet
+# $puppet::                                    Enable puppet
 #
-# $reverse_proxy::                      Add reverse proxy to the parent
+# $reverse_proxy::                             Add reverse proxy to the parent
 #
-# $reverse_proxy_port::                 Reverse proxy listening port
+# $reverse_proxy_port::                        Reverse proxy listening port
 #
-# $qpid_router::                        Configure qpid dispatch router
+# $qpid_router::                               Configure qpid dispatch router
 #
-# $qpid_router_hub_addr::               Address for dispatch router hub
+# $qpid_router_hub_addr::                      Address for dispatch router hub
 #
-# $qpid_router_hub_port::               Port for dispatch router hub
+# $qpid_router_hub_port::                      Port for dispatch router hub
 #
-# $qpid_router_agent_addr::             Listener address for goferd agents
+# $qpid_router_agent_addr::                    Listener address for goferd agents
 #
-# $qpid_router_agent_port::             Listener port for goferd agents
+# $qpid_router_agent_port::                    Listener port for goferd agents
 #
-# $qpid_router_broker_addr::            Address of qpidd broker to connect to
+# $qpid_router_broker_addr::                   Address of qpidd broker to connect to
 #
-# $qpid_router_broker_port::            Port of qpidd broker to connect to
+# $qpid_router_broker_port::                   Port of qpidd broker to connect to
 #
-# $qpid_router_logging_level::          Logging level of dispatch router (e.g. info+ or debug+)
+# $qpid_router_logging_level::                 Logging level of dispatch router (e.g. info+ or debug+)
 #
-# $qpid_router_logging::                Whether to log to file or syslog.
+# $qpid_router_logging::                       Whether to log to file or syslog.
 #
-# $qpid_router_logging_path::           Directory for dispatch router logs, if using file logging
+# $qpid_router_logging_path::                  Directory for dispatch router logs, if using file logging
 #
-# $qpid_router_ssl_ciphers::            SSL Ciphers to support in dispatch router
+# $qpid_router_ssl_ciphers::                   SSL Ciphers to support in dispatch router
 #
-# $qpid_router_ssl_protocols::          Protocols to support in dispatch router (e.g. TLSv1.2, etc)
+# $qpid_router_ssl_protocols::                 Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
-# $pulpcore_manage_postgresql::         Manage the Pulpcore PostgreSQL database.
+# $pulpcore_manage_postgresql::                Manage the Pulpcore PostgreSQL database.
 #
-# $pulpcore_postgresql_host::           Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
+# $pulpcore_postgresql_host::                  Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
 #
-# $pulpcore_postgresql_port::           Port of the Pulpcore PostgreSQL database.
+# $pulpcore_postgresql_port::                  Port of the Pulpcore PostgreSQL database.
 #
-# $pulpcore_postgresql_user::           User of the Pulpcore PostgreSQL database.
+# $pulpcore_postgresql_user::                  User of the Pulpcore PostgreSQL database.
 #
-# $pulpcore_postgresql_password::       Password of the Pulpcore PostgreSQL database.
+# $pulpcore_postgresql_password::              Password of the Pulpcore PostgreSQL database.
 #
-# $pulpcore_postgresql_db_name::        Name of the Pulpcore database in PostgreSQL.
+# $pulpcore_postgresql_db_name::               Name of the Pulpcore database in PostgreSQL.
 #
-# $pulpcore_postgresql_ssl::            Enable SSL connection to the Pulpcore PostgreSQL database. Only meaningful for external/unmanaged DB.
+# $pulpcore_postgresql_ssl::                   Enable SSL connection to the Pulpcore PostgreSQL database. Only meaningful for external/unmanaged DB.
 #
-# $pulpcore_postgresql_ssl_require::    Configure Pulpcore to require an encrypted connection to the PostgreSQL database.
+# $pulpcore_postgresql_ssl_require::           Configure Pulpcore to require an encrypted connection to the PostgreSQL database.
 #
-# $pulpcore_postgresql_ssl_cert::       Path to SSL certificate to use for Pulpcore connection to PostgreSQL database.
+# $pulpcore_postgresql_ssl_cert::              Path to SSL certificate to use for Pulpcore connection to PostgreSQL database.
 #
-# $pulpcore_postgresql_ssl_key::        Path to key file to use for Pulpcore connection to PostgreSQL database.
+# $pulpcore_postgresql_ssl_key::               Path to key file to use for Pulpcore connection to PostgreSQL database.
 #
-# $pulpcore_postgresql_ssl_root_ca::    Path to the root certificate authority to validate the certificate supplied by the PostgreSQL database server.
+# $pulpcore_postgresql_ssl_root_ca::           Path to the root certificate authority to validate the certificate supplied by the PostgreSQL database server.
 #
-# $pulpcore_worker_count::              Number of pulpcore workers. Defaults to 8 or the number of CPU cores, whichever is smaller.
-#                                       Enabling more than 8 workers, even with additional CPU cores available, likely results in performance
-#                                       degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
-#                                       incrementally with benchmarking at each step to determine an optimal value for your deployment.
+# $pulpcore_worker_count::                     Number of pulpcore workers. Defaults to 8 or the number of CPU cores, whichever is smaller.
+#                                              Enabling more than 8 workers, even with additional CPU cores available, likely results in performance
+#                                              degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
+#                                              incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
-# $pulpcore_django_secret_key::         Secret key used for cryptographic operations by Pulpcore's django runtime
+# $pulpcore_content_service_worker_timeout::   Gunicorn worker timeout in seconds for the pulpcore-content.service
+#
+# $pulpcore_api_service_worker_timeout::       Gunicorn worker timeout in seconds for the pulpcore-api.service
+#
+# $pulpcore_django_secret_key::                Secret key used for cryptographic operations by Pulpcore's django runtime
 #
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
@@ -114,6 +118,8 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
   Optional[String[50]] $pulpcore_django_secret_key = undef,
+  Integer[0] $pulpcore_content_service_worker_timeout = $foreman_proxy_content::params::pulpcore_content_service_worker_timeout,
+  Integer[0] $pulpcore_api_service_worker_timeout = $foreman_proxy_content::params::pulpcore_api_service_worker_timeout,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -215,31 +221,33 @@ class foreman_proxy_content (
   }
 
   class { 'pulpcore':
-    allowed_import_path       => $pulpcore_allowed_import_path,
-    allowed_export_path       => $pulpcore_allowed_export_path,
-    apache_http_vhost         => $apache_http_vhost,
-    apache_https_vhost        => $apache_https_vhost,
-    apache_https_cert         => $apache_https_cert,
-    apache_https_key          => $apache_https_key,
-    apache_https_ca           => $apache_https_ca,
-    apache_https_chain        => $apache_https_chain,
-    apache_vhost_priority     => $priority,
-    servername                => $servername,
-    static_url                => '/pulp/assets/',
-    postgresql_manage_db      => $pulpcore_manage_postgresql,
-    postgresql_db_host        => $pulpcore_postgresql_host,
-    postgresql_db_port        => $pulpcore_postgresql_port,
-    postgresql_db_user        => $pulpcore_postgresql_user,
-    postgresql_db_password    => $pulpcore_postgresql_password,
-    postgresql_db_name        => $pulpcore_postgresql_db_name,
-    postgresql_db_ssl         => $pulpcore_postgresql_ssl,
-    postgresql_db_ssl_require => $pulpcore_postgresql_ssl_require,
-    postgresql_db_ssl_cert    => $pulpcore_postgresql_ssl_cert,
-    postgresql_db_ssl_key     => $pulpcore_postgresql_ssl_key,
-    postgresql_db_ssl_root_ca => $pulpcore_postgresql_ssl_root_ca,
-    worker_count              => $pulpcore_worker_count,
-    django_secret_key         => $pulpcore_django_secret_key,
-    before                    => Class['foreman_proxy::plugin::pulp'],
+    allowed_import_path            => $pulpcore_allowed_import_path,
+    allowed_export_path            => $pulpcore_allowed_export_path,
+    apache_http_vhost              => $apache_http_vhost,
+    apache_https_vhost             => $apache_https_vhost,
+    apache_https_cert              => $apache_https_cert,
+    apache_https_key               => $apache_https_key,
+    apache_https_ca                => $apache_https_ca,
+    apache_https_chain             => $apache_https_chain,
+    apache_vhost_priority          => $priority,
+    servername                     => $servername,
+    static_url                     => '/pulp/assets/',
+    postgresql_manage_db           => $pulpcore_manage_postgresql,
+    postgresql_db_host             => $pulpcore_postgresql_host,
+    postgresql_db_port             => $pulpcore_postgresql_port,
+    postgresql_db_user             => $pulpcore_postgresql_user,
+    postgresql_db_password         => $pulpcore_postgresql_password,
+    postgresql_db_name             => $pulpcore_postgresql_db_name,
+    postgresql_db_ssl              => $pulpcore_postgresql_ssl,
+    postgresql_db_ssl_require      => $pulpcore_postgresql_ssl_require,
+    postgresql_db_ssl_cert         => $pulpcore_postgresql_ssl_cert,
+    postgresql_db_ssl_key          => $pulpcore_postgresql_ssl_key,
+    postgresql_db_ssl_root_ca      => $pulpcore_postgresql_ssl_root_ca,
+    worker_count                   => $pulpcore_worker_count,
+    django_secret_key              => $pulpcore_django_secret_key,
+    content_service_worker_timeout => $pulpcore_content_service_worker_timeout,
+    api_service_worker_timeout     => $pulpcore_api_service_worker_timeout,
+    before                         => Class['foreman_proxy::plugin::pulp'],
   }
 
   if $enable_docker {
