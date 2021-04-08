@@ -147,7 +147,7 @@ describe 'foreman_proxy_content' do
           it { is_expected.to compile.with_all_deps }
           it do
             is_expected.to contain_class('certs::puppet')
-              .that_comes_before('Class[foreman::puppetmaster]')
+              .that_comes_before(['Class[puppet::server::config]', 'Class[puppetserver_foreman]'])
           end
         end
 

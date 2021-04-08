@@ -294,7 +294,7 @@ class foreman_proxy_content (
     if $puppet::server and $puppet::server::foreman {
       class { 'certs::puppet':
         hostname => $certs::foreman_proxy::hostname,
-        before   => Class['foreman::puppetmaster'],
+        before   => Class['puppet::server::config'],
       }
     }
   }
