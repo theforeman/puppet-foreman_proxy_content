@@ -15,6 +15,7 @@ describe 'foreman_proxy_content' do
             .with(apache_https_vhost: 'foreman-ssl')
             .with(content_service_worker_timeout: 90)
             .with(api_service_worker_timeout: 90)
+            .with(allowed_content_checksums: ['sha1', 'sha224', 'sha256', 'sha384', 'sha512'])
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
 
