@@ -46,6 +46,8 @@
 #
 # $qpid_router_ssl_protocols::                 Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
+# $pulpcore_allowed_content_checksums::        List of checksums to use for pulpcore content operations
+#
 # $pulpcore_manage_postgresql::                Manage the Pulpcore PostgreSQL database.
 #
 # $pulpcore_postgresql_host::                  Host of the Pulpcore PostgreSQL database. Must be specified if external/unmanaged.
@@ -108,6 +110,7 @@ class foreman_proxy_content (
   Boolean $pulpcore_manage_postgresql = true,
   Stdlib::Host $pulpcore_postgresql_host = 'localhost',
   Stdlib::Port $pulpcore_postgresql_port = 5432,
+  Pulpcore::ChecksumTypes $pulpcore_allowed_content_checksums = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512'],
   String $pulpcore_postgresql_user = 'pulp',
   String $pulpcore_postgresql_password = $foreman_proxy_content::params::pulpcore_postgresql_password,
   String $pulpcore_postgresql_db_name = 'pulpcore',
@@ -221,6 +224,7 @@ class foreman_proxy_content (
   }
 
   class { 'pulpcore':
+    allowed_content_checksums      => $pulpcore_allowed_content_checksums,
     allowed_import_path            => $pulpcore_allowed_import_path,
     allowed_export_path            => $pulpcore_allowed_export_path,
     apache_http_vhost              => $apache_http_vhost,
