@@ -12,6 +12,8 @@
 #
 # $enable_deb::                                Enable debian content plugin
 #
+# $enable_ansible::                            Enable ansible content plugin
+#
 # $enable_katello_agent::                      Enable katello-agent for remote yum actions
 #
 # $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
@@ -105,7 +107,7 @@ class foreman_proxy_content (
   Boolean $enable_file = true,
   Boolean $enable_docker = true,
   Boolean $enable_deb = true,
-
+  Boolean $enable_ansible = true,
   Boolean $enable_katello_agent = false,
 
   Boolean $pulpcore_manage_postgresql = true,
@@ -278,6 +280,10 @@ class foreman_proxy_content (
   if $enable_deb {
     class { 'pulpcore::plugin::deb':
       use_pulp2_content_route => true,
+    }
+  }
+  if $enable_ansible {
+    class { 'pulpcore::plugin::ansible':
     }
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
