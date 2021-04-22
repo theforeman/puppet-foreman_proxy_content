@@ -4,15 +4,15 @@
 #
 # === Parameters:
 #
-# $enable_yum::                                Enable rpm content plugin, including syncing of yum content
+# $enable_yum::                                Enable the RPM content feature. This allows syncing, managing and serving RPM content to be consumed by package managers like yum and dnf.
 #
-# $enable_file::                               Enable file content plugin
+# $enable_file::                               Enable the file content feature. This allows syncing, managing, and serving file content.
 #
-# $enable_docker::                             Enable docker content plugin
+# $enable_docker::                             Enable the container content feature. This allows syncing, managing, and serving container content.
 #
-# $enable_deb::                                Enable debian content plugin
+# $enable_deb::                                Enable the Debian content feature. This allows syncing, managing, and serving Debian content.
 #
-# $enable_ansible::                            Enable ansible content plugin
+# $enable_ansible::                            Enable the Ansible content feature. This allows syncing, managing, and serving Ansible content.
 #
 # $enable_katello_agent::                      Enable katello-agent for remote yum actions
 #
