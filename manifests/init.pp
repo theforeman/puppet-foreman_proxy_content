@@ -113,7 +113,7 @@ class foreman_proxy_content (
   Boolean $pulpcore_manage_postgresql = true,
   Stdlib::Host $pulpcore_postgresql_host = 'localhost',
   Stdlib::Port $pulpcore_postgresql_port = 5432,
-  Pulpcore::ChecksumTypes $pulpcore_allowed_content_checksums = ['sha1', 'sha224', 'sha256', 'sha384', 'sha512'],
+  Pulpcore::ChecksumTypes $pulpcore_allowed_content_checksums = $foreman_proxy_content::params::pulpcore_allowed_content_checksums,
   String $pulpcore_postgresql_user = 'pulp',
   String $pulpcore_postgresql_password = $foreman_proxy_content::params::pulpcore_postgresql_password,
   String $pulpcore_postgresql_db_name = 'pulpcore',
