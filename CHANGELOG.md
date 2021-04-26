@@ -1,5 +1,26 @@
 # Changelog
 
+## [18.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.0.0) (2021-04-27)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.1.0...18.0.0)
+
+**Breaking changes:**
+
+- Refs [\#32239](https://projects.theforeman.org/issues/32239) - Drop pulp 2 parameters from foreman\_proxy::plugin::pulp [\#339](https://github.com/theforeman/puppet-foreman_proxy_content/pull/339) ([ehelms](https://github.com/ehelms))
+- Refs [\#32037](https://projects.theforeman.org/issues/32037): Add flag to enable katello\_agent infrastructure and disable it by default [\#329](https://github.com/theforeman/puppet-foreman_proxy_content/pull/329) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow puppet-certs \< 13.0.0 [\#348](https://github.com/theforeman/puppet-foreman_proxy_content/pull/348) ([wbclark](https://github.com/wbclark))
+- Fixes [\#32160](https://projects.theforeman.org/issues/32160) - enable ansible content [\#343](https://github.com/theforeman/puppet-foreman_proxy_content/pull/343) ([jlsherrill](https://github.com/jlsherrill))
+- Fixes [\#32338](https://projects.theforeman.org/issues/32338) - expose pulpcore allowed\_content\_checksums [\#342](https://github.com/theforeman/puppet-foreman_proxy_content/pull/342) ([jlsherrill](https://github.com/jlsherrill))
+- Allow puppet-qpid 8+ [\#341](https://github.com/theforeman/puppet-foreman_proxy_content/pull/341) ([ehelms](https://github.com/ehelms))
+- Generalize Puppet certs chaining [\#340](https://github.com/theforeman/puppet-foreman_proxy_content/pull/340) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Refs [\#32338](https://projects.theforeman.org/issues/32338) - Move content array param to params.pp [\#346](https://github.com/theforeman/puppet-foreman_proxy_content/pull/346) ([ekohl](https://github.com/ekohl))
+
 ## [17.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.1.0) (2021-03-24)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.0.0...17.1.0)
