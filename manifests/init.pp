@@ -226,6 +226,10 @@ class foreman_proxy_content (
     $apache_https_chain = $certs::katello_server_ca_cert
   }
 
+  $api_client_auth_cn_map = Hash($foreman_proxy::trusted_hosts.map |$host| {
+      [$host, 'admin']
+  })
+
   class { 'pulpcore':
     allowed_content_checksums      => $pulpcore_allowed_content_checksums,
     allowed_import_path            => $pulpcore_allowed_import_path,
@@ -254,6 +258,7 @@ class foreman_proxy_content (
     django_secret_key              => $pulpcore_django_secret_key,
     content_service_worker_timeout => $pulpcore_content_service_worker_timeout,
     api_service_worker_timeout     => $pulpcore_api_service_worker_timeout,
+    api_client_auth_cn_map         => $api_client_auth_cn_map,
     before                         => Class['foreman_proxy::plugin::pulp'],
   }
 
