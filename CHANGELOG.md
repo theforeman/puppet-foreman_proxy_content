@@ -1,5 +1,17 @@
 # Changelog
 
+## [18.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.1.0) (2021-04-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.0.0...18.1.0)
+
+**Implemented enhancements:**
+
+- Improve clarity of content type feature param documentation strings [\#344](https://github.com/theforeman/puppet-foreman_proxy_content/pull/344) ([wbclark](https://github.com/wbclark))
+
+**Fixed bugs:**
+
+- Fixes [\#32443](https://projects.theforeman.org/issues/32443) - Add support for md5 for ALLOWED\_CONTENT\_CHECKSUM [\#349](https://github.com/theforeman/puppet-foreman_proxy_content/pull/349) ([jlsherrill](https://github.com/jlsherrill))
+
 ## [18.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.0.0) (2021-04-27)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.1.0...18.0.0)
