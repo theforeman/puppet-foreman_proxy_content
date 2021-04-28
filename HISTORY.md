@@ -1,3 +1,50 @@
+## [18.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.0.0) (2021-04-27)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.1.0...18.0.0)
+
+**Breaking changes:**
+
+- Refs [\#32239](https://projects.theforeman.org/issues/32239) - Drop pulp 2 parameters from foreman\_proxy::plugin::pulp [\#339](https://github.com/theforeman/puppet-foreman_proxy_content/pull/339) ([ehelms](https://github.com/ehelms))
+- Refs [\#32037](https://projects.theforeman.org/issues/32037): Add flag to enable katello\_agent infrastructure and disable it by default [\#329](https://github.com/theforeman/puppet-foreman_proxy_content/pull/329) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow puppet-certs \< 13.0.0 [\#348](https://github.com/theforeman/puppet-foreman_proxy_content/pull/348) ([wbclark](https://github.com/wbclark))
+- Fixes [\#32160](https://projects.theforeman.org/issues/32160) - enable ansible content [\#343](https://github.com/theforeman/puppet-foreman_proxy_content/pull/343) ([jlsherrill](https://github.com/jlsherrill))
+- Fixes [\#32338](https://projects.theforeman.org/issues/32338) - expose pulpcore allowed\_content\_checksums [\#342](https://github.com/theforeman/puppet-foreman_proxy_content/pull/342) ([jlsherrill](https://github.com/jlsherrill))
+- Allow puppet-qpid 8+ [\#341](https://github.com/theforeman/puppet-foreman_proxy_content/pull/341) ([ehelms](https://github.com/ehelms))
+- Generalize Puppet certs chaining [\#340](https://github.com/theforeman/puppet-foreman_proxy_content/pull/340) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Refs [\#32338](https://projects.theforeman.org/issues/32338) - Move content array param to params.pp [\#346](https://github.com/theforeman/puppet-foreman_proxy_content/pull/346) ([ekohl](https://github.com/ekohl))
+
+## [17.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.1.0) (2021-03-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.0.0...17.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#32161](https://projects.theforeman.org/issues/32161): Set disablereuse=on and retry=0 on reverse proxy [\#337](https://github.com/theforeman/puppet-foreman_proxy_content/pull/337) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32149](https://projects.theforeman.org/issues/32149) - Expose pulpcore-{content,api} gunicorn worker timeouts [\#335](https://github.com/theforeman/puppet-foreman_proxy_content/pull/335) ([wbclark](https://github.com/wbclark))
+- Add pulpcore\_django\_secret\_key parameter [\#331](https://github.com/theforeman/puppet-foreman_proxy_content/pull/331) ([laugmanuel](https://github.com/laugmanuel))
+
+## [17.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/17.0.0) (2021-03-10)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/16.0.0...17.0.0)
+
+**Breaking changes:**
+
+- Refs [\#31878](https://projects.theforeman.org/issues/31878): Use client certificate auth to talk from qpid-dispatch t… [\#327](https://github.com/theforeman/puppet-foreman_proxy_content/pull/327) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Fixes [\#31868](https://projects.theforeman.org/issues/31868): Switch to /pulp/content/ by default for clients [\#328](https://github.com/theforeman/puppet-foreman_proxy_content/pull/328) ([ehelms](https://github.com/ehelms))
+
+**Merged pull requests:**
+
+- Allow katello/qpid 7.x [\#332](https://github.com/theforeman/puppet-foreman_proxy_content/pull/332) ([ekohl](https://github.com/ekohl))
+
 ## [16.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/16.0.0) (2021-02-10)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/15.0.0...16.0.0)
