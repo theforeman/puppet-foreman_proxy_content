@@ -149,7 +149,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
 
     return false if rpms.empty?
 
-    rpms.max_by { |name| rpm('-qp', name, "--queryformat=%{release}") }
+    rpms.max_by { |name| rpm('-qp', name, "--queryformat=%{release}")[/\d+/].to_i }
   end
 
   def mkdir(dir)
