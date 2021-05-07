@@ -32,6 +32,10 @@ describe 'bootstrap_rpm', :order => :defined do
       it { should be_file }
     end
 
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
+      it { should_not exist }
+    end
+
     describe file('/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm') do
       it { should be_symlink }
       it { should be_linked_to "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm" }
@@ -68,6 +72,26 @@ describe 'bootstrap_rpm', :order => :defined do
       its(:content) { should match /hostname = #{host_inventory['fqdn']}/ }
       its(:content) { should match %r{baseurl = https://#{host_inventory['fqdn']}/pulp/content/} }
       its(:content) { should match /port = 443/ }
+    end
+  end
+
+  context 'ensure symlink is present if deleted' do
+    it 'removes symlink and re-applies the manifest' do
+      apply_manifest("exec { '/bin/unlink /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm': }", catch_failures: true)
+      apply_manifest("class { 'foreman_proxy_content::bootstrap_rpm': }", catch_failures: true)
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm") do
+      it { should be_file }
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
+      it { should_not exist }
+    end
+
+    describe file('/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm') do
+      it { should be_symlink }
+      it { should be_linked_to "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm" }
     end
   end
 
@@ -159,7 +183,7 @@ describe 'bootstrap_rpm', :order => :defined do
   end
 
   context 'correctly sets latest RPM after reaching RPM release of 10' do
-    it 'applies 8 more times without error' do
+    it 'applies 7 more times without error' do
       7.times do |num|
         apply_manifest(
           "class { 'foreman_proxy_content::bootstrap_rpm': rhsm_port => 844#{num}, }",

@@ -15,7 +15,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
     if rpm_changed?
       copy_rpm
       copy_srpm
-      link_rpm
+      link_rpm(resource[:symlink])
     end
   ensure
     FileUtils.remove_dir(base_dir) if File.directory?(base_dir)
@@ -27,7 +27,24 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
     write_specfile
     build_rpm
 
-    (!resource[:symlink] || File.exist?(resource[:symlink])) && !rpm_changed?
+    !rpm_changed?
+  end
+
+  def symlink
+    File.readlink(resource[:symlink]) if File.exist?(resource[:symlink])
+  end
+
+  def symlink=(value)
+    link_rpm(value)
+  end
+
+  def latest_rpm
+    rpms = Dir.glob("#{resource[:dest]}/*.noarch.rpm")
+    rpms = rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
+
+    return false if rpms.empty?
+
+    rpms.max_by { |name| rpm('-qp', name, "--queryformat=%{release}")[/\d+/].to_i }
   end
 
   private
@@ -139,17 +156,8 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
     Dir.glob("#{srpm_dir}/*")[0]
   end
 
-  def link_rpm
-    FileUtils.ln_s(latest_rpm, resource[:symlink], force: true) if resource[:symlink]
-  end
-
-  def latest_rpm
-    rpms = Dir.glob("#{resource[:dest]}/*.noarch.rpm")
-    rpms = rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
-
-    return false if rpms.empty?
-
-    rpms.max_by { |name| rpm('-qp', name, "--queryformat=%{release}")[/\d+/].to_i }
+  def link_rpm(dest)
+    FileUtils.ln_s(latest_rpm, dest, force: true)
   end
 
   def mkdir(dir)
