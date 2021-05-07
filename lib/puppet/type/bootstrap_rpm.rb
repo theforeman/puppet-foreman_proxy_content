@@ -15,8 +15,20 @@ Puppet::Type.newtype(:bootstrap_rpm) do
     desc "Location on disk to deploy the bootstrap RPM"
   end
 
-  newparam(:symlink) do
+  newproperty(:symlink) do
     desc "Name of the symlink to link the most recent RPM to"
+
+    def latest_rpm
+      provider.latest_rpm
+    end
+
+    def should_to_s(newvalue)
+      self.class.format_value_for_display(latest_rpm)
+    end
+
+    def insync?(is)
+      is == latest_rpm
+    end
   end
 
   autorequire(:file) do
