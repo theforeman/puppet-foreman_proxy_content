@@ -1,6 +1,21 @@
 # Changelog
 
-## [18.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.1.0) (2021-04-28)
+## [18.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.2.0) (2021-05-17)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.1.0...18.2.0)
+
+**Implemented enhancements:**
+
+- Allow Puppet 7 compatible versions of mods [\#354](https://github.com/theforeman/puppet-foreman_proxy_content/pull/354) ([ekohl](https://github.com/ekohl))
+- Include certs::foreman\_proxy instead of declaring [\#353](https://github.com/theforeman/puppet-foreman_proxy_content/pull/353) ([ekohl](https://github.com/ekohl))
+- Fixes [\#32383](https://projects.theforeman.org/issues/32383): Set Pulp to expect Foreman host as the client authentic… [\#350](https://github.com/theforeman/puppet-foreman_proxy_content/pull/350) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Fixes [\#32567](https://projects.theforeman.org/issues/32567): Ensure bootstrap RPM symlink exists [\#357](https://github.com/theforeman/puppet-foreman_proxy_content/pull/357) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32529](https://projects.theforeman.org/issues/32529): Find latest bootstrap RPM by sorting as integer [\#355](https://github.com/theforeman/puppet-foreman_proxy_content/pull/355) ([ehelms](https://github.com/ehelms))
+
+## [18.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.1.0) (2021-04-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.0.0...18.1.0)
 
