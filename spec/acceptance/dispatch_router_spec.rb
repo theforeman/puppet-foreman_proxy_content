@@ -2,13 +2,13 @@ require 'spec_helper_acceptance'
 
 describe 'dispatch_router' do
   context 'with default parameters' do
-    let(:pp) do
-      <<-PUPPET
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
       include foreman_proxy_content::dispatch_router
-      PUPPET
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     describe service('qdrouterd') do
       it { is_expected.to be_running }
@@ -21,15 +21,15 @@ describe 'dispatch_router' do
   end
 
   context 'with ensure absent' do
-    let(:pp) do
-      <<-PUPPET
-      class { 'foreman_proxy_content::dispatch_router':
-        ensure => 'absent',
-      }
-      PUPPET
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman_proxy_content::dispatch_router':
+          ensure => 'absent',
+        }
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     describe service('qdrouterd') do
       it { is_expected.not_to be_running }
