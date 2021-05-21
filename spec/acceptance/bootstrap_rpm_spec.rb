@@ -7,19 +7,19 @@ describe 'bootstrap_rpm', :order => :defined do
   end
 
   context 'with default params' do
-    let(:pp) do
-      <<-EOS
-      include foreman_proxy_content::bootstrap_rpm
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        include foreman_proxy_content::bootstrap_rpm
 
-      package { "katello-ca-consumer-#{host_inventory['fqdn']}":
-        ensure => installed,
-        source => "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm",
-        require => Class['foreman_proxy_content::bootstrap_rpm'],
-      }
-      EOS
+        package { "katello-ca-consumer-#{host_inventory['fqdn']}":
+          ensure => installed,
+          source => "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm",
+          require => Class['foreman_proxy_content::bootstrap_rpm'],
+        }
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     describe file('/var/www/html/pub/katello-rhsm-consumer') do
       it { should be_file }
@@ -96,29 +96,29 @@ describe 'bootstrap_rpm', :order => :defined do
   end
 
   context 'creates new RPM after CA changes' do
-    let(:pp) do
-      <<-EOS
-      include foreman_proxy_content::bootstrap_rpm
-
-      package { "katello-ca-consumer-#{host_inventory['fqdn']}":
-        ensure => latest,
-        source => "/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm",
-        require => Class['foreman_proxy_content::bootstrap_rpm'],
-      }
-      EOS
-    end
-
     before(:all) do
-      pp_setup = <<-EOS
+      pp_setup = <<-PUPPET
         exec { "rm -rf /root/ssl-build":
           path => "/bin:/usr/bin",
         }
-      EOS
+      PUPPET
 
       apply_manifest(pp_setup, catch_failures: true)
     end
 
-    it_behaves_like 'a idempotent resource'
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        include foreman_proxy_content::bootstrap_rpm
+
+        package { "katello-ca-consumer-#{host_inventory['fqdn']}":
+          ensure => latest,
+          source => "/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm",
+          require => Class['foreman_proxy_content::bootstrap_rpm'],
+        }
+        PUPPET
+      end
+    end
 
     describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
       it { should be_file }
@@ -138,21 +138,21 @@ describe 'bootstrap_rpm', :order => :defined do
   end
 
   context 'creates new RPM after port changes' do
-    let(:pp) do
-      <<-EOS
-      class { 'foreman_proxy_content::bootstrap_rpm':
-        rhsm_port => 8443,
-      }
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          rhsm_port => 8443,
+        }
 
-      package { "katello-ca-consumer-#{host_inventory['fqdn']}":
-        ensure => latest,
-        source => "/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm",
-        require => Class['foreman_proxy_content::bootstrap_rpm'],
-      }
-      EOS
+        package { "katello-ca-consumer-#{host_inventory['fqdn']}":
+          ensure => latest,
+          source => "/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm",
+          require => Class['foreman_proxy_content::bootstrap_rpm'],
+        }
+        PUPPET
+      end
     end
-
-    it_behaves_like 'a idempotent resource'
 
     describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-3.noarch.rpm") do
       it { should be_file }
