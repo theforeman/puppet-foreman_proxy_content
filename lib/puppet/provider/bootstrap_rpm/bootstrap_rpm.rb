@@ -39,7 +39,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
   end
 
   def latest_rpm
-    rpms = Dir.glob("#{resource[:dest]}/*.noarch.rpm")
+    rpms = Dir.glob("#{resource[:dest]}/#{resource[:name]}*.noarch.rpm")
     rpms = rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
 
     return false if rpms.empty?
