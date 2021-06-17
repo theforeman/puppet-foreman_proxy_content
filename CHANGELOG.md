@@ -1,6 +1,26 @@
 # Changelog
 
-## [18.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.2.0) (2021-05-17)
+## [18.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.3.0) (2021-06-17)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.2.0...18.3.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#32553](https://projects.theforeman.org/issues/32553) - Remove md5 from allowed content types [\#356](https://github.com/theforeman/puppet-foreman_proxy_content/pull/356) ([jlsherrill](https://github.com/jlsherrill))
+- Support Puppet 7 [\#333](https://github.com/theforeman/puppet-foreman_proxy_content/pull/333) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#32700](https://projects.theforeman.org/issues/32700): Only capture bootstrap RPMs by name [\#365](https://github.com/theforeman/puppet-foreman_proxy_content/pull/365) ([ehelms](https://github.com/ehelms))
+- Add explicit dependency on puppet/trusted\_ca [\#362](https://github.com/theforeman/puppet-foreman_proxy_content/pull/362) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Mark compatible with puppet/trusted\_ca 4.x [\#364](https://github.com/theforeman/puppet-foreman_proxy_content/pull/364) ([ekohl](https://github.com/ekohl))
+- Unpin camptocamp/systemd in fixtures [\#363](https://github.com/theforeman/puppet-foreman_proxy_content/pull/363) ([ekohl](https://github.com/ekohl))
+- Switch to voxpupuli-acceptance-1.0 [\#359](https://github.com/theforeman/puppet-foreman_proxy_content/pull/359) ([ekohl](https://github.com/ekohl))
+
+## [18.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.2.0) (2021-05-19)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.1.0...18.2.0)
 
