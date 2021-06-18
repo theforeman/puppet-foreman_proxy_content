@@ -26,7 +26,7 @@
     },
     {
       "name": "theforeman/foreman_proxy",
-      "version_requirement": ">= 18.0.0 < 20.0.0"
+      "version_requirement": ">= 19.0.0 < 20.0.0"
     },
     {
       "name": "katello/qpid",
