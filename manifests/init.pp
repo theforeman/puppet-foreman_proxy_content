@@ -293,11 +293,12 @@ class foreman_proxy_content (
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
 
   class { 'foreman_proxy::plugin::pulp':
-    pulpcore_enabled     => true,
-    pulpcore_mirror      => $pulpcore_mirror,
-    pulpcore_api_url     => "https://${servername}",
-    pulpcore_content_url => "https://${servername}${pulpcore::apache::content_path}",
-    require              => Class['pulpcore'],
+    pulpcore_enabled      => true,
+    pulpcore_mirror       => $pulpcore_mirror,
+    pulpcore_api_url      => "https://${servername}",
+    pulpcore_content_url  => "https://${servername}${pulpcore::apache::content_path}",
+    client_authentication => ['client_certificate'],
+    require               => Class['pulpcore'],
   }
 
   if $puppet {
