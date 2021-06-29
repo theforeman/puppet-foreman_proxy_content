@@ -77,6 +77,10 @@
 #                                              degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
 #                                              incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
+# $pulpcore_use_rq_tasking_system::            Use the older RQ workers tasking system instead of the newer PostgreSQL tasking system introduced in Pulpcore 3.13.
+#                                              Any benchmarking you did to optimize worker_count or other tasking related parameters will no longer be accurate after
+#                                              changing the tasking system. Do not modify this setting unless you understand the implications for performance and stability.
+#
 # $pulpcore_content_service_worker_timeout::   Gunicorn worker timeout in seconds for the pulpcore-content.service
 #
 # $pulpcore_api_service_worker_timeout::       Gunicorn worker timeout in seconds for the pulpcore-api.service
@@ -123,6 +127,7 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = '/etc/pki/katello/private/pulpcore-database.key',
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
+  Boolean $pulpcore_use_rq_tasking_system = $foreman_proxy_content::params::pulpcore_use_rq_tasking_system,
   Optional[String[50]] $pulpcore_django_secret_key = undef,
   Integer[0] $pulpcore_content_service_worker_timeout = $foreman_proxy_content::params::pulpcore_content_service_worker_timeout,
   Integer[0] $pulpcore_api_service_worker_timeout = $foreman_proxy_content::params::pulpcore_api_service_worker_timeout,
@@ -255,6 +260,7 @@ class foreman_proxy_content (
     postgresql_db_ssl_key          => $pulpcore_postgresql_ssl_key,
     postgresql_db_ssl_root_ca      => $pulpcore_postgresql_ssl_root_ca,
     worker_count                   => $pulpcore_worker_count,
+    use_rq_tasking_system          => $pulpcore_use_rq_tasking_system,
     django_secret_key              => $pulpcore_django_secret_key,
     content_service_worker_timeout => $pulpcore_content_service_worker_timeout,
     api_service_worker_timeout     => $pulpcore_api_service_worker_timeout,
