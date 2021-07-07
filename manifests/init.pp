@@ -83,6 +83,11 @@
 #
 # $pulpcore_django_secret_key::                Secret key used for cryptographic operations by Pulpcore's django runtime
 #
+# $pulpcore_cache_enabled::                    Enable Redis based content caching within the Pulp content app.
+#
+# $pulpcore_cache_expires_ttl::                The number of seconds that content should be cached for.
+#                                              Specify 'None' to never expire the cache.
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -126,6 +131,8 @@ class foreman_proxy_content (
   Optional[String[50]] $pulpcore_django_secret_key = undef,
   Integer[0] $pulpcore_content_service_worker_timeout = $foreman_proxy_content::params::pulpcore_content_service_worker_timeout,
   Integer[0] $pulpcore_api_service_worker_timeout = $foreman_proxy_content::params::pulpcore_api_service_worker_timeout,
+  Boolean $pulpcore_cache_enabled = false,
+  Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -259,6 +266,8 @@ class foreman_proxy_content (
     content_service_worker_timeout => $pulpcore_content_service_worker_timeout,
     api_service_worker_timeout     => $pulpcore_api_service_worker_timeout,
     api_client_auth_cn_map         => $api_client_auth_cn_map,
+    cache_enabled                  => $pulpcore_cache_enabled,
+    cache_expires_ttl              => $pulpcore_cache_expires_ttl,
     before                         => Class['foreman_proxy::plugin::pulp'],
   }
 
