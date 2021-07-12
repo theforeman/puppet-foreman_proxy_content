@@ -1,5 +1,18 @@
 # Changelog
 
+## [19.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/19.0.0) (2021-07-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.3.0...19.0.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#32910](https://projects.theforeman.org/issues/32910): Support enabling content caching for Pulp [\#372](https://github.com/theforeman/puppet-foreman_proxy_content/pull/372) ([ehelms](https://github.com/ehelms))
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Optionally enable new Pulpcore tasking system [\#371](https://github.com/theforeman/puppet-foreman_proxy_content/pull/371) ([wbclark](https://github.com/wbclark))
+
+**Fixed bugs:**
+
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Fixup param doc [\#376](https://github.com/theforeman/puppet-foreman_proxy_content/pull/376) ([wbclark](https://github.com/wbclark))
+
 ## [18.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.3.0) (2021-06-17)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.2.0...18.3.0)
