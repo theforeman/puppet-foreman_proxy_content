@@ -77,7 +77,7 @@
 #                                              degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
 #                                              incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
-# $pulpcore_use_rq_tasking_system::            Use the older RQ workers tasking system instead of the newer PostgreSQL tasking system introduced in Pulpcore 3.13.
+# $pulpcore_use_rq_tasking_system::            Use the older RQ workers tasking system instead of the newer PostgreSQL tasking system introduced in Pulpcore 3.14.
 #                                              Any benchmarking you did to optimize worker_count or other tasking related parameters will no longer be accurate after
 #                                              changing the tasking system. Do not modify this setting unless you understand the implications for performance and stability.
 #
