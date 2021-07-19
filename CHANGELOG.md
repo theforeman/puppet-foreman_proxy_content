@@ -1,5 +1,25 @@
 # Changelog
 
+## [20.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.0.0) (2021-07-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/19.0.0...20.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 5 support [\#361](https://github.com/theforeman/puppet-foreman_proxy_content/pull/361) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow puppet-pulpcore 5.0.0 [\#379](https://github.com/theforeman/puppet-foreman_proxy_content/pull/379) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32910](https://projects.theforeman.org/issues/32910): Support enabling content caching for Pulp [\#372](https://github.com/theforeman/puppet-foreman_proxy_content/pull/372) ([ehelms](https://github.com/ehelms))
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Optionally enable new Pulpcore tasking system [\#371](https://github.com/theforeman/puppet-foreman_proxy_content/pull/371) ([wbclark](https://github.com/wbclark))
+- Allow puppet-qpid 9.0.0 [\#370](https://github.com/theforeman/puppet-foreman_proxy_content/pull/370) ([ehelms](https://github.com/ehelms))
+- Set client\_authentication on foreman\_proxy::plugin::pulp [\#368](https://github.com/theforeman/puppet-foreman_proxy_content/pull/368) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Fixup param doc [\#376](https://github.com/theforeman/puppet-foreman_proxy_content/pull/376) ([wbclark](https://github.com/wbclark))
+
 ## [18.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.3.0) (2021-06-17)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.2.0...18.3.0)
