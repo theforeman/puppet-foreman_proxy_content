@@ -132,10 +132,10 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_key = '/etc/pki/katello/private/pulpcore-database.key',
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
-  Boolean $pulpcore_use_rq_tasking_system = $foreman_proxy_content::params::pulpcore_use_rq_tasking_system,
+  Boolean $pulpcore_use_rq_tasking_system = false,
   Optional[String[50]] $pulpcore_django_secret_key = undef,
-  Integer[0] $pulpcore_content_service_worker_timeout = $foreman_proxy_content::params::pulpcore_content_service_worker_timeout,
-  Integer[0] $pulpcore_api_service_worker_timeout = $foreman_proxy_content::params::pulpcore_api_service_worker_timeout,
+  Integer[0] $pulpcore_content_service_worker_timeout = 90,
+  Integer[0] $pulpcore_api_service_worker_timeout = 90,
   Boolean $pulpcore_cache_enabled = false,
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
 ) inherits foreman_proxy_content::params {
