@@ -9,6 +9,7 @@ describe 'foreman_proxy_content' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('katello-debug') }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
+        it { is_expected.not_to contain_class('certs::puppet') }
         it do
           is_expected.to contain_class('pulpcore')
             .with(apache_http_vhost: 'foreman')
@@ -130,32 +131,65 @@ describe 'foreman_proxy_content' do
       end
 
       context 'with puppet' do
-        let(:params) do
-          {
-            puppet: true,
-          }
-        end
+        context 'automatically detected' do
+          context 'by class inclusion' do
+            let(:pre_condition) do
+              <<-PUPPET
+              class { 'puppet':
+                server         => true,
+                server_foreman => true,
+              }
+              PUPPET
+            end
 
-        describe 'with puppet server enabled' do
-          let(:pre_condition) do
-            <<-PUPPET
-            class { 'puppet':
-              server         => true,
-              server_foreman => true,
-            }
-            PUPPET
+            it { is_expected.to compile.with_all_deps }
+            it do
+              is_expected.to contain_class('certs::puppet')
+                .that_comes_before(['Class[puppet::server::config]', 'Class[puppetserver_foreman]'])
+            end
           end
 
-          it { is_expected.to compile.with_all_deps }
-          it do
-            is_expected.to contain_class('certs::puppet')
-              .that_comes_before(['Class[puppet::server::config]', 'Class[puppetserver_foreman]'])
+          context 'via hiera' do
+            let(:hiera_config) { 'spec/fixtures/hiera/hiera.yaml' }
+
+            it { is_expected.to compile.with_all_deps }
+            it do
+              is_expected.to contain_class('certs::puppet')
+                .that_comes_before(['Class[puppet::server::config]', 'Class[puppetserver_foreman]'])
+            end
           end
         end
 
-        describe 'with puppet server disabled' do
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.not_to contain_class('certs::puppet') }
+        context 'explicitly set' do
+          context 'to true' do
+            let(:params) do
+              {
+                puppet: true,
+              }
+            end
+
+            describe 'with puppet server enabled' do
+              let(:pre_condition) do
+                <<-PUPPET
+                class { 'puppet':
+                  server         => true,
+                  server_foreman => true,
+                }
+                PUPPET
+              end
+
+              it { is_expected.to compile.with_all_deps }
+              it do
+                is_expected.to contain_class('certs::puppet')
+                  .that_comes_before(['Class[puppet::server::config]', 'Class[puppetserver_foreman]'])
+              end
+            end
+
+            describe 'with puppet server disabled' do
+              it { is_expected.to compile.with_all_deps }
+              it { is_expected.not_to contain_class('certs::puppet') }
+            end
+          end
         end
       end
     end

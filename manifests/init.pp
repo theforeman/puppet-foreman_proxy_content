@@ -20,7 +20,7 @@
 #
 # === Advanced parameters:
 #
-# $puppet::                                    Enable puppet
+# $puppet::                                    Enable puppet. If undef, it will try to detect this automatically.
 #
 # $reverse_proxy::                             Add reverse proxy to the parent
 #
@@ -95,7 +95,7 @@
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
-  Boolean $puppet = true,
+  Optional[Boolean] $puppet = undef,
 
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
@@ -316,7 +316,8 @@ class foreman_proxy_content (
     require               => Class['pulpcore'],
   }
 
-  if $puppet {
+  # classes is set by Kafo
+  if pick($puppet, defined(Class['puppet']) or 'puppet' in lookup('classes', Array, undef, [])) {
     # We can't pull the certs out to the top level, because of how it gets the default
     # parameter values from the main certs class.  Kafo can't handle that case, so
     # it remains here for now.
