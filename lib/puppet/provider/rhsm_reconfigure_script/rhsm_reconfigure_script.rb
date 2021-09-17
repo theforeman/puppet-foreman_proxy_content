@@ -42,7 +42,7 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
       KATELLO_DEFAULT_CA_CERT=<%= resource[:default_ca_name] %>.pem
 
       CERT_DIR=/etc/rhsm/ca
-      PREFIX=/rhsm
+      PREFIX=<%= resource[:rhsm_path %>
       CFG=/etc/rhsm/rhsm.conf
       CFG_BACKUP=$CFG.kat-backup
       CA_TRUST_ANCHORS=/etc/pki/ca-trust/source/anchors

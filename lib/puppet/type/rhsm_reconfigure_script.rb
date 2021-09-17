@@ -31,6 +31,11 @@ Puppet::Type.newtype(:rhsm_reconfigure_script) do
     desc "Port that RHSM should be configured to talk to"
   end
 
+  newparam(:rhsm_path) do
+    desc "Port that RHSM should be configured to talk to"
+    default '/rhsm'
+  end
+
   autorequire(:file) do
     [
       self[:server_ca_cert],
