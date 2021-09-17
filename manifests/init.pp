@@ -149,6 +149,7 @@ class foreman_proxy_content (
   # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
   $shared_with_foreman_vhost = !$pulpcore_mirror
 
+  $rhsm_path = '/rhsm'
   $rhsm_port = $reverse_proxy_real ? {
     true  => $reverse_proxy_port,
     false => 443
@@ -303,18 +304,22 @@ class foreman_proxy_content (
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
 
+  $rhsm_url = "https://${servername}:${rhsm_port}${rhsm_path}"
+
   class { 'foreman_proxy::plugin::pulp':
     pulpcore_enabled      => true,
     pulpcore_mirror       => $pulpcore_mirror,
     pulpcore_api_url      => "https://${servername}",
     pulpcore_content_url  => "https://${servername}${pulpcore::apache::content_path}",
     client_authentication => ['client_certificate'],
+    rhsm_url              => $rhsm_url,
     require               => Class['pulpcore'],
   }
 
   class { 'foreman_proxy_content::bootstrap_rpm':
     rhsm_hostname => $servername,
     rhsm_port     => $rhsm_port,
+    rhsm_path     => $rhsm_path,
   }
 
   if $puppet {
