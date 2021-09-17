@@ -159,10 +159,6 @@ class foreman_proxy_content (
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
 
-  class { 'foreman_proxy_content::bootstrap_rpm':
-    rhsm_port => $rhsm_port,
-  }
-
   if $reverse_proxy_real {
     class { 'foreman_proxy_content::reverse_proxy':
       url  => "${foreman_url}/",
@@ -314,6 +310,11 @@ class foreman_proxy_content (
     pulpcore_content_url  => "https://${servername}${pulpcore::apache::content_path}",
     client_authentication => ['client_certificate'],
     require               => Class['pulpcore'],
+  }
+
+  class { 'foreman_proxy_content::bootstrap_rpm':
+    rhsm_hostname => $servername,
+    rhsm_port     => $rhsm_port,
   }
 
   if $puppet {
