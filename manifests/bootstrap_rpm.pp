@@ -12,7 +12,6 @@ class foreman_proxy_content::bootstrap_rpm (
   $server_ca_name = $certs::server_ca_name
   $default_ca_name = $certs::default_ca_name
   $ca_cert = $certs::ca_cert
-  $server_ca = $certs::server_ca
 
   $katello_rhsm_setup_script = 'katello-rhsm-consumer'
   $katello_rhsm_setup_script_location = "/usr/bin/${katello_rhsm_setup_script}"
