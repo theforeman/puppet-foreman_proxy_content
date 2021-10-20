@@ -14,6 +14,10 @@
 #
 # $enable_ansible::                            Enable the Ansible content feature. This allows syncing, managing, and serving Ansible content.
 #
+# $enable_python::                             Enable the Python content feature. This allows syncing, managing, and serving Python content.
+#
+# $enable_ostree::                             Enable the OSTree content feature. This allows syncing, managing, and serving OSTree content. This is not available on el7.
+#
 # $enable_katello_agent::                      Enable katello-agent for remote yum actions
 #
 # $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
@@ -117,6 +121,8 @@ class foreman_proxy_content (
   Boolean $enable_docker = true,
   Boolean $enable_deb = true,
   Boolean $enable_ansible = true,
+  Boolean $enable_python = true,
+  Boolean $enable_ostree = false,
   Boolean $enable_katello_agent = false,
 
   Boolean $pulpcore_manage_postgresql = true,
@@ -303,6 +309,14 @@ class foreman_proxy_content (
   }
   if $enable_ansible {
     class { 'pulpcore::plugin::ansible':
+    }
+  }
+  if $enable_python {
+    class { 'pulpcore::plugin::python':
+    }
+  }
+  if $enable_ostree {
+    class { 'pulpcore::plugin::ostree':
     }
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
