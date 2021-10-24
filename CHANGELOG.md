@@ -1,5 +1,19 @@
 # Changelog
 
+## [20.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.1.0) (2021-11-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.0.0...20.1.0)
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 20.0.0 [\#391](https://github.com/theforeman/puppet-foreman_proxy_content/pull/391) ([ehelms](https://github.com/ehelms))
+- Fixes [\#33863](https://projects.theforeman.org/issues/33863) - Deploy RHSM proxy vhost on 443 and attach Pulpcore configuration to it [\#390](https://github.com/theforeman/puppet-foreman_proxy_content/pull/390) ([wbclark](https://github.com/wbclark))
+- Allow katello/certs 14.0.0 [\#389](https://github.com/theforeman/puppet-foreman_proxy_content/pull/389) ([ehelms](https://github.com/ehelms))
+- Fixes [\#33751](https://projects.theforeman.org/issues/33751) - enable python and ostree content [\#387](https://github.com/theforeman/puppet-foreman_proxy_content/pull/387) ([jlsherrill](https://github.com/jlsherrill))
+- Drop unused server\_ca variable [\#386](https://github.com/theforeman/puppet-foreman_proxy_content/pull/386) ([ehelms](https://github.com/ehelms))
+- Configure RHSM url in Foreman Proxy's Pulp plugin [\#384](https://github.com/theforeman/puppet-foreman_proxy_content/pull/384) ([wbclark](https://github.com/wbclark))
+- Move more parameters from params.pp to init.pp [\#382](https://github.com/theforeman/puppet-foreman_proxy_content/pull/382) ([ekohl](https://github.com/ekohl))
+
 ## [20.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.0.0) (2021-07-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/19.0.0...20.0.0)
