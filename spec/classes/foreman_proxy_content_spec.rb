@@ -20,6 +20,11 @@ describe 'foreman_proxy_content' do
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
 
+        it do
+          is_expected.to contain_class('foreman_proxy::plugin::pulp')
+            .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
+        end
+
         context 'with custom service worker timeouts' do
           let(:params) do
             {
@@ -130,6 +135,10 @@ describe 'foreman_proxy_content' do
             .with(apache_http_vhost: true)
             .with(apache_https_vhost: true)
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
+        end
+        it do
+          is_expected.to contain_class('foreman_proxy::plugin::pulp')
+            .with_rhsm_url("https://#{facts[:fqdn]}:8443/rhsm")
         end
         it do
           is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
