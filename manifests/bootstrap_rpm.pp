@@ -4,6 +4,7 @@
 class foreman_proxy_content::bootstrap_rpm (
   Stdlib::Fqdn $rhsm_hostname = $facts['networking']['fqdn'],
   Stdlib::Port $rhsm_port = 443,
+  Pattern[/\A(\/[a-zA-Z0-9]+)+(\/)?\z/] $rhsm_path = '/rhsm',
   Stdlib::Absolutepath $rpm_serve_dir = '/var/www/html/pub',
 ) {
   include certs
@@ -54,6 +55,7 @@ class foreman_proxy_content::bootstrap_rpm (
     server_ca_name  => $server_ca_name,
     rhsm_hostname   => $rhsm_hostname,
     rhsm_port       => $rhsm_port,
+    rhsm_path       => $rhsm_path,
   }
 
   bootstrap_rpm { $bootstrap_rpm_name:
