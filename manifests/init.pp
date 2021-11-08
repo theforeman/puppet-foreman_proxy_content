@@ -156,10 +156,7 @@ class foreman_proxy_content (
   $shared_with_foreman_vhost = !$pulpcore_mirror
 
   $rhsm_path = '/rhsm'
-  $rhsm_port = $reverse_proxy_real ? {
-    true  => $reverse_proxy_port,
-    false => 443
-  }
+  $rhsm_port = 443
 
   ensure_packages('katello-debug')
 
@@ -167,9 +164,25 @@ class foreman_proxy_content (
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
 
   if $reverse_proxy_real {
-    class { 'foreman_proxy_content::reverse_proxy':
-      url  => "${foreman_url}/",
-      port => $reverse_proxy_port,
+    foreman_proxy_content::reverse_proxy { "rhsm-pulpcore-https-${reverse_proxy_port}":
+      url      => "${foreman_url}/",
+      port     => $reverse_proxy_port,
+      priority => '10',
+      before   => Class['pulpcore::apache'],
+    }
+  }
+
+  if $pulpcore_mirror {
+    $pulpcore_https_vhost_name = "rhsm-pulpcore-https-${rhsm_port}"
+
+    if $rhsm_port != $reverse_proxy_port {
+      foreman_proxy_content::reverse_proxy { $pulpcore_https_vhost_name:
+        path     => $rhsm_path,
+        url      => "${foreman_url}${rhsm_path}",
+        port     => $rhsm_port,
+        priority => '10',
+        before   => Class['pulpcore::apache'],
+      }
     }
   }
 
@@ -232,13 +245,13 @@ class foreman_proxy_content (
     include certs::apache
     Class['certs::apache'] ~> Class['pulpcore::apache']
     $servername = $certs::apache::hostname
-    $priority = undef
+    $priority = '10'
     $apache_http_vhost = undef
-    $apache_https_vhost = undef
-    $apache_https_cert = $certs::apache::apache_cert
-    $apache_https_key = $certs::apache::apache_key
-    $apache_https_ca = $certs::katello_default_ca_cert
-    $apache_https_chain = $certs::katello_server_ca_cert
+    $apache_https_vhost = $pulpcore_https_vhost_name
+    $apache_https_cert = undef
+    $apache_https_key = undef
+    $apache_https_ca = undef
+    $apache_https_chain = undef
   }
 
   $api_client_auth_cn_map = Hash($foreman_proxy::trusted_hosts.map |$host| {
@@ -283,7 +296,10 @@ class foreman_proxy_content (
   if $enable_docker {
     include pulpcore::plugin::container
     unless $shared_with_foreman_vhost {
-      include foreman_proxy_content::container
+      class { 'foreman_proxy_content::container':
+        pulpcore_https_vhost => $apache_https_vhost,
+      }
+
       class { 'foreman_proxy::plugin::container_gateway':
         pulp_endpoint => "https://${servername}",
       }

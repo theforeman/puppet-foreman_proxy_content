@@ -133,17 +133,26 @@ describe 'foreman_proxy_content' do
         it do
           is_expected.to contain_class('pulpcore')
             .with(apache_http_vhost: true)
-            .with(apache_https_vhost: true)
+            .with(apache_https_vhost: 'rhsm-pulpcore-https-443')
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
         it do
           is_expected.to contain_class('foreman_proxy::plugin::pulp')
-            .with_rhsm_url("https://#{facts[:fqdn]}:8443/rhsm")
+            .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
         end
         it do
-          is_expected.to contain_class('foreman_proxy_content::reverse_proxy')
+          is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
             .with(path: '/')
             .with(port: 8443)
+            .with(priority: '10')
+            .that_comes_before('Class[pulpcore::apache]')
+        end
+        it do
+          is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-443')
+            .with(path: '/rhsm')
+            .with(port: 443)
+            .with(priority: '10')
+            .that_comes_before('Class[pulpcore::apache]')
         end
         it do
           is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
