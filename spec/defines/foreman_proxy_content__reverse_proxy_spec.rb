@@ -4,8 +4,9 @@ describe 'foreman_proxy_content::reverse_proxy' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+      let(:title) { 'my-reverse-proxy' }
 
-      describe 'with inherited parameters' do
+      context 'with inherited parameters' do
 
         let(:pre_condition) do
           <<-PUPPET
@@ -15,7 +16,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
 
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_apache__vhost('katello-reverse-proxy')
+          is_expected.to contain_apache__vhost('my-reverse-proxy')
             .with_servername(facts[:fqdn])
             .with_aliases([])
             .with_port(8443)
@@ -28,12 +29,13 @@ describe 'foreman_proxy_content::reverse_proxy' do
         end
       end
 
-      describe 'with explicit parameters' do
+      context 'with explicit parameters' do
         let(:params) { { url: 'https://foreman.example.com/', port: 443 } }
+        let(:title) { 'katello-reverse-proxy-443' }
 
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_apache__vhost('katello-reverse-proxy')
+          is_expected.to contain_apache__vhost('katello-reverse-proxy-443')
             .with_servername('foo.example.com')
             .with_aliases([])
             .with_port(443)
@@ -44,11 +46,11 @@ describe 'foreman_proxy_content::reverse_proxy' do
               'reverse_urls' => ['https://foreman.example.com/'],
               'params' => {'disablereuse' => 'on', 'retry' => '0'},
             }])
-          is_expected.to contain_concat__fragment('katello-reverse-proxy-proxy')
+          is_expected.to contain_concat__fragment('katello-reverse-proxy-443-proxy')
             .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=on retry=0$})
         end
 
-        describe 'with custom servername and cnames' do
+        context 'with custom servername and cnames' do
           let(:pre_condition) do
             <<-PUPPET
             class { 'certs::apache':
@@ -57,6 +59,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
             }
             PUPPET
           end
+          let(:title) { 'katello-reverse-proxy' }
 
           it { is_expected.to compile.with_all_deps }
           it do
@@ -66,15 +69,17 @@ describe 'foreman_proxy_content::reverse_proxy' do
           end
         end
 
-        describe 'with vhost_params' do
+        context 'with vhost_params' do
           let(:params) { super().merge(vhost_params: {keepalive: 'on'}) }
+          let(:title) { 'katello-reverse-proxy' }
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_apache__vhost('katello-reverse-proxy').with_keepalive('on') }
         end
 
-        describe 'with proxy_pass_params' do
+        context 'with proxy_pass_params' do
           let(:params) { super().merge(proxy_pass_params: {disablereuse: 'off'}) }
+          let(:title) { 'katello-reverse-proxy' }
 
           it { is_expected.to compile.with_all_deps }
           it do

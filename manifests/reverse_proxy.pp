@@ -12,13 +12,19 @@
 #   Any parameters to pass to the apache::vhost resource
 # @param proxy_pass_params
 #   Any parameters to pass to the proxy_pass param of the apache::vhost resource
-class foreman_proxy_content::reverse_proxy (
+# @param ensure
+#   Specifies if the virtual host is present or absent.
+# @param priority
+#   Sets the relative load-order for Apache HTTPD VirtualHost configuration files. See Apache::Vhost
+define foreman_proxy_content::reverse_proxy (
   Stdlib::Unixpath $path = '/',
   Stdlib::Httpurl $url = "${foreman_proxy_content::foreman_url}/",
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
   Hash[String, Variant[String, Integer]] $proxy_pass_params = {'disablereuse' => 'on', 'retry' => '0'},
+  Enum['present', 'absent'] $ensure = 'present',
+  Optional[Variant[String, Boolean]] $priority = '28',
 ) {
   include apache
   include certs::apache
@@ -26,12 +32,15 @@ class foreman_proxy_content::reverse_proxy (
 
   Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
 
-  apache::vhost { 'katello-reverse-proxy':
+  $vhost_name = $title
+
+  apache::vhost { $vhost_name:
+    ensure                 => $ensure,
     servername             => $certs::apache::hostname,
     aliases                => $certs::apache::cname,
     port                   => $port,
     docroot                => '/var/www/',
-    priority               => '28',
+    priority               => $priority,
     ssl_options            => ['+StdEnvVars', '+ExportCertData', '+FakeBasicAuth'],
     ssl                    => true,
     ssl_proxyengine        => true,

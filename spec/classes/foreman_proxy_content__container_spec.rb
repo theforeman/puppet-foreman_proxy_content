@@ -29,12 +29,12 @@ describe 'foreman_proxy_content::container' do
       end
 
       describe 'with explicit parameters' do
-        let(:params) { { location_prefix: '/other_pulpcore_registry', registry_v1_path: '/vr1/', registry_v2_path: '/vr2/' } }
+        let(:params) { { location_prefix: '/other_pulpcore_registry', registry_v1_path: '/vr1/', registry_v2_path: '/vr2/', pulpcore_https_vhost: 'rhsm-pulpcore-reverse-proxy-443' } }
 
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_apache__vhost__fragment('pulp-https-container')
-            .with_vhost('pulpcore-https')
+            .with_vhost('rhsm-pulpcore-reverse-proxy-443')
             .with_priority('10')
             .with_content(%r{^\s+<Location "/other_pulpcore_registry/vr2/">$})
             .with_content(%r{^\s+Require expr %\{SSL_CLIENT_S_DN_CN\} == "foo.example.com"$})
