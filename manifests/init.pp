@@ -352,6 +352,17 @@ class foreman_proxy_content (
     rhsm_path     => $rhsm_path,
   }
 
+  # smart_proxy_pulp dynamically retrieves the Pulp content types and Katello
+  # uses this. This means the features need to be refreshed after a content
+  # type is added. The API also changes so apipie cache needs to be regenerated.
+  # lint:ignore:spaceship_operator_without_tag
+  if $foreman_proxy::register_in_foreman {
+    Pulpcore::Plugin <| |> ~> Foreman_smartproxy[$foreman_proxy::registered_name]
+    Foreman_smartproxy[$foreman_proxy::registered_name] -> Foreman::Rake <| title == 'apipie:cache:index' |>
+  }
+  Pulpcore::Plugin <| |> ~> Foreman::Rake <| title == 'apipie:cache:index' |>
+  # lint:endignore
+
   if $puppet {
     # We can't pull the certs out to the top level, because of how it gets the default
     # parameter values from the main certs class.  Kafo can't handle that case, so
