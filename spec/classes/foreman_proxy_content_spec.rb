@@ -42,17 +42,15 @@ describe 'foreman_proxy_content' do
           end
         end
 
-        context 'enabling disabled by default content types' do 
-          let(:params) do 
+        context 'enabling disabled by default content types' do
+          let(:params) do
             {
               enable_ostree: true
             }
           end
 
           it { is_expected.to compile.with_all_deps }
-          it do 
-            is_expected.to contain_class('pulpcore::plugin::ostree')
-          end
+          it { is_expected.to contain_class('pulpcore::plugin::ostree') }
         end
 
         context 'with external postgres' do
