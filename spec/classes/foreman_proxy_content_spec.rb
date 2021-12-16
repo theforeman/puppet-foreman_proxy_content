@@ -25,6 +25,18 @@ describe 'foreman_proxy_content' do
             .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
         end
 
+        context 'with foreman' do
+          let(:pre_condition) { 'include foreman' }
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_foreman_smartproxy('foo.example.com')
+              .that_subscribes_to('Pulpcore::Plugin[rpm]')
+              .that_comes_before('Foreman::Rake[apipie:cache:index]')
+          end
+          it { is_expected.to contain_foreman__rake('apipie:cache:index').that_subscribes_to('Pulpcore::Plugin[rpm]') }
+        end
+
         context 'with custom service worker timeouts' do
           let(:params) do
             {
