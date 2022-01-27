@@ -142,7 +142,7 @@ class foreman_proxy_content (
   Optional[String[50]] $pulpcore_django_secret_key = undef,
   Integer[0] $pulpcore_content_service_worker_timeout = 90,
   Integer[0] $pulpcore_api_service_worker_timeout = 90,
-  Boolean $pulpcore_cache_enabled = false,
+  Boolean $pulpcore_cache_enabled = true,
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
 ) inherits foreman_proxy_content::params {
   include certs
