@@ -13,6 +13,7 @@ fixtures:
     datacat:       "https://github.com/richardc/puppet-datacat"
     foreman_proxy: "https://github.com/theforeman/puppet-foreman_proxy.git"
     foreman:       "https://github.com/theforeman/puppet-foreman"
+    katello:       "https://github.com/theforeman/puppet-katello"
     puppet:        "https://github.com/theforeman/puppet-puppet"
     puppetserver_foreman: "https://github.com/theforeman/puppet-puppetserver_foreman"
     tftp:          "https://github.com/theforeman/puppet-tftp"
