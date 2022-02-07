@@ -101,34 +101,19 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
         # rhel setup
         BASEURL=https://$KATELLO_SERVER/pulp/content/
 
-        # Get version of RHSM
-        RHSM_V="$((rpm -q --queryformat='%{VERSION}' subscription-manager 2> /dev/null || echo 0.0.0) | tail -n1 | tr . ' ')"
-        declare -a RHSM_VERSION=($RHSM_V)
+        subscription-manager config \
+          --server.hostname="$KATELLO_SERVER" \
+          --server.prefix="$PREFIX" \
+          --server.port="$PORT" \
+          --rhsm.repo_ca_cert="%(ca_cert_dir)s$KATELLO_SERVER_CA_CERT" \
+          --rhsm.baseurl="$BASEURL"
 
-        # configure rhsm
-        # the config command was introduced in rhsm 0.96.6
-        # fallback left for older versions
-        if test ${RHSM_VERSION[0]:-0} -gt 0 -o ${RHSM_VERSION[1]:-0} -gt 96 -o \( ${RHSM_VERSION[1]:-0} -eq 96 -a ${RHSM_VERSION[2]:-0} -gt 6 \); then
-          subscription-manager config \
-            --server.hostname="$KATELLO_SERVER" \
-            --server.prefix="$PREFIX" \
-            --server.port="$PORT" \
-            --rhsm.repo_ca_cert="%(ca_cert_dir)s$KATELLO_SERVER_CA_CERT" \
-            --rhsm.baseurl="$BASEURL"
-
-          # Older versions of subscription manager may not recognize
-          # report_package_profile and package_profile_on_trans options.
-          # So set them separately and redirect out & error to /dev/null
-          # to fail silently.
-          subscription-manager config --rhsm.package_profile_on_trans=1 > /dev/null 2>&1 || true
-          subscription-manager config --rhsm.report_package_profile=1 > /dev/null 2>&1 || true
-        else
-          sed -i "s/^hostname\s*=.*/hostname = $KATELLO_SERVER/g" $CFG
-          sed -i "s/^port\s*=.*/port = $PORT/g" $CFG
-          sed -i "s|^prefix\s*=.*|prefix = $PREFIX|g" $CFG
-          sed -i "s|^repo_ca_cert\s*=.*|repo_ca_cert = %(ca_cert_dir)s$KATELLO_SERVER_CA_CERT|g" $CFG
-          sed -i "s|^baseurl\s*=.*|baseurl=$BASEURL|g" $CFG
-        fi
+        # Older versions of subscription manager may not recognize
+        # report_package_profile and package_profile_on_trans options.
+        # So set them separately and redirect out & error to /dev/null
+        # to fail silently.
+        subscription-manager config --rhsm.package_profile_on_trans=1 > /dev/null 2>&1 || true
+        subscription-manager config --rhsm.report_package_profile=1 > /dev/null 2>&1 || true
 
         if grep --quiet full_refresh_on_yum $CFG; then
           sed -i "s/full_refresh_on_yum\s*=.*$/full_refresh_on_yum = 1/g" $CFG
@@ -143,17 +128,6 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
         update-ca-trust enable
         cp $CERT_DIR/$KATELLO_SERVER_CA_CERT $CA_TRUST_ANCHORS
         update-ca-trust
-      fi
-
-      # EL5 systems and subscription-manager versions before 1.18.1-1 don't have the network.fqdn fact.
-      # For these cases, we have to update the "hostname-override" fact
-      if (test -f /etc/redhat-release && grep -q -i "Red Hat Enterprise Linux Server release 5" /etc/redhat-release) || \
-         (test -f /etc/centos-release && grep -q -i "CentOS Linux release 5" /etc/centos-release) || \
-         test ${RHSM_VERSION[0]:-0} -lt 1 -o ${RHSM_VERSION[1]:-0} -lt 18 -o \( ${RHSM_VERSION[1]:-0} -eq 18 -a ${RHSM_VERSION[2]:-0} -lt 2 \); then
-        FQDN="$(hostname -f 2>/dev/null || echo localhost)"
-        if [ "$FQDN" != "localhost" ] && [ -d /etc/rhsm/facts/ ]; then
-          echo "{\"network.hostname-override\":\"$FQDN\"}" > /etc/rhsm/facts/katello.facts
-        fi
       fi
 
       exit 0
