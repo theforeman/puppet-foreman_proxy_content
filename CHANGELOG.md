@@ -1,5 +1,25 @@
 # Changelog
 
+## [20.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.2.0) (2022-02-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.1.0...20.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#34406](https://projects.theforeman.org/issues/34406) - drop support for ancient EL versions [\#400](https://github.com/theforeman/puppet-foreman_proxy_content/pull/400) ([evgeni](https://github.com/evgeni))
+- Allow theforeman/foreman\_proxy 21.x [\#398](https://github.com/theforeman/puppet-foreman_proxy_content/pull/398) ([ekohl](https://github.com/ekohl))
+- Allow katello/certs 15.x [\#397](https://github.com/theforeman/puppet-foreman_proxy_content/pull/397) ([ekohl](https://github.com/ekohl))
+- Refs [\#34325](https://projects.theforeman.org/issues/34325) - enable redis cache by default [\#395](https://github.com/theforeman/puppet-foreman_proxy_content/pull/395) ([jlsherrill](https://github.com/jlsherrill))
+- Use variables on $certs::apache for CA/chain [\#392](https://github.com/theforeman/puppet-foreman_proxy_content/pull/392) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#34154](https://projects.theforeman.org/issues/34154) - Refresh on Pulp plugin installation [\#393](https://github.com/theforeman/puppet-foreman_proxy_content/pull/393) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Require at least theforeman/certs 15 [\#399](https://github.com/theforeman/puppet-foreman_proxy_content/pull/399) ([ekohl](https://github.com/ekohl))
+
 ## [20.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.1.0) (2021-11-09)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.0.0...20.1.0)
@@ -33,6 +53,10 @@
 **Fixed bugs:**
 
 - Refs [\#32891](https://projects.theforeman.org/issues/32891) - Fixup param doc [\#376](https://github.com/theforeman/puppet-foreman_proxy_content/pull/376) ([wbclark](https://github.com/wbclark))
+
+## [19.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/19.0.0) (2021-07-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.3.0...19.0.0)
 
 ## [18.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.3.0) (2021-06-17)
 
