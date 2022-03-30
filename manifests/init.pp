@@ -288,6 +288,16 @@ class foreman_proxy_content (
     before                         => Class['foreman_proxy::plugin::pulp'],
   }
 
+  if $shared_with_foreman_vhost {
+    include certs::pulp_client
+    class { 'pulpcore::cli':
+      pulpcore_url => "https://${servername}",
+      dry_run      => true,
+      cert         => $certs::pulp_client::client_cert,
+      key          => $certs::pulp_client::client_key,
+    }
+  }
+
   if $enable_docker {
     include pulpcore::plugin::container
     unless $shared_with_foreman_vhost {
