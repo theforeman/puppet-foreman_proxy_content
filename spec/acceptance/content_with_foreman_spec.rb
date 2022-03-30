@@ -47,4 +47,16 @@ describe 'pulpcore non-mirror' do
     it { is_expected.to be_file }
     it { is_expected.to contain(%{DocumentRoot "/usr/share/foreman/public"}) }
   end
+
+  describe command("pulp status") do
+    its(:exit_status) { is_expected.to eq 0 }
+    its(:stdout) { is_expected.to match(/versions/) }
+    its(:stderr) { is_expected.not_to match(/Error/) }
+  end
+
+  describe command("pulp user list") do
+    its(:exit_status) { is_expected.to eq 0 }
+    its(:stdout) { is_expected.to match(/admin/) }
+    its(:stderr) { is_expected.not_to match(/Error/) }
+  end
 end
