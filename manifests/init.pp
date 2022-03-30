@@ -147,7 +147,8 @@ class foreman_proxy_content (
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
   $reverse_proxy_real = $pulpcore_mirror or $reverse_proxy
 
-  # TODO: doesn't allow deploying a Pulp non-mirror without Foreman
+  # TODO: make it configurable
+  # https://github.com/theforeman/puppet-foreman_proxy_content/issues/407
   $shared_with_foreman_vhost = !$pulpcore_mirror
 
   $rhsm_path = '/rhsm'
