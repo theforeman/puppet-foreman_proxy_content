@@ -168,7 +168,7 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulpcore_mirror {
+  unless $shared_with_foreman_vhost {
     $pulpcore_https_vhost_name = "rhsm-pulpcore-https-${rhsm_port}"
 
     if $rhsm_port != $reverse_proxy_port {
