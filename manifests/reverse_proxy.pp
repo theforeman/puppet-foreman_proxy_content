@@ -16,6 +16,8 @@
 #   Specifies if the virtual host is present or absent.
 # @param priority
 #   Sets the relative load-order for Apache HTTPD VirtualHost configuration files. See Apache::Vhost
+# @param docroot
+#   Define the Apache HTTPD VirtualHost DocumentRoot
 define foreman_proxy_content::reverse_proxy (
   Stdlib::Unixpath $path = '/',
   Stdlib::Httpurl $url = "${foreman_proxy_content::foreman_url}/",
@@ -25,6 +27,7 @@ define foreman_proxy_content::reverse_proxy (
   Hash[String, Variant[String, Integer]] $proxy_pass_params = {'disablereuse' => 'on', 'retry' => '0'},
   Enum['present', 'absent'] $ensure = 'present',
   Optional[Variant[String, Boolean]] $priority = '28',
+  Stdlib::Absolutepath $docroot = '/var/www',
 ) {
   include apache
   include certs::apache
