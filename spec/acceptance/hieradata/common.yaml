@@ -1,3 +1,5 @@
+---
+apache::default_mods: false
 foreman_proxy::manage_puppet_group: false
 foreman_proxy::puppet: false
 foreman_proxy::puppetca: false
