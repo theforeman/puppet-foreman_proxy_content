@@ -10,6 +10,8 @@ class foreman_proxy_content::pub_dir (
 ) {
   ensure_packages('katello-client-bootstrap')
 
+  include apache::mod::alias
+
   pulpcore::apache::fragment{ 'pub_dir':
     http_content  => template('foreman_proxy_content/httpd_pub.erb'),
     https_content => template('foreman_proxy_content/httpd_pub.erb'),
