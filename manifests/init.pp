@@ -359,13 +359,11 @@ class foreman_proxy_content (
 
   # smart_proxy_pulp dynamically retrieves the Pulp content types and Katello
   # uses this. This means the features need to be refreshed after a content
-  # type is added. The API also changes so apipie cache needs to be regenerated.
+  # type is added.
   # lint:ignore:spaceship_operator_without_tag
   if $foreman_proxy::register_in_foreman {
     Pulpcore::Plugin <| |> ~> Foreman_smartproxy[$foreman_proxy::registered_name]
-    Foreman_smartproxy[$foreman_proxy::registered_name] -> Foreman::Rake <| title == 'apipie:cache:index' |>
   }
-  Pulpcore::Plugin <| |> ~> Foreman::Rake <| title == 'apipie:cache:index' |>
   # lint:endignore
 
   if $puppet {
