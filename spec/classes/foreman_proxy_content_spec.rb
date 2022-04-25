@@ -32,9 +32,7 @@ describe 'foreman_proxy_content' do
           it do
             is_expected.to contain_foreman_smartproxy('foo.example.com')
               .that_subscribes_to('Pulpcore::Plugin[rpm]')
-              .that_comes_before('Foreman::Rake[apipie:cache:index]')
           end
-          it { is_expected.to contain_foreman__rake('apipie:cache:index').that_subscribes_to('Pulpcore::Plugin[rpm]') }
         end
 
         context 'with custom service worker timeouts' do
