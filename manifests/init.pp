@@ -95,7 +95,7 @@
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
-  Boolean $puppet = true,
+  Boolean $puppet = false,
 
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
