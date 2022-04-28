@@ -1,5 +1,26 @@
 # Changelog
 
+## [21.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.0.0) (2022-04-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.2.0...21.0.0)
+
+**Breaking changes:**
+
+- Refs [\#34640](https://projects.theforeman.org/issues/34640) - Drop apipie cache work around [\#414](https://github.com/theforeman/puppet-foreman_proxy_content/pull/414) ([ehelms](https://github.com/ehelms))
+- Drop pulpcore\_use\_rq\_tasking\_system parameter [\#404](https://github.com/theforeman/puppet-foreman_proxy_content/pull/404) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Allow puppet-foreman\_proxy 22.0.0 [\#413](https://github.com/theforeman/puppet-foreman_proxy_content/pull/413) ([ehelms](https://github.com/ehelms))
+- Bump theforeman/pulpcore requirement to \>= 6.0.0 [\#412](https://github.com/theforeman/puppet-foreman_proxy_content/pull/412) ([evgeni](https://github.com/evgeni))
+- Refs [\#34684](https://projects.theforeman.org/issues/34684) - enable pulp-cli for Katello [\#405](https://github.com/theforeman/puppet-foreman_proxy_content/pull/405) ([evgeni](https://github.com/evgeni))
+- Allow stdlib 8.x, extlib 6.x, apache 7.x [\#402](https://github.com/theforeman/puppet-foreman_proxy_content/pull/402) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#34819](https://projects.theforeman.org/issues/34819) - disable Puppet by default [\#415](https://github.com/theforeman/puppet-foreman_proxy_content/pull/415) ([evgeni](https://github.com/evgeni))
+- include apache::mod::alias in foreman\_proxy\_content::pub\_dir [\#409](https://github.com/theforeman/puppet-foreman_proxy_content/pull/409) ([wbclark](https://github.com/wbclark))
+
 ## [20.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.2.0) (2022-02-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.1.0...20.2.0)
