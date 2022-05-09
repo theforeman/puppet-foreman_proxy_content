@@ -17,12 +17,61 @@ describe 'foreman_proxy_content' do
             .with(api_service_worker_timeout: 90)
             .with(allowed_content_checksums: ['sha1', 'sha224', 'sha256', 'sha384', 'sha512'])
             .with(api_client_auth_cn_map: {facts[:fqdn] => 'admin'})
+            .with(allowed_import_path: ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports'])
+            .with(allowed_export_path: ['/var/lib/pulp/exports'])
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
 
         it do
           is_expected.to contain_class('foreman_proxy::plugin::pulp')
             .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
+        end
+
+        context 'with custom import/export paths as arrays' do
+          let(:params) do
+            {
+              pulpcore_additional_import_paths: ['/my/custom/import/path', '/my/other/import/path'],
+              pulpcore_additional_export_paths: ['/my/custom/export/path'],
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with(allowed_import_path:
+                [
+                  '/var/lib/pulp/sync_imports',
+                  '/var/lib/pulp/imports',
+                  '/my/custom/import/path',
+                  '/my/other/import/path'
+                ]
+              )
+              .with(allowed_export_path: ['/var/lib/pulp/exports', '/my/custom/export/path'])
+          end
+        end
+
+        context 'with custom import/export paths as strings' do
+          let(:params) do
+            {
+              pulpcore_additional_import_paths: '/my/custom/import/path',
+              pulpcore_additional_export_paths: '/my/custom/export/path',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with(allowed_import_path:
+                [
+                  '/var/lib/pulp/sync_imports',
+                  '/var/lib/pulp/imports',
+                  '/my/custom/import/path',
+                ]
+              )
+              .with(allowed_export_path: ['/var/lib/pulp/exports', '/my/custom/export/path'])
+          end
         end
 
         context 'with foreman' do
@@ -142,6 +191,8 @@ describe 'foreman_proxy_content' do
           is_expected.to contain_class('pulpcore')
             .with(apache_http_vhost: true)
             .with(apache_https_vhost: 'rhsm-pulpcore-https-443')
+            .with(allowed_import_path: ['/var/lib/pulp/sync_imports'])
+            .with(allowed_export_path: [])
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
         end
         it do
