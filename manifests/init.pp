@@ -92,6 +92,10 @@
 # $pulpcore_cache_expires_ttl::                The number of seconds that content should be cached for.
 #                                              Specify 'None' to never expire the cache.
 #
+# $pulpcore_additional_import_paths::          Additional allowed paths that Pulpcore can use for content imports, or sync from using file:// protocol
+#
+# $pulpcore_additional_export_paths::          Additional allowed paths that Pulpcore can use for content exports
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -139,6 +143,8 @@ class foreman_proxy_content (
   Integer[0] $pulpcore_api_service_worker_timeout = 90,
   Boolean $pulpcore_cache_enabled = true,
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
+  Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_import_paths = [],
+  Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -215,16 +221,19 @@ class foreman_proxy_content (
   }
 
   if $pulpcore_mirror {
-    $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports']
-    $pulpcore_allowed_export_path    = []
+    $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports']
+    $base_allowed_export_paths    = []
 
     pulpcore::apache::fragment{'gpg_key_proxy':
       https_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
     }
   } else {
-    $pulpcore_allowed_import_path    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
-    $pulpcore_allowed_export_path    = ['/var/lib/pulp/exports']
+    $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports']
+    $base_allowed_export_paths    = ['/var/lib/pulp/exports']
   }
+
+  $pulpcore_allowed_import_paths = unique($base_allowed_import_paths + $pulpcore_additional_import_paths)
+  $pulpcore_allowed_export_paths = unique($base_allowed_export_paths + $pulpcore_additional_export_paths)
 
   if $shared_with_foreman_vhost {
     include foreman::config::apache
@@ -256,8 +265,8 @@ class foreman_proxy_content (
 
   class { 'pulpcore':
     allowed_content_checksums      => $pulpcore_allowed_content_checksums,
-    allowed_import_path            => $pulpcore_allowed_import_path,
-    allowed_export_path            => $pulpcore_allowed_export_path,
+    allowed_import_path            => $pulpcore_allowed_import_paths,
+    allowed_export_path            => $pulpcore_allowed_export_paths,
     apache_http_vhost              => $apache_http_vhost,
     apache_https_vhost             => $apache_https_vhost,
     apache_https_cert              => $apache_https_cert,
