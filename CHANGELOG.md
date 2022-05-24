@@ -1,6 +1,14 @@
 # Changelog
 
-## [21.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.0.0) (2022-04-28)
+## [21.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.1.0) (2022-05-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.0.0...21.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#34882](https://projects.theforeman.org/issues/34882) - allow custom pulpcore import/export paths [\#417](https://github.com/theforeman/puppet-foreman_proxy_content/pull/417) ([wbclark](https://github.com/wbclark))
+
+## [21.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.0.0) (2022-05-03)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.2.0...21.0.0)
 
