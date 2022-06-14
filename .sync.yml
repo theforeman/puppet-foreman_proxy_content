@@ -10,5 +10,8 @@ spec/spec_helper.rb:
     - name: root_home
       value: /root
       source: puppetlabs-stdlib
+    - name: service_provider
+      value: systemd
+      source: puppetlabs-stdlib
 spec/spec_helper_acceptance.rb:
   locale_workaround: true
