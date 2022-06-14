@@ -4,6 +4,14 @@ describe 'pulpcore non-mirror' do
   it_behaves_like 'an idempotent resource' do
     let(:manifest) do
       <<~PUPPET
+      group { 'foreman':
+        ensure => present,
+      }
+
+      file { '/etc/foreman':
+        ensure => directory
+      }
+
       include certs::foreman_proxy
 
       class { 'foreman_proxy':
