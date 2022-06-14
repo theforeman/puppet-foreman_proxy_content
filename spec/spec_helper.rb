@@ -5,6 +5,7 @@ require 'voxpupuli/test/spec_helper'
 
 add_custom_fact :systemd, true # puppet-systemd
 add_custom_fact :root_home, "/root" # puppetlabs-stdlib
+add_custom_fact :service_provider, "systemd" # puppetlabs-stdlib
 
 def get_content(subject, title)
   is_expected.to contain_file(title)
