@@ -37,7 +37,7 @@ define foreman_proxy_content::reverse_proxy (
   apache::vhost { $vhost_name:
     ensure                 => $ensure,
     servername             => $certs::apache::hostname,
-    aliases                => $certs::apache::cname,
+    serveraliases          => $certs::apache::cname,
     port                   => $port,
     docroot                => '/var/www/',
     priority               => $priority,
