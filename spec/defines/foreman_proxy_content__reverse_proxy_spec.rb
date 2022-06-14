@@ -18,7 +18,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
         it do
           is_expected.to contain_apache__vhost('my-reverse-proxy')
             .with_servername(facts[:fqdn])
-            .with_aliases([])
+            .with_serveraliases([])
             .with_port(8443)
             .with_proxy_pass([{
               'path' => '/',
@@ -37,7 +37,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
         it do
           is_expected.to contain_apache__vhost('katello-reverse-proxy-443')
             .with_servername('foo.example.com')
-            .with_aliases([])
+            .with_serveraliases([])
             .with_port(443)
             .without_keepalive # Not part of the vhost but used in the vhost_params
             .with_proxy_pass([{
@@ -65,7 +65,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
           it do
             is_expected.to contain_apache__vhost('katello-reverse-proxy')
               .with_servername('proxy.example.com')
-              .with_aliases(['proxy-01.example.com'])
+              .with_serveraliases(['proxy-01.example.com'])
           end
         end
 
