@@ -24,7 +24,7 @@ define foreman_proxy_content::reverse_proxy (
   Hash[String, Any] $vhost_params = {},
   Hash[String, Variant[String, Integer]] $proxy_pass_params = { 'disablereuse' => 'on', 'retry' => '0' },
   Enum['present', 'absent'] $ensure = 'present',
-  Optional[Variant[String, Boolean]] $priority = '28',
+  Variant[String, Boolean] $priority = '28',
 ) {
   include apache
   include certs::apache
