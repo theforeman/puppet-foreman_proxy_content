@@ -29,7 +29,7 @@ class foreman_proxy_content::dispatch_router::hub (
     notify => Service['qdrouterd'],
   }
 
-  qpid::router::listener {'hub':
+  qpid::router::listener { 'hub':
     host        => $hub_addr,
     port        => $hub_port,
     role        => 'inter-router',

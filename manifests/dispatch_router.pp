@@ -36,7 +36,6 @@ class foreman_proxy_content::dispatch_router (
   Enum['file', 'syslog'] $logging = 'syslog',
   Stdlib::Absolutepath $logging_path = '/var/log/qdrouterd',
 ) {
-
   class { 'qpid::router':
     ensure => $ensure,
   }

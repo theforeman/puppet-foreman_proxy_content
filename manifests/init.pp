@@ -224,7 +224,7 @@ class foreman_proxy_content (
     $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports']
     $base_allowed_export_paths    = []
 
-    pulpcore::apache::fragment{'gpg_key_proxy':
+    pulpcore::apache::fragment { 'gpg_key_proxy':
       https_content => template('foreman_proxy_content/_pulp_gpg_proxy.erb'),
     }
   } else {
