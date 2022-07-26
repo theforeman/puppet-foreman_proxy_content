@@ -167,10 +167,10 @@ class foreman_proxy_content (
 
   if $reverse_proxy_real {
     foreman_proxy_content::reverse_proxy { "rhsm-pulpcore-https-${reverse_proxy_port}":
-      url      => "${foreman_url}/",
-      port     => $reverse_proxy_port,
-      priority => '10',
-      before   => Class['pulpcore::apache'],
+      path_url_map => { '/' => "${foreman_url}/" },
+      port         => $reverse_proxy_port,
+      priority     => '10',
+      before       => Class['pulpcore::apache'],
     }
   }
 
@@ -179,11 +179,10 @@ class foreman_proxy_content (
 
     if $rhsm_port != $reverse_proxy_port {
       foreman_proxy_content::reverse_proxy { $pulpcore_https_vhost_name:
-        path     => $rhsm_path,
-        url      => "${foreman_url}${rhsm_path}",
-        port     => $rhsm_port,
-        priority => '10',
-        before   => Class['pulpcore::apache'],
+        path_url_map => { $rhsm_path => "${foreman_url}${rhsm_path}" },
+        port         => $rhsm_port,
+        priority     => '10',
+        before       => Class['pulpcore::apache'],
       }
     }
   }

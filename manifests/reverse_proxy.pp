@@ -1,9 +1,7 @@
 # Adds http reverse-proxy to parent conf
 #
-# @param path
-#   The path where to mount the reverse proxy
-# @param url
-#   The URL to forward to
+# @param path_url_map
+#   The paths and corresponding URLs where to mount the reverse proxy
 # @param port
 #   The port to listen on
 # @param ssl_protocol
@@ -17,8 +15,7 @@
 # @param priority
 #   Sets the relative load-order for Apache HTTPD VirtualHost configuration files. See Apache::Vhost
 define foreman_proxy_content::reverse_proxy (
-  Stdlib::Unixpath $path = '/',
-  Stdlib::Httpurl $url = "${foreman_proxy_content::foreman_url}/",
+  Hash[Stdlib::Unixpath, Stdlib::Httpurl] $path_url_map = { '/' => "${foreman_proxy_content::foreman_url}/" },
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
@@ -33,6 +30,15 @@ define foreman_proxy_content::reverse_proxy (
   Class['certs', 'certs::ca', 'certs::apache', 'certs::foreman_proxy'] ~> Class['apache::service']
 
   $vhost_name = $title
+
+  $proxy_pass = $path_url_map.map |Stdlib::Unixpath $path, Stdlib::Httpurl $url| {
+    {
+      'path'         => $path,
+      'url'          => $url,
+      'reverse_urls' => [$url],
+      'params'       => $proxy_pass_params,
+    }
+  }
 
   apache::vhost { $vhost_name:
     ensure                 => $ensure,
@@ -54,14 +60,7 @@ define foreman_proxy_content::reverse_proxy (
     ssl_verify_depth       => 10,
     ssl_protocol           => $ssl_protocol,
     request_headers        => ['set X_RHSM_SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"'],
-    proxy_pass             => [
-      {
-        'path'         => $path,
-        'url'          => $url,
-        'reverse_urls' => [$url],
-        'params'       => $proxy_pass_params,
-      }
-    ],
+    proxy_pass             => $proxy_pass,
     error_documents        => [
       {
         'error_code' => '500',

@@ -30,7 +30,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
       end
 
       context 'with explicit parameters' do
-        let(:params) { { url: 'https://foreman.example.com/', port: 443 } }
+        let(:params) { { path_url_map: {'/' => 'https://foreman.example.com/'}, port: 443 } }
         let(:title) { 'katello-reverse-proxy-443' }
 
         it { is_expected.to compile.with_all_deps }
