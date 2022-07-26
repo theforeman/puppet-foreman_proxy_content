@@ -160,6 +160,8 @@ class foreman_proxy_content (
   $rhsm_path = '/rhsm'
   $rhsm_port = 443
 
+  $insights_path = '/redhat_access'
+
   ensure_packages('katello-debug')
 
   include certs::foreman_proxy
@@ -179,7 +181,10 @@ class foreman_proxy_content (
 
     if $rhsm_port != $reverse_proxy_port {
       foreman_proxy_content::reverse_proxy { $pulpcore_https_vhost_name:
-        path_url_map => { $rhsm_path => "${foreman_url}${rhsm_path}" },
+        path_url_map => {
+          $rhsm_path     => "${foreman_url}${rhsm_path}",
+          $insights_path => "${foreman_url}${insights_path}",
+        },
         port         => $rhsm_port,
         priority     => '10',
         before       => Class['pulpcore::apache'],
