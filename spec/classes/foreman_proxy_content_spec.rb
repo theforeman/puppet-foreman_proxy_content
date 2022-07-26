@@ -208,7 +208,7 @@ describe 'foreman_proxy_content' do
         end
         it do
           is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-443')
-            .with(path_url_map: {'/rhsm' => 'https://foo.example.com/rhsm'})
+            .with(path_url_map: {'/rhsm' => 'https://foo.example.com/rhsm', '/redhat_access' => 'https://foo.example.com/redhat_access'})
             .with(port: 443)
             .with(priority: '10')
             .that_comes_before('Class[pulpcore::apache]')
