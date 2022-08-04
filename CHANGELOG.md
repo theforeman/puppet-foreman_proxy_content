@@ -1,5 +1,24 @@
 # Changelog
 
+## [22.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.0.0) (2022-08-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.1.0...22.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#35278](https://projects.theforeman.org/issues/35278): Add Red Hat Insights path to reverse proxy URLs [\#423](https://github.com/theforeman/puppet-foreman_proxy_content/pull/423) ([ehelms](https://github.com/ehelms))
+- Refs [\#35005](https://projects.theforeman.org/issues/35005) - use foreman client certs for pulp-cli auth [\#420](https://github.com/theforeman/puppet-foreman_proxy_content/pull/420) ([evgeni](https://github.com/evgeni))
+- Drop EL7 support [\#419](https://github.com/theforeman/puppet-foreman_proxy_content/pull/419) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 23.x [\#424](https://github.com/theforeman/puppet-foreman_proxy_content/pull/424) ([ekohl](https://github.com/ekohl))
+- Update to voxpupuli-test 5 [\#421](https://github.com/theforeman/puppet-foreman_proxy_content/pull/421) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#35227](https://projects.theforeman.org/issues/35227) - Load apache::mod::autoindex if needed [\#422](https://github.com/theforeman/puppet-foreman_proxy_content/pull/422) ([ekohl](https://github.com/ekohl))
+
 ## [21.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.1.0) (2022-05-24)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.0.0...21.1.0)
