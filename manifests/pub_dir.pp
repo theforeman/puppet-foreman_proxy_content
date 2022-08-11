@@ -13,6 +13,7 @@ class foreman_proxy_content::pub_dir (
   include apache::mod::alias
 
   if '+Indexes' in $pub_dir_options.split(' ') {
+    include apache::mod::dir
     include apache::mod::autoindex
   }
 
