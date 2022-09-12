@@ -130,6 +130,9 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
         update-ca-trust
       fi
 
+      # restart yggdrasild if it is installed and running
+      systemctl try-restart yggdrasil >/dev/null 2>&1 || true
+
       exit 0
     HEREDOC
   end
