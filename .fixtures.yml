@@ -18,7 +18,9 @@ fixtures:
     puppetserver_foreman: "https://github.com/theforeman/puppet-puppetserver_foreman"
     tftp:          "https://github.com/theforeman/puppet-tftp"
     xinetd:        "https://github.com/puppetlabs/puppetlabs-xinetd"
-    certs:         "https://github.com/theforeman/puppet-certs.git"
+    certs:
+      repo: "https://github.com/theforeman/puppet-certs.git"
+      ref: "15.1.1"
     qpid:          "https://github.com/theforeman/puppet-qpid.git"
     pulpcore:      "https://github.com/theforeman/puppet-pulpcore.git"
     postgresql:    "https://github.com/puppetlabs/puppetlabs-postgresql"
