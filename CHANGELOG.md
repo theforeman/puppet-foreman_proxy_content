@@ -1,5 +1,15 @@
 # Changelog
 
+## [21.1.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.1.1) (2022-10-05)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.1.0...21.1.1)
+
+**Fixed bugs:**
+
+- Refs [\#35227](https://projects.theforeman.org/issues/35227) - Include mod\_dir for indexing [\#426](https://github.com/theforeman/puppet-foreman_proxy_content/pull/426) ([ekohl](https://github.com/ekohl))
+- Fixes [\#35227](https://projects.theforeman.org/issues/35227) - Load apache::mod::autoindex if needed [\#422](https://github.com/theforeman/puppet-foreman_proxy_content/pull/422) ([ekohl](https://github.com/ekohl))
+- Correctly set serveraliases for the reverse proxy; partially [\#420](https://github.com/theforeman/puppet-foreman_proxy_content/pull/420) ([evgeni](https://github.com/evgeni))
+
 ## [21.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.1.0) (2022-05-24)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.0.0...21.1.0)
