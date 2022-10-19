@@ -96,6 +96,8 @@
 #
 # $pulpcore_additional_export_paths::          Additional allowed paths that Pulpcore can use for content exports
 #
+# $pulpcore_telemetry::                        Enable upload of anonymous usage data to https://analytics.pulpproject.org/
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -145,6 +147,7 @@ class foreman_proxy_content (
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_import_paths = [],
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
+  Boolean $pulpcore_telemetry = false,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -299,6 +302,7 @@ class foreman_proxy_content (
     cache_enabled                  => $pulpcore_cache_enabled,
     cache_expires_ttl              => $pulpcore_cache_expires_ttl,
     before                         => Class['foreman_proxy::plugin::pulp'],
+    telemetry                      => $pulpcore_telemetry,
   }
 
   if $shared_with_foreman_vhost {
