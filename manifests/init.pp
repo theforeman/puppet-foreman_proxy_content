@@ -245,6 +245,8 @@ class foreman_proxy_content (
   if $shared_with_foreman_vhost {
     include foreman::config::apache
     $servername = $foreman::config::apache::servername
+    $serveraliases = $foreman::config::apache::serveraliases
+    $client_facing_servername = $servername
     $priority = $foreman::config::apache::priority
     $apache_http_vhost = 'foreman'
     $apache_https_vhost = 'foreman-ssl'
@@ -257,6 +259,7 @@ class foreman_proxy_content (
     include certs::apache
     Class['certs::apache'] ~> Class['pulpcore::apache']
     $servername = $certs::apache::hostname
+    $serveraliases = $certs::apache::cname
     $priority = '10'
     $apache_http_vhost = undef
     $apache_https_vhost = $pulpcore_https_vhost_name
@@ -264,6 +267,16 @@ class foreman_proxy_content (
     $apache_https_key = undef
     $apache_https_ca = undef
     $apache_https_chain = undef
+
+    if $foreman_proxy::registration_url {
+      $client_facing_servername = foreman_proxy_content::host_from_url($foreman_proxy::registration_url)
+
+      unless $client_facing_servername in $serveraliases {
+        fail("The foreman_proxy::registration_url (${client_facing_servername}) does not match the specified cname: ${serveraliases}")
+      }
+    } else {
+      $client_facing_servername = $servername
+    }
   }
 
   $api_client_auth_cn_map = Hash($foreman_proxy::trusted_hosts.map |$host| {
@@ -357,20 +370,20 @@ class foreman_proxy_content (
   }
   include pulpcore::plugin::certguard # Required to be present by Katello when syncing a content proxy
 
-  $rhsm_url = "https://${servername}:${rhsm_port}${rhsm_path}"
+  $rhsm_url = "https://${client_facing_servername}:${rhsm_port}${rhsm_path}"
 
   class { 'foreman_proxy::plugin::pulp':
     pulpcore_enabled      => true,
     pulpcore_mirror       => $pulpcore_mirror,
     pulpcore_api_url      => "https://${servername}",
-    pulpcore_content_url  => "https://${servername}${pulpcore::apache::content_path}",
+    pulpcore_content_url  => "https://${client_facing_servername}${pulpcore::apache::content_path}",
     client_authentication => ['client_certificate'],
     rhsm_url              => $rhsm_url,
     require               => Class['pulpcore'],
   }
 
   class { 'foreman_proxy_content::bootstrap_rpm':
-    rhsm_hostname => $servername,
+    rhsm_hostname => $client_facing_servername,
     rhsm_port     => $rhsm_port,
     rhsm_path     => $rhsm_path,
   }

@@ -248,6 +248,54 @@ describe 'foreman_proxy_content' do
           it { is_expected.not_to contain_class('certs::puppet') }
         end
       end
+
+      context 'with registration_url' do
+        let(:params) do
+          {
+            pulpcore_mirror: true,
+          }
+        end
+
+        describe 'should configure rhsm and pulp content URLs with load balancer' do
+          let(:pre_condition) do
+            <<-PUPPET
+            class { 'foreman_proxy':
+              registration_url => "https://loadbalancer.example.com/",
+            }
+            class { 'certs':
+              cname => ['loadbalancer.example.com'],
+            }
+            PUPPET
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_class('foreman_proxy::plugin::pulp')
+              .with_rhsm_url("https://loadbalancer.example.com:443/rhsm")
+          end
+
+          it do
+            is_expected.to contain_class('foreman_proxy::plugin::pulp')
+              .with_pulpcore_content_url("https://loadbalancer.example.com/pulp/content")
+          end
+        end
+
+        describe 'should throw an error if cname and registration_url do not match' do
+          let(:pre_condition) do
+            <<-PUPPET
+            class { 'foreman_proxy':
+              registration_url => "https://loadbalancer.example.com/",
+            }
+            class { 'certs':
+              cname => ['nottheloadbalancer.example.com'],
+            }
+            PUPPET
+          end
+
+          it { is_expected.not_to compile.with_all_deps }
+        end
+      end
     end
   end
 end
