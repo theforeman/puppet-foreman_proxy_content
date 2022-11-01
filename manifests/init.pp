@@ -22,6 +22,12 @@
 #
 # $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
 #
+# $hostname::                                  Set the hostname where clients connect to.
+#                                              It ends up on the certificate as the Common Name and in Apache's ServerName.
+#
+# $cname::                                     Set the alternative names where clients can connect to.
+#                                              It ends up on the certificate as CNAMEs and in Apache's ServerAliases.
+#
 # === Advanced parameters:
 #
 # $puppet::                                    Enable puppet
@@ -148,6 +154,9 @@ class foreman_proxy_content (
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_import_paths = [],
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
   Boolean $pulpcore_telemetry = false,
+
+  Optional[Stdlib::Fqdn] $hostname = undef,
+  Array[Stdlib::Fqdn] $cname = [],
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -169,6 +178,13 @@ class foreman_proxy_content (
 
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
+
+  if $reverse_proxy_real or !$shared_with_foreman_vhost {
+    class { 'certs::apache':
+      hostname => $hostname,
+      cname    => $cname,
+    }
+  }
 
   if $reverse_proxy_real {
     foreman_proxy_content::reverse_proxy { "rhsm-pulpcore-https-${reverse_proxy_port}":
@@ -282,6 +298,7 @@ class foreman_proxy_content (
     apache_https_chain             => $apache_https_chain,
     apache_vhost_priority          => $priority,
     servername                     => $servername,
+    serveraliases                  => $cname,
     static_url                     => '/pulp/assets/',
     postgresql_manage_db           => $pulpcore_manage_postgresql,
     postgresql_db_host             => $pulpcore_postgresql_host,
