@@ -1,5 +1,22 @@
 # Changelog
 
+## [22.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.1.0) (2022-11-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.0.0...22.1.0)
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 24.x [\#436](https://github.com/theforeman/puppet-foreman_proxy_content/pull/436) ([ekohl](https://github.com/ekohl))
+- Allow katello/certs 16.x [\#434](https://github.com/theforeman/puppet-foreman_proxy_content/pull/434) ([ekohl](https://github.com/ekohl))
+- Allow theforeman/pulpcore 7.x [\#433](https://github.com/theforeman/puppet-foreman_proxy_content/pull/433) ([ekohl](https://github.com/ekohl))
+- Fixes [\#35607](https://projects.theforeman.org/issues/35607) - Pulpcore Telemetry should be disabled initially [\#431](https://github.com/theforeman/puppet-foreman_proxy_content/pull/431) ([wbclark](https://github.com/wbclark))
+- Fixes [\#35486](https://projects.theforeman.org/issues/35486) - Restart yggdrasil in rhsm-reconfigure [\#428](https://github.com/theforeman/puppet-foreman_proxy_content/pull/428) ([adamruzicka](https://github.com/adamruzicka))
+- Allow puppetlabs/apache 8 [\#427](https://github.com/theforeman/puppet-foreman_proxy_content/pull/427) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Refs [\#35227](https://projects.theforeman.org/issues/35227) - Include mod\_dir for indexing [\#426](https://github.com/theforeman/puppet-foreman_proxy_content/pull/426) ([ekohl](https://github.com/ekohl))
+
 ## [22.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.0.0) (2022-08-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.1.0...22.0.0)

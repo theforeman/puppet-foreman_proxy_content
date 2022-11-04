@@ -1,3 +1,173 @@
+## [22.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.1.0) (2022-11-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.0.0...22.1.0)
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 24.x [\#436](https://github.com/theforeman/puppet-foreman_proxy_content/pull/436) ([ekohl](https://github.com/ekohl))
+- Allow katello/certs 16.x [\#434](https://github.com/theforeman/puppet-foreman_proxy_content/pull/434) ([ekohl](https://github.com/ekohl))
+- Allow theforeman/pulpcore 7.x [\#433](https://github.com/theforeman/puppet-foreman_proxy_content/pull/433) ([ekohl](https://github.com/ekohl))
+- Fixes [\#35607](https://projects.theforeman.org/issues/35607) - Pulpcore Telemetry should be disabled initially [\#431](https://github.com/theforeman/puppet-foreman_proxy_content/pull/431) ([wbclark](https://github.com/wbclark))
+- Fixes [\#35486](https://projects.theforeman.org/issues/35486) - Restart yggdrasil in rhsm-reconfigure [\#428](https://github.com/theforeman/puppet-foreman_proxy_content/pull/428) ([adamruzicka](https://github.com/adamruzicka))
+- Allow puppetlabs/apache 8 [\#427](https://github.com/theforeman/puppet-foreman_proxy_content/pull/427) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Refs [\#35227](https://projects.theforeman.org/issues/35227) - Include mod\_dir for indexing [\#426](https://github.com/theforeman/puppet-foreman_proxy_content/pull/426) ([ekohl](https://github.com/ekohl))
+
+## [22.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.0.0) (2022-08-04)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.1.0...22.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#35278](https://projects.theforeman.org/issues/35278): Add Red Hat Insights path to reverse proxy URLs [\#423](https://github.com/theforeman/puppet-foreman_proxy_content/pull/423) ([ehelms](https://github.com/ehelms))
+- Refs [\#35005](https://projects.theforeman.org/issues/35005) - use foreman client certs for pulp-cli auth [\#420](https://github.com/theforeman/puppet-foreman_proxy_content/pull/420) ([evgeni](https://github.com/evgeni))
+- Drop EL7 support [\#419](https://github.com/theforeman/puppet-foreman_proxy_content/pull/419) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 23.x [\#424](https://github.com/theforeman/puppet-foreman_proxy_content/pull/424) ([ekohl](https://github.com/ekohl))
+- Update to voxpupuli-test 5 [\#421](https://github.com/theforeman/puppet-foreman_proxy_content/pull/421) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#35227](https://projects.theforeman.org/issues/35227) - Load apache::mod::autoindex if needed [\#422](https://github.com/theforeman/puppet-foreman_proxy_content/pull/422) ([ekohl](https://github.com/ekohl))
+
+## [21.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.1.0) (2022-05-24)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/21.0.0...21.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#34882](https://projects.theforeman.org/issues/34882) - allow custom pulpcore import/export paths [\#417](https://github.com/theforeman/puppet-foreman_proxy_content/pull/417) ([wbclark](https://github.com/wbclark))
+
+## [21.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/21.0.0) (2022-05-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.2.0...21.0.0)
+
+**Breaking changes:**
+
+- Refs [\#34640](https://projects.theforeman.org/issues/34640) - Drop apipie cache work around [\#414](https://github.com/theforeman/puppet-foreman_proxy_content/pull/414) ([ehelms](https://github.com/ehelms))
+- Drop pulpcore\_use\_rq\_tasking\_system parameter [\#404](https://github.com/theforeman/puppet-foreman_proxy_content/pull/404) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Allow puppet-foreman\_proxy 22.0.0 [\#413](https://github.com/theforeman/puppet-foreman_proxy_content/pull/413) ([ehelms](https://github.com/ehelms))
+- Bump theforeman/pulpcore requirement to \>= 6.0.0 [\#412](https://github.com/theforeman/puppet-foreman_proxy_content/pull/412) ([evgeni](https://github.com/evgeni))
+- Refs [\#34684](https://projects.theforeman.org/issues/34684) - enable pulp-cli for Katello [\#405](https://github.com/theforeman/puppet-foreman_proxy_content/pull/405) ([evgeni](https://github.com/evgeni))
+- Allow stdlib 8.x, extlib 6.x, apache 7.x [\#402](https://github.com/theforeman/puppet-foreman_proxy_content/pull/402) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#34819](https://projects.theforeman.org/issues/34819) - disable Puppet by default [\#415](https://github.com/theforeman/puppet-foreman_proxy_content/pull/415) ([evgeni](https://github.com/evgeni))
+- include apache::mod::alias in foreman\_proxy\_content::pub\_dir [\#409](https://github.com/theforeman/puppet-foreman_proxy_content/pull/409) ([wbclark](https://github.com/wbclark))
+
+## [20.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.2.0) (2022-02-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.1.0...20.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#34406](https://projects.theforeman.org/issues/34406) - drop support for ancient EL versions [\#400](https://github.com/theforeman/puppet-foreman_proxy_content/pull/400) ([evgeni](https://github.com/evgeni))
+- Allow theforeman/foreman\_proxy 21.x [\#398](https://github.com/theforeman/puppet-foreman_proxy_content/pull/398) ([ekohl](https://github.com/ekohl))
+- Allow katello/certs 15.x [\#397](https://github.com/theforeman/puppet-foreman_proxy_content/pull/397) ([ekohl](https://github.com/ekohl))
+- Refs [\#34325](https://projects.theforeman.org/issues/34325) - enable redis cache by default [\#395](https://github.com/theforeman/puppet-foreman_proxy_content/pull/395) ([jlsherrill](https://github.com/jlsherrill))
+- Use variables on $certs::apache for CA/chain [\#392](https://github.com/theforeman/puppet-foreman_proxy_content/pull/392) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#34154](https://projects.theforeman.org/issues/34154) - Refresh on Pulp plugin installation [\#393](https://github.com/theforeman/puppet-foreman_proxy_content/pull/393) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Require at least theforeman/certs 15 [\#399](https://github.com/theforeman/puppet-foreman_proxy_content/pull/399) ([ekohl](https://github.com/ekohl))
+
+## [20.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.1.0) (2021-11-09)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/20.0.0...20.1.0)
+
+**Implemented enhancements:**
+
+- Allow theforeman/foreman\_proxy 20.0.0 [\#391](https://github.com/theforeman/puppet-foreman_proxy_content/pull/391) ([ehelms](https://github.com/ehelms))
+- Fixes [\#33863](https://projects.theforeman.org/issues/33863) - Deploy RHSM proxy vhost on 443 and attach Pulpcore configuration to it [\#390](https://github.com/theforeman/puppet-foreman_proxy_content/pull/390) ([wbclark](https://github.com/wbclark))
+- Allow katello/certs 14.0.0 [\#389](https://github.com/theforeman/puppet-foreman_proxy_content/pull/389) ([ehelms](https://github.com/ehelms))
+- Fixes [\#33751](https://projects.theforeman.org/issues/33751) - enable python and ostree content [\#387](https://github.com/theforeman/puppet-foreman_proxy_content/pull/387) ([jlsherrill](https://github.com/jlsherrill))
+- Drop unused server\_ca variable [\#386](https://github.com/theforeman/puppet-foreman_proxy_content/pull/386) ([ehelms](https://github.com/ehelms))
+- Configure RHSM url in Foreman Proxy's Pulp plugin [\#384](https://github.com/theforeman/puppet-foreman_proxy_content/pull/384) ([wbclark](https://github.com/wbclark))
+- Move more parameters from params.pp to init.pp [\#382](https://github.com/theforeman/puppet-foreman_proxy_content/pull/382) ([ekohl](https://github.com/ekohl))
+
+## [20.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/20.0.0) (2021-07-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/19.0.0...20.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 5 support [\#361](https://github.com/theforeman/puppet-foreman_proxy_content/pull/361) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Allow puppet-pulpcore 5.0.0 [\#379](https://github.com/theforeman/puppet-foreman_proxy_content/pull/379) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32910](https://projects.theforeman.org/issues/32910): Support enabling content caching for Pulp [\#372](https://github.com/theforeman/puppet-foreman_proxy_content/pull/372) ([ehelms](https://github.com/ehelms))
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Optionally enable new Pulpcore tasking system [\#371](https://github.com/theforeman/puppet-foreman_proxy_content/pull/371) ([wbclark](https://github.com/wbclark))
+- Allow puppet-qpid 9.0.0 [\#370](https://github.com/theforeman/puppet-foreman_proxy_content/pull/370) ([ehelms](https://github.com/ehelms))
+- Set client\_authentication on foreman\_proxy::plugin::pulp [\#368](https://github.com/theforeman/puppet-foreman_proxy_content/pull/368) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Refs [\#32891](https://projects.theforeman.org/issues/32891) - Fixup param doc [\#376](https://github.com/theforeman/puppet-foreman_proxy_content/pull/376) ([wbclark](https://github.com/wbclark))
+
+## [19.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/19.0.0) (2021-07-12)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.3.0...19.0.0)
+
+## [18.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.3.0) (2021-06-17)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.2.0...18.3.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#32553](https://projects.theforeman.org/issues/32553) - Remove md5 from allowed content types [\#356](https://github.com/theforeman/puppet-foreman_proxy_content/pull/356) ([jlsherrill](https://github.com/jlsherrill))
+- Support Puppet 7 [\#333](https://github.com/theforeman/puppet-foreman_proxy_content/pull/333) ([ekohl](https://github.com/ekohl))
+
+**Fixed bugs:**
+
+- Fixes [\#32700](https://projects.theforeman.org/issues/32700): Only capture bootstrap RPMs by name [\#365](https://github.com/theforeman/puppet-foreman_proxy_content/pull/365) ([ehelms](https://github.com/ehelms))
+- Add explicit dependency on puppet/trusted\_ca [\#362](https://github.com/theforeman/puppet-foreman_proxy_content/pull/362) ([ekohl](https://github.com/ekohl))
+
+**Merged pull requests:**
+
+- Mark compatible with puppet/trusted\_ca 4.x [\#364](https://github.com/theforeman/puppet-foreman_proxy_content/pull/364) ([ekohl](https://github.com/ekohl))
+- Unpin camptocamp/systemd in fixtures [\#363](https://github.com/theforeman/puppet-foreman_proxy_content/pull/363) ([ekohl](https://github.com/ekohl))
+- Switch to voxpupuli-acceptance-1.0 [\#359](https://github.com/theforeman/puppet-foreman_proxy_content/pull/359) ([ekohl](https://github.com/ekohl))
+
+## [18.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.2.0) (2021-05-19)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.1.0...18.2.0)
+
+**Implemented enhancements:**
+
+- Allow Puppet 7 compatible versions of mods [\#354](https://github.com/theforeman/puppet-foreman_proxy_content/pull/354) ([ekohl](https://github.com/ekohl))
+- Include certs::foreman\_proxy instead of declaring [\#353](https://github.com/theforeman/puppet-foreman_proxy_content/pull/353) ([ekohl](https://github.com/ekohl))
+- Fixes [\#32383](https://projects.theforeman.org/issues/32383): Set Pulp to expect Foreman host as the client authentic… [\#350](https://github.com/theforeman/puppet-foreman_proxy_content/pull/350) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Fixes [\#32567](https://projects.theforeman.org/issues/32567): Ensure bootstrap RPM symlink exists [\#357](https://github.com/theforeman/puppet-foreman_proxy_content/pull/357) ([ehelms](https://github.com/ehelms))
+- Fixes [\#32529](https://projects.theforeman.org/issues/32529): Find latest bootstrap RPM by sorting as integer [\#355](https://github.com/theforeman/puppet-foreman_proxy_content/pull/355) ([ehelms](https://github.com/ehelms))
+
+## [18.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.1.0) (2021-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/18.0.0...18.1.0)
+
+**Implemented enhancements:**
+
+- Improve clarity of content type feature param documentation strings [\#344](https://github.com/theforeman/puppet-foreman_proxy_content/pull/344) ([wbclark](https://github.com/wbclark))
+
+**Fixed bugs:**
+
+- Fixes [\#32443](https://projects.theforeman.org/issues/32443) - Add support for md5 for ALLOWED\_CONTENT\_CHECKSUM [\#349](https://github.com/theforeman/puppet-foreman_proxy_content/pull/349) ([jlsherrill](https://github.com/jlsherrill))
+
 ## [18.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/18.0.0) (2021-04-27)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/17.1.0...18.0.0)
