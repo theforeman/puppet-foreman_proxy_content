@@ -16,7 +16,7 @@
 #
 # $enable_python::                             Enable the Python content feature. This allows syncing, managing, and serving Python content.
 #
-# $enable_ostree::                             Enable the OSTree content feature. This allows syncing, managing, and serving OSTree content. This is not available on el7.
+# $enable_ostree::                             Enable the OSTree content feature. This allows syncing, managing, and serving OSTree content.
 #
 # $enable_katello_agent::                      Enable katello-agent for remote yum actions
 #
