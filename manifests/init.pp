@@ -295,6 +295,7 @@ class foreman_proxy_content (
     apache_https_chain             => $apache_https_chain,
     apache_vhost_priority          => $priority,
     servername                     => $servername,
+    serveraliases                  => $serveraliases,
     static_url                     => '/pulp/assets/',
     postgresql_manage_db           => $pulpcore_manage_postgresql,
     postgresql_db_host             => $pulpcore_postgresql_host,
