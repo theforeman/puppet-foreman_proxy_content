@@ -1,5 +1,17 @@
 # Changelog
 
+## [22.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.2.0) (2022-12-14)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.1.0...22.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#35681](https://projects.theforeman.org/issues/35681): Use registration\_url for RHSM and Pulp content URL  [\#432](https://github.com/theforeman/puppet-foreman_proxy_content/pull/432) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- drop "not on el7" comment, now that we don't support it [\#438](https://github.com/theforeman/puppet-foreman_proxy_content/pull/438) ([evgeni](https://github.com/evgeni))
+
 ## [22.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.1.0) (2022-11-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.0.0...22.1.0)
