@@ -24,8 +24,6 @@
 #
 # === Advanced parameters:
 #
-# $puppet::                                    Enable puppet
-#
 # $reverse_proxy::                             Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                        Reverse proxy listening port
@@ -100,8 +98,6 @@
 #
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
-
-  Boolean $puppet = false,
 
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
@@ -397,17 +393,4 @@ class foreman_proxy_content (
     Pulpcore::Plugin <| |> ~> Foreman_smartproxy[$foreman_proxy::registered_name]
   }
   # lint:endignore
-
-  if $puppet {
-    # We can't pull the certs out to the top level, because of how it gets the default
-    # parameter values from the main certs class.  Kafo can't handle that case, so
-    # it remains here for now.
-    include puppet
-    if $puppet::server and $puppet::server::foreman {
-      class { 'certs::puppet':
-        hostname => $certs::foreman_proxy::hostname,
-        before   => Class['puppet::server::config'],
-      }
-    }
-  }
 }
