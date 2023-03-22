@@ -1,5 +1,13 @@
 # Changelog
 
+## [23.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/23.0.0) (2023-03-22)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.2.0...23.0.0)
+
+**Breaking changes:**
+
+- Refs [\#35985](https://projects.theforeman.org/issues/35985) - Rely on theforeman/puppet to do integration [\#440](https://github.com/theforeman/puppet-foreman_proxy_content/pull/440) ([ekohl](https://github.com/ekohl))
+
 ## [22.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/22.2.0) (2022-12-14)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.1.0...22.2.0)
