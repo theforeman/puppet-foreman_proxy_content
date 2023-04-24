@@ -26,6 +26,8 @@
 #
 # $reverse_proxy_port::                        Reverse proxy listening port
 #
+# $reverse_proxy_backend_protocol::            Configure the protocol used by the reverse proxy to connect to Foreman
+#
 # $pulpcore_allowed_content_checksums::        List of checksums to use for pulpcore content operations
 #
 # $pulpcore_manage_postgresql::                Manage the Pulpcore PostgreSQL database.
@@ -81,6 +83,7 @@ class foreman_proxy_content (
 
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
+  Enum['h2', 'https'] $reverse_proxy_backend_protocol = 'h2',
 
   Boolean $enable_yum = true,
   Boolean $enable_file = true,
@@ -120,6 +123,7 @@ class foreman_proxy_content (
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
   $reverse_proxy_real = $pulpcore_mirror or $reverse_proxy
+  $proxy_foreman_url = $foreman_url.regsubst('https://', "${reverse_proxy_backend_protocol}://")
 
   # TODO: make it configurable
   # https://github.com/theforeman/puppet-foreman_proxy_content/issues/407
@@ -137,7 +141,7 @@ class foreman_proxy_content (
 
   if $reverse_proxy_real {
     foreman_proxy_content::reverse_proxy { "rhsm-pulpcore-https-${reverse_proxy_port}":
-      path_url_map => { '/' => "${foreman_url}/" },
+      path_url_map => { '/' => "${proxy_foreman_url}/" },
       port         => $reverse_proxy_port,
       priority     => '10',
       before       => Class['pulpcore::apache'],
@@ -150,8 +154,8 @@ class foreman_proxy_content (
     if $rhsm_port != $reverse_proxy_port {
       foreman_proxy_content::reverse_proxy { $pulpcore_https_vhost_name:
         path_url_map => {
-          $rhsm_path     => "${foreman_url}${rhsm_path}",
-          $insights_path => "${foreman_url}${insights_path}",
+          $rhsm_path     => "${proxy_foreman_url}${rhsm_path}",
+          $insights_path => "${proxy_foreman_url}${insights_path}",
         },
         port         => $rhsm_port,
         priority     => '10',

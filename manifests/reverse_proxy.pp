@@ -15,7 +15,7 @@
 # @param priority
 #   Sets the relative load-order for Apache HTTPD VirtualHost configuration files. See Apache::Vhost
 define foreman_proxy_content::reverse_proxy (
-  Hash[Stdlib::Unixpath, Stdlib::Httpurl] $path_url_map = { '/' => "${foreman_proxy_content::foreman_url}/" },
+  Hash[Stdlib::Unixpath, String[1]] $path_url_map = { '/' => "${foreman_proxy_content::foreman_url}/" },
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
@@ -31,7 +31,7 @@ define foreman_proxy_content::reverse_proxy (
 
   $vhost_name = $title
 
-  $proxy_pass = $path_url_map.map |Stdlib::Unixpath $path, Stdlib::Httpurl $url| {
+  $proxy_pass = $path_url_map.map |$path, $url| {
     {
       'path'         => $path,
       'url'          => $url,
