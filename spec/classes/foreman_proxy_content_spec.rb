@@ -201,14 +201,14 @@ describe 'foreman_proxy_content' do
         end
         it do
           is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
-            .with(path_url_map: {'/' => 'https://foo.example.com/'})
+            .with(path_url_map: {'/' => 'h2://foo.example.com/'})
             .with(port: 8443)
             .with(priority: '10')
             .that_comes_before('Class[pulpcore::apache]')
         end
         it do
           is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-443')
-            .with(path_url_map: {'/rhsm' => 'https://foo.example.com/rhsm', '/redhat_access' => 'https://foo.example.com/redhat_access'})
+            .with(path_url_map: {'/rhsm' => 'h2://foo.example.com/rhsm', '/redhat_access' => 'h2://foo.example.com/redhat_access'})
             .with(port: 443)
             .with(priority: '10')
             .that_comes_before('Class[pulpcore::apache]')
