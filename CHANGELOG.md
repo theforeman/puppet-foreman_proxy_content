@@ -1,5 +1,19 @@
 # Changelog
 
+## [24.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.0.0) (2023-05-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/23.0.0...24.0.0)
+
+**Breaking changes:**
+
+- Refs [\#36345](https://projects.theforeman.org/issues/36345) - Raise minimum Puppet version to 7.0.0 [\#445](https://github.com/theforeman/puppet-foreman_proxy_content/pull/445) ([ekohl](https://github.com/ekohl))
+
+**Implemented enhancements:**
+
+- Mark compatible with theforeman/foreman\_proxy 25.x [\#447](https://github.com/theforeman/puppet-foreman_proxy_content/pull/447) ([ekohl](https://github.com/ekohl))
+- Mark compatible with theforeman/pulpcore 8.x [\#446](https://github.com/theforeman/puppet-foreman_proxy_content/pull/446) ([ekohl](https://github.com/ekohl))
+- Mark compatible with puppetlabs/apache 10.x [\#443](https://github.com/theforeman/puppet-foreman_proxy_content/pull/443) ([ekohl](https://github.com/ekohl))
+
 ## [23.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/23.0.0) (2023-03-22)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/22.2.0...23.0.0)
