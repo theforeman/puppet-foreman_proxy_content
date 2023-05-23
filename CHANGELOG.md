@@ -1,5 +1,13 @@
 # Changelog
 
+## [24.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.1.0) (2023-05-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.0.0...24.1.0)
+
+**Implemented enhancements:**
+
+- Mark compatible with katello/qpid 10.x [\#449](https://github.com/theforeman/puppet-foreman_proxy_content/pull/449) ([ekohl](https://github.com/ekohl))
+
 ## [24.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.0.0) (2023-05-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/23.0.0...24.0.0)
