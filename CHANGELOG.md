@@ -1,5 +1,13 @@
 # Changelog
 
+## [24.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.2.0) (2023-06-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.1.0...24.2.0)
+
+**Implemented enhancements:**
+
+- expose pulpcore's HIDE\_GUARDED\_DISTRIBUTIONS setting [\#451](https://github.com/theforeman/puppet-foreman_proxy_content/pull/451) ([evgeni](https://github.com/evgeni))
+
 ## [24.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.1.0) (2023-05-23)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.0.0...24.1.0)
