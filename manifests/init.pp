@@ -96,6 +96,8 @@
 #
 # $pulpcore_telemetry::                        Enable upload of anonymous usage data to https://analytics.pulpproject.org/
 #
+# $pulpcore_hide_guarded_distributions::       Hide distributions that are protected by a content guard from the default listing
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -144,6 +146,7 @@ class foreman_proxy_content (
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_import_paths = [],
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
   Boolean $pulpcore_telemetry = false,
+  Boolean $pulpcore_hide_guarded_distributions = true,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -313,6 +316,7 @@ class foreman_proxy_content (
     cache_expires_ttl              => $pulpcore_cache_expires_ttl,
     before                         => Class['foreman_proxy::plugin::pulp'],
     telemetry                      => $pulpcore_telemetry,
+    hide_guarded_distributions     => $pulpcore_hide_guarded_distributions,
   }
 
   if $shared_with_foreman_vhost {
