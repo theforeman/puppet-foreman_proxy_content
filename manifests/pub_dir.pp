@@ -8,7 +8,7 @@
 class foreman_proxy_content::pub_dir (
   String $pub_dir_options = '+FollowSymLinks +Indexes',
 ) {
-  ensure_packages('katello-client-bootstrap')
+  stdlib::ensure_packages('katello-client-bootstrap')
 
   include apache::mod::alias
 

@@ -134,7 +134,7 @@ class foreman_proxy_content (
 
   $insights_path = '/redhat_access'
 
-  ensure_packages('katello-debug')
+  stdlib::ensure_packages('katello-debug')
 
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
