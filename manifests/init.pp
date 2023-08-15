@@ -18,8 +18,6 @@
 #
 # $enable_ostree::                             Enable the OSTree content feature. This allows syncing, managing, and serving OSTree content.
 #
-# $enable_katello_agent::                      Enable katello-agent for remote yum actions
-#
 # $pulpcore_mirror::                           Deploy Pulp to be used as a mirror
 #
 # === Advanced parameters:
@@ -27,28 +25,6 @@
 # $reverse_proxy::                             Add reverse proxy to the parent
 #
 # $reverse_proxy_port::                        Reverse proxy listening port
-#
-# $qpid_router_hub_addr::                      Address for dispatch router hub
-#
-# $qpid_router_hub_port::                      Port for dispatch router hub
-#
-# $qpid_router_agent_addr::                    Listener address for goferd agents
-#
-# $qpid_router_agent_port::                    Listener port for goferd agents
-#
-# $qpid_router_broker_addr::                   Address of qpidd broker to connect to
-#
-# $qpid_router_broker_port::                   Port of qpidd broker to connect to
-#
-# $qpid_router_logging_level::                 Logging level of dispatch router (e.g. info+ or debug+)
-#
-# $qpid_router_logging::                       Whether to log to file or syslog.
-#
-# $qpid_router_logging_path::                  Directory for dispatch router logs, if using file logging
-#
-# $qpid_router_ssl_ciphers::                   SSL Ciphers to support in dispatch router
-#
-# $qpid_router_ssl_protocols::                 Protocols to support in dispatch router (e.g. TLSv1.2, etc)
 #
 # $pulpcore_allowed_content_checksums::        List of checksums to use for pulpcore content operations
 #
@@ -106,18 +82,6 @@ class foreman_proxy_content (
   Boolean $reverse_proxy = false,
   Stdlib::Port $reverse_proxy_port = 8443,
 
-  Optional[String] $qpid_router_hub_addr = undef,
-  Stdlib::Port $qpid_router_hub_port = 5646,
-  Optional[String] $qpid_router_agent_addr = undef,
-  Stdlib::Port $qpid_router_agent_port = 5647,
-  String $qpid_router_broker_addr = 'localhost',
-  Stdlib::Port $qpid_router_broker_port = 5671,
-  String $qpid_router_logging_level = 'info+',
-  Enum['file', 'syslog'] $qpid_router_logging = 'syslog',
-  Stdlib::Absolutepath $qpid_router_logging_path = '/var/log/qdrouterd',
-  String $qpid_router_ssl_ciphers = 'ALL:!aNULL:+HIGH:-SSLv3:!IDEA-CBC-SHA',
-  Optional[Array[String]] $qpid_router_ssl_protocols = undef,
-
   Boolean $enable_yum = true,
   Boolean $enable_file = true,
   Boolean $enable_docker = true,
@@ -125,7 +89,6 @@ class foreman_proxy_content (
   Boolean $enable_ansible = true,
   Boolean $enable_python = true,
   Boolean $enable_ostree = false,
-  Boolean $enable_katello_agent = false,
 
   Boolean $pulpcore_manage_postgresql = true,
   Stdlib::Host $pulpcore_postgresql_host = 'localhost',
@@ -199,35 +162,10 @@ class foreman_proxy_content (
 
   include foreman_proxy_content::pub_dir
 
-  class { 'foreman_proxy_content::dispatch_router':
-    ensure        => bool2str($enable_katello_agent, 'present', 'absent'),
-    agent_addr    => $qpid_router_agent_addr,
-    agent_port    => $qpid_router_agent_port,
-    ssl_ciphers   => $qpid_router_ssl_ciphers,
-    ssl_protocols => $qpid_router_ssl_protocols,
-    logging_level => $qpid_router_logging_level,
-    logging       => $qpid_router_logging,
-    logging_path  => $qpid_router_logging_path,
+  class { 'qpid::router':
+    ensure => 'absent',
   }
-  contain foreman_proxy_content::dispatch_router
-
-  if $enable_katello_agent {
-    if $pulpcore_mirror {
-      class { 'foreman_proxy_content::dispatch_router::connector':
-        host => $foreman_host,
-        port => $qpid_router_hub_port,
-      }
-      contain foreman_proxy_content::dispatch_router::connector
-    } else {
-      class { 'foreman_proxy_content::dispatch_router::hub':
-        hub_addr    => $qpid_router_hub_addr,
-        hub_port    => $qpid_router_hub_port,
-        broker_addr => $qpid_router_broker_addr,
-        broker_port => $qpid_router_broker_port,
-      }
-      contain foreman_proxy_content::dispatch_router::hub
-    }
-  }
+  contain qpid::router
 
   if $pulpcore_mirror {
     $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports']
