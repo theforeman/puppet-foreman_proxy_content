@@ -37,4 +37,13 @@ describe 'pulpcore mirror' do
     # TODO: this is a regression introduced in 76e2a6852d1d2ca33935ccf8a6ab69992c32ec1d
     it { is_expected.to contain(%{DocumentRoot "/var/www}) }
   end
+
+  describe service('qdrouterd') do
+    it { is_expected.not_to be_running }
+    it { is_expected.not_to be_enabled }
+  end
+
+  describe port('5647') do
+    it { is_expected.not_to be_listening }
+  end
 end
