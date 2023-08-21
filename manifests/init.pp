@@ -98,6 +98,8 @@
 #
 # $pulpcore_hide_guarded_distributions::       Hide distributions that are protected by a content guard from the default listing
 #
+# $pulpcore_import_workers_percent::           What percentage of available-workers will pulpcore use for import tasks at a time
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -147,6 +149,7 @@ class foreman_proxy_content (
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
   Boolean $pulpcore_telemetry = false,
   Boolean $pulpcore_hide_guarded_distributions = true,
+  Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -317,6 +320,7 @@ class foreman_proxy_content (
     before                         => Class['foreman_proxy::plugin::pulp'],
     telemetry                      => $pulpcore_telemetry,
     hide_guarded_distributions     => $pulpcore_hide_guarded_distributions,
+    import_workers_percent         => $pulpcore_import_workers_percent,
   }
 
   if $shared_with_foreman_vhost {
