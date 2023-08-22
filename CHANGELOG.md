@@ -1,5 +1,13 @@
 # Changelog
 
+## [24.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.3.0) (2023-08-22)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.2.0...24.3.0)
+
+**Implemented enhancements:**
+
+- allow configuring IMPORT\_WORKERS\_PERCENT [\#456](https://github.com/theforeman/puppet-foreman_proxy_content/pull/456) ([evgeni](https://github.com/evgeni))
+
 ## [24.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.2.0) (2023-06-20)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.1.0...24.2.0)
