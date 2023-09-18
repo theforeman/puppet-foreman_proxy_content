@@ -301,6 +301,7 @@ class foreman_proxy_content (
   }
   if $enable_ansible {
     class { 'pulpcore::plugin::ansible':
+      permission_classes => [],
     }
   }
   if $enable_python {
