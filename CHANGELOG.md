@@ -1,5 +1,17 @@
 # Changelog
 
+## [25.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/25.0.0) (2023-09-18)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.3.0...25.0.0)
+
+**Breaking changes:**
+
+- Remove katello-agent [\#455](https://github.com/theforeman/puppet-foreman_proxy_content/pull/455) ([wbclark](https://github.com/wbclark))
+
+**Implemented enhancements:**
+
+- Fixes [\#36709](https://projects.theforeman.org/issues/36709) - Set ANSIBLE\_PERMISSION\_CLASSES to empty list [\#458](https://github.com/theforeman/puppet-foreman_proxy_content/pull/458) ([ekohl](https://github.com/ekohl))
+
 ## [24.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/24.3.0) (2023-08-22)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.2.0...24.3.0)
