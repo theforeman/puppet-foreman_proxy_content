@@ -1,5 +1,23 @@
 # Changelog
 
+## [26.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/26.0.0) (2023-11-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/25.0.0...26.0.0)
+
+**Breaking changes:**
+
+- puppetlabs/stdlib: Require 9.x && puppet/trusted\_ca: Allow 5.x [\#453](https://github.com/theforeman/puppet-foreman_proxy_content/pull/453) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Mark compatible with theforeman/pulpcore 9.x [\#465](https://github.com/theforeman/puppet-foreman_proxy_content/pull/465) ([ekohl](https://github.com/ekohl))
+- Mark compatible with katello/qpid 11.x [\#464](https://github.com/theforeman/puppet-foreman_proxy_content/pull/464) ([ekohl](https://github.com/ekohl))
+- Mark compatible with puppet-extlib 7.x [\#463](https://github.com/theforeman/puppet-foreman_proxy_content/pull/463) ([ekohl](https://github.com/ekohl))
+- Mark compatible with katello/certs 17.x [\#462](https://github.com/theforeman/puppet-foreman_proxy_content/pull/462) ([ekohl](https://github.com/ekohl))
+- Mark compatible with puppetlabs/apache 11.x [\#460](https://github.com/theforeman/puppet-foreman_proxy_content/pull/460) ([ekohl](https://github.com/ekohl))
+- Add Puppet 8 support [\#454](https://github.com/theforeman/puppet-foreman_proxy_content/pull/454) ([bastelfreak](https://github.com/bastelfreak))
+- Fixes [\#36854](https://projects.theforeman.org/issues/36854) - Use HTTP/2 when proxying to Foreman [\#442](https://github.com/theforeman/puppet-foreman_proxy_content/pull/442) ([ekohl](https://github.com/ekohl))
+
 ## [25.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/25.0.0) (2023-09-18)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/24.3.0...25.0.0)
