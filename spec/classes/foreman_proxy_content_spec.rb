@@ -7,7 +7,6 @@ describe 'foreman_proxy_content' do
 
       context 'without parameters' do
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('katello-debug') }
         it { is_expected.to contain_class('foreman_proxy_content::pub_dir') }
         it do
           is_expected.to contain_class('pulpcore')
