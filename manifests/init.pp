@@ -72,7 +72,7 @@
 #
 # $pulpcore_additional_export_paths::          Additional allowed paths that Pulpcore can use for content exports
 #
-# $pulpcore_telemetry::                        Enable upload of anonymous usage data to https://analytics.pulpproject.org/
+# $pulpcore_analytics::                        Enable upload of anonymous usage data to https://analytics.pulpproject.org/
 #
 # $pulpcore_hide_guarded_distributions::       Hide distributions that are protected by a content guard from the default listing
 #
@@ -113,7 +113,7 @@ class foreman_proxy_content (
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_import_paths = [],
   Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]] $pulpcore_additional_export_paths = [],
-  Boolean $pulpcore_telemetry = false,
+  Boolean $pulpcore_analytics = false,
   Boolean $pulpcore_hide_guarded_distributions = true,
   Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
 ) inherits foreman_proxy_content::params {
@@ -258,7 +258,7 @@ class foreman_proxy_content (
     cache_enabled                  => $pulpcore_cache_enabled,
     cache_expires_ttl              => $pulpcore_cache_expires_ttl,
     before                         => Class['foreman_proxy::plugin::pulp'],
-    telemetry                      => $pulpcore_telemetry,
+    analytics                      => $pulpcore_analytics,
     hide_guarded_distributions     => $pulpcore_hide_guarded_distributions,
     import_workers_percent         => $pulpcore_import_workers_percent,
   }
