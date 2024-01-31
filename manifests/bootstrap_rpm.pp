@@ -56,6 +56,9 @@ class foreman_proxy_content::bootstrap_rpm (
     rhsm_hostname   => $rhsm_hostname,
     rhsm_port       => $rhsm_port,
     rhsm_path       => $rhsm_path,
+    owner           => 'root',
+    group           => 'root',
+    mode            => '0644',
   }
 
   bootstrap_rpm { $bootstrap_rpm_name:
@@ -63,5 +66,8 @@ class foreman_proxy_content::bootstrap_rpm (
     script  => "${rpm_serve_dir}/${katello_rhsm_setup_script}",
     dest    => $rpm_serve_dir,
     symlink => "${rpm_serve_dir}/${candlepin_cert_rpm_alias_filename}",
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

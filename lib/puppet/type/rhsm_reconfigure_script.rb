@@ -1,3 +1,7 @@
+require 'puppet/type/file/owner'
+require 'puppet/type/file/group'
+require 'puppet/type/file/mode'
+
 Puppet::Type.newtype(:rhsm_reconfigure_script) do
   desc 'Creates script to reconfigure RHSM to point at a server'
 
@@ -36,6 +40,18 @@ Puppet::Type.newtype(:rhsm_reconfigure_script) do
     defaultto '/rhsm'
   end
 
+  newparam(:owner, parent: Puppet::Type::File::Owner) do
+    desc "Specifies the owner of the private key. Valid options: a string containing a username or integer containing a uid."
+  end
+
+  newparam(:group, parent: Puppet::Type::File::Group) do
+    desc "Specifies a permissions group for the private key. Valid options: a string containing a group name or integer containing a gid."
+  end
+
+  newparam(:mode, parent: Puppet::Type::File::Mode) do
+    desc "Specifies the permissions mode of the private key. Valid options: a string containing a permission mode value in octal notation."
+  end
+
   autorequire(:file) do
     [
       self[:server_ca_cert],
@@ -46,5 +62,28 @@ Puppet::Type.newtype(:rhsm_reconfigure_script) do
 
   def refresh
     provider.create unless provider.exist?
+  end
+
+  def generate
+    file_opts = {
+      ensure: (self[:ensure] == :absent) ? :absent : :file,
+    }
+
+    [:path,
+     :owner,
+     :group,
+     :mode].each do |param|
+      file_opts[param] = self[param] unless self[param].nil?
+    end
+
+    excluded_metaparams = [:before, :notify, :require, :subscribe, :tag]
+
+    Puppet::Type.metaparams.each do |metaparam|
+      unless self[metaparam].nil? || excluded_metaparams.include?(metaparam)
+        file_opts[metaparam] = self[metaparam]
+      end
+    end
+
+    [Puppet::Type.type(:file).new(file_opts)]
   end
 end
