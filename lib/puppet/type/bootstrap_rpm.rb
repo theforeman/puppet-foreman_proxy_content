@@ -66,10 +66,10 @@ Puppet::Type.newtype(:bootstrap_rpm) do
   def generate
     file_opts = {
       ensure: (self[:ensure] == :absent) ? :absent : :file,
+      path: "#{self[:dest]}/#{self[:name]}",
     }
 
-    [:path,
-     :owner,
+    [:owner,
      :group,
      :mode].each do |param|
       file_opts[param] = self[param] unless self[param].nil?
