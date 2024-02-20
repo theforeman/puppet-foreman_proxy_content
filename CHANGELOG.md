@@ -1,5 +1,25 @@
 # Changelog
 
+## [27.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/27.0.0) (2024-02-20)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/26.0.0...27.0.0)
+
+**Breaking changes:**
+
+- Refs [\#37062](https://projects.theforeman.org/issues/37062) - Use pulpcore::analytics instead of pulpcore::telemetry [\#470](https://github.com/theforeman/puppet-foreman_proxy_content/pull/470) ([wbclark](https://github.com/wbclark))
+
+**Implemented enhancements:**
+
+- Mark compatible with theforeman/pulpcore 10.x [\#473](https://github.com/theforeman/puppet-foreman_proxy_content/pull/473) ([ekohl](https://github.com/ekohl))
+- Support EL9 [\#469](https://github.com/theforeman/puppet-foreman_proxy_content/pull/469) ([evgeni](https://github.com/evgeni))
+- do not install katello-debug by default [\#468](https://github.com/theforeman/puppet-foreman_proxy_content/pull/468) ([evgeni](https://github.com/evgeni))
+
+**Fixed bugs:**
+
+- Require pulpcore 10.x for pulpcore::analytics parameter [\#474](https://github.com/theforeman/puppet-foreman_proxy_content/pull/474) ([ekohl](https://github.com/ekohl))
+- Refs [\#37130](https://projects.theforeman.org/issues/37130): Set bootstrap\_rpm file resource path correctly [\#472](https://github.com/theforeman/puppet-foreman_proxy_content/pull/472) ([ehelms](https://github.com/ehelms))
+- Fixes [\#37130](https://projects.theforeman.org/issues/37130) - set owner, group and mode for bootstrap RPM [\#471](https://github.com/theforeman/puppet-foreman_proxy_content/pull/471) ([ehelms](https://github.com/ehelms))
+
 ## [26.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/26.0.0) (2023-11-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/25.0.0...26.0.0)
