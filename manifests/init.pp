@@ -164,11 +164,6 @@ class foreman_proxy_content (
 
   include foreman_proxy_content::pub_dir
 
-  class { 'qpid::router':
-    ensure => 'absent',
-  }
-  contain qpid::router
-
   if $pulpcore_mirror {
     $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports']
     $base_allowed_export_paths    = []
