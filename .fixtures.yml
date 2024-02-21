@@ -18,7 +18,6 @@ fixtures:
     tftp:          "https://github.com/theforeman/puppet-tftp"
     xinetd:        "https://github.com/puppetlabs/puppetlabs-xinetd"
     certs:         "https://github.com/theforeman/puppet-certs.git"
-    qpid:          "https://github.com/theforeman/puppet-qpid.git"
     pulpcore:      "https://github.com/theforeman/puppet-pulpcore.git"
     postgresql:    "https://github.com/puppetlabs/puppetlabs-postgresql"
     redis:         "https://github.com/voxpupuli/puppet-redis"
