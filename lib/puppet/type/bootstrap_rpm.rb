@@ -62,27 +62,4 @@ Puppet::Type.newtype(:bootstrap_rpm) do
   def refresh
     provider.create
   end
-
-  def generate
-    file_opts = {
-      ensure: (self[:ensure] == :absent) ? :absent : :file,
-      path: "#{self[:dest]}/#{self[:name]}",
-    }
-
-    [:owner,
-     :group,
-     :mode].each do |param|
-      file_opts[param] = self[param] unless self[param].nil?
-    end
-
-    excluded_metaparams = [:before, :notify, :require, :subscribe, :tag]
-
-    Puppet::Type.metaparams.each do |metaparam|
-      unless self[metaparam].nil? || excluded_metaparams.include?(metaparam)
-        file_opts[metaparam] = self[metaparam]
-      end
-    end
-
-    [Puppet::Type.type(:file).new(file_opts)]
-  end
 end
