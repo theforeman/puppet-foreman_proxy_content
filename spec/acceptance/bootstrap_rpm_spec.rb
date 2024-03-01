@@ -35,6 +35,13 @@ describe 'bootstrap_rpm', :order => :defined do
       it { should be_grouped_into 'root' }
     end
 
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.src.rpm") do
+      it { should be_file }
+      it { should be_mode 644 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+
     describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
       it { should_not exist }
     end
@@ -211,6 +218,56 @@ describe 'bootstrap_rpm', :order => :defined do
     describe file('/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm') do
       it { should be_symlink }
       it { should be_linked_to "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-10.noarch.rpm" }
+    end
+  end
+
+  context 'generates bootstrapm RPM with proper mode with 0077 umask' do
+    before(:all) do
+      on hosts, 'rm -rf /var/www/html/pub/*rpm'
+      on hosts, "echo 'umask 0077' > /etc/profile.d/umask.sh"
+    end
+
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        include foreman_proxy_content::bootstrap_rpm
+        PUPPET
+      end
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm") do
+      it { should be_file }
+      it { should be_mode 644 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+  end
+
+  context 'correctly sets the mode on subsequent RPMs' do
+    it 'applies again without error' do
+      apply_manifest(
+        "class { 'foreman_proxy_content::bootstrap_rpm': rhsm_port => 8447, }",
+        catch_failures: true
+      )
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
+      it { should be_file }
+      it { should be_mode 644 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.src.rpm") do
+      it { should be_file }
+      it { should be_mode 644 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+
+    describe file('/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm') do
+      it { should be_symlink }
+      it { should be_linked_to "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm" }
     end
   end
 end

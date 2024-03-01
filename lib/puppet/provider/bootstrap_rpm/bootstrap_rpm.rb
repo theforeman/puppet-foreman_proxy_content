@@ -38,8 +38,10 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
     link_rpm(value)
   end
 
-  def latest_rpm
-    rpms = Dir.glob("#{resource[:dest]}/#{resource[:name]}*.noarch.rpm")
+  def latest_rpm(source: false)
+    extension = source ? 'src.rpm' : 'noarch.rpm'
+
+    rpms = Dir.glob("#{resource[:dest]}/#{resource[:name]}*.#{extension}")
     rpms = rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
 
     return false if rpms.empty?
@@ -89,7 +91,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
   end
 
   def build_rpm
-    output = rpmbuild(
+    rpmbuild(
       '-ba',
       File.join(spec_dir, "#{resource[:name]}.spec"),
       '--define', "_topdir #{base_dir}",
@@ -100,10 +102,17 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
 
   def copy_rpm
     FileUtils.copy(built_rpm, resource[:dest])
+    set_ownership(latest_rpm)
   end
 
   def copy_srpm
     FileUtils.copy(built_srpm, resource[:dest])
+    set_ownership(latest_rpm(source: true))
+  end
+
+  def set_ownership(file)
+    File.chmod(resource[:mode].to_i(8), file)
+    FileUtils.chown(resource[:owner], resource[:group], file)
   end
 
   def rpm_changed?
