@@ -280,6 +280,16 @@ class foreman_proxy_content (
         pulp_endpoint => "https://${servername}",
       }
     }
+    include postgresql::client
+    include postgresql::server
+    include postgresql::server::contrib
+    postgresql::server::db { $foreman_proxy::plugin::postgresql_database:
+      user     => $foreman_proxy::plugin::postgresql_user,
+      password => postgresql::postgresql_password($foreman_proxy::plugin::postgresql_user, $foreman_proxy::plugin::postgresql_db_password),
+      encoding => 'utf8',
+      locale   => 'en_US.utf8',
+      require  => Package['glibc-langpack-en'],
+    }
   }
   if $enable_file {
     class { 'pulpcore::plugin::file':
