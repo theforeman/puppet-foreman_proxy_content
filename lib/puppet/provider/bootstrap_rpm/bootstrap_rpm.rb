@@ -95,6 +95,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
       '-ba',
       File.join(spec_dir, "#{resource[:name]}.spec"),
       '--define', "_topdir #{base_dir}",
+      '--define', '_binary_payload w2.xzdio',
       '--define', "name #{resource[:name]}",
       '--define', "release #{release}"
     )

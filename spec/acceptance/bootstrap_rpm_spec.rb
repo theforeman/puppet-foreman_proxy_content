@@ -60,6 +60,8 @@ describe 'bootstrap_rpm', :order => :defined do
 
     describe command('rpm -qp /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm --requires') do
       its(:stdout) { should match(/^subscription-manager/) }
+      its(:stdout) { should match(/PayloadIsXz/) }
+      its(:stdout) { should_not match(/PayloadIsZstd/) }
     end
 
     describe command('rpm -qp /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm --list') do
