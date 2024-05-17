@@ -1,5 +1,13 @@
 ---
 apache::default_mods: false
+# This is normally set in the installer, but the bootstrap_rpm test needs it
+#apache::default_vhost: false
+apache::mpm_module: 'event'
+apache::protocols:
+  - 'h2'
+  - 'h2c'
+  - 'http/1.1'
+
 foreman_proxy::manage_puppet_group: false
 foreman_proxy::puppet: false
 foreman_proxy::puppetca: false
