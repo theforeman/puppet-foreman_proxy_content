@@ -1,5 +1,24 @@
 # Changelog
 
+## [28.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/28.0.0) (2024-05-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/27.0.0...28.0.0)
+
+**Breaking changes:**
+
+- Remove qpid class [\#476](https://github.com/theforeman/puppet-foreman_proxy_content/pull/476) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Mark compatible with theforeman/foreman\_proxy 26.x [\#483](https://github.com/theforeman/puppet-foreman_proxy_content/pull/483) ([ekohl](https://github.com/ekohl))
+- Mark compatible with katello/certs 18.x [\#482](https://github.com/theforeman/puppet-foreman_proxy_content/pull/482) ([ekohl](https://github.com/ekohl))
+- Allow puppetlabs/apache 12.x [\#478](https://github.com/theforeman/puppet-foreman_proxy_content/pull/478) ([evgeni](https://github.com/evgeni))
+
+**Fixed bugs:**
+
+- enforce xz compression for consumer rpm [\#480](https://github.com/theforeman/puppet-foreman_proxy_content/pull/480) ([evgeni](https://github.com/evgeni))
+- Refs [\#37130](https://projects.theforeman.org/issues/37130) - Set the mode on the generated bootstrap RPM [\#477](https://github.com/theforeman/puppet-foreman_proxy_content/pull/477) ([ehelms](https://github.com/ehelms))
+
 ## [27.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/27.0.0) (2024-02-20)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/26.0.0...27.0.0)
