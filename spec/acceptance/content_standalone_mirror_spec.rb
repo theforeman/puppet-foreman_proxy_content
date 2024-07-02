@@ -35,8 +35,7 @@ describe 'pulpcore mirror' do
 
     describe file('/etc/httpd/conf.d/10-rhsm-pulpcore-https-443.conf') do
       it { is_expected.to be_file }
-      # TODO: this is a regression introduced in 76e2a6852d1d2ca33935ccf8a6ab69992c32ec1d
-      it { is_expected.to contain(%{DocumentRoot "/var/www}) }
+      it { is_expected.to contain('DocumentRoot "/var/lib/pulp/pulpcore_static"') }
     end
 
     describe port('443') do
@@ -83,8 +82,7 @@ describe 'pulpcore mirror' do
 
     describe file('/etc/httpd/conf.d/10-rhsm-pulpcore-https-443.conf') do
       it { is_expected.to be_file }
-      # TODO: this is a regression introduced in 76e2a6852d1d2ca33935ccf8a6ab69992c32ec1d
-      it { is_expected.to contain(%{DocumentRoot "/var/www}) }
+      it { is_expected.to contain('DocumentRoot "/var/lib/pulp/pulpcore_static"') }
     end
 
     describe port('443') do

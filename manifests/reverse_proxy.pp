@@ -1,5 +1,7 @@
 # Adds http reverse-proxy to parent conf
 #
+# @param docroot
+#   The document root for the reverse proxy to use
 # @param path_url_map
 #   The paths and corresponding URLs where to mount the reverse proxy
 # @param port
@@ -15,6 +17,7 @@
 # @param priority
 #   Sets the relative load-order for Apache HTTPD VirtualHost configuration files. See Apache::Vhost
 define foreman_proxy_content::reverse_proxy (
+  Stdlib::Absolutepath $docroot = '/var/www/html',
   Hash[Stdlib::Unixpath, String[1]] $path_url_map = { '/' => "${foreman_proxy_content::foreman_url}/" },
   Stdlib::Port $port = $foreman_proxy_content::reverse_proxy_port,
   Variant[Array[String], String, Undef] $ssl_protocol = undef,
@@ -45,8 +48,9 @@ define foreman_proxy_content::reverse_proxy (
     servername             => $certs::apache::hostname,
     serveraliases          => $certs::apache::cname,
     port                   => $port,
-    docroot                => '/var/www/',
+    docroot                => $docroot,
     priority               => $priority,
+    options                => ['FollowSymLinks'],
     ssl_options            => ['+StdEnvVars', '+ExportCertData', '+FakeBasicAuth'],
     ssl                    => true,
     ssl_proxyengine        => true,

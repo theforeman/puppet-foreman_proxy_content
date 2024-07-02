@@ -146,22 +146,6 @@ class foreman_proxy_content (
     }
   }
 
-  if $pulpcore_mirror {
-    $pulpcore_https_vhost_name = "rhsm-pulpcore-https-${rhsm_port}"
-
-    if $rhsm_port != $reverse_proxy_port {
-      foreman_proxy_content::reverse_proxy { $pulpcore_https_vhost_name:
-        path_url_map => {
-          $rhsm_path     => "${proxy_foreman_url}${rhsm_path}",
-          $insights_path => "${proxy_foreman_url}${insights_path}",
-        },
-        port         => $rhsm_port,
-        priority     => '10',
-        before       => Class['pulpcore::apache'],
-      }
-    }
-  }
-
   include foreman_proxy_content::pub_dir
 
   if $pulpcore_mirror {
@@ -199,7 +183,7 @@ class foreman_proxy_content (
     $serveraliases = $certs::apache::cname
     $priority = '10'
     $apache_http_vhost = undef
-    $apache_https_vhost = $pulpcore_https_vhost_name
+    $apache_https_vhost = "rhsm-pulpcore-https-${rhsm_port}"
     $apache_https_cert = undef
     $apache_https_key = undef
     $apache_https_ca = undef
@@ -266,6 +250,19 @@ class foreman_proxy_content (
       cert         => $certs::foreman::client_cert,
       key          => $certs::foreman::client_key,
       require      => Class['certs::foreman'],
+    }
+  } elsif $pulpcore_mirror {
+    if $rhsm_port != $reverse_proxy_port {
+      foreman_proxy_content::reverse_proxy { $apache_https_vhost:
+        docroot      => $pulpcore::apache_docroot,
+        path_url_map => {
+          $rhsm_path     => "${proxy_foreman_url}${rhsm_path}",
+          $insights_path => "${proxy_foreman_url}${insights_path}",
+        },
+        port         => $rhsm_port,
+        priority     => '10',
+        before       => Class['pulpcore::apache'],
+      }
     }
   }
 
