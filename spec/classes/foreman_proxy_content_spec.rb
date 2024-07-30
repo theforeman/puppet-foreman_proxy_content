@@ -199,11 +199,7 @@ describe 'foreman_proxy_content' do
             .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
         end
         it do
-          is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
-            .with(path_url_map: {'/' => 'h2://foo.example.com/'})
-            .with(port: 8443)
-            .with(priority: '10')
-            .that_comes_before('Class[pulpcore::apache]')
+          is_expected.not_to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
         end
         it do
           is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-443')
@@ -263,6 +259,23 @@ describe 'foreman_proxy_content' do
           end
 
           it { is_expected.not_to compile.with_all_deps }
+        end
+      end
+
+      context 'with deprecated_reverse_proxy_port' do
+        let(:params) do
+          {
+            pulpcore_mirror: true,
+            reverse_proxy: true,
+          }
+        end
+
+        it do
+          is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
+            .with(path_url_map: {'/' => 'h2://foo.example.com/'})
+            .with(port: 8443)
+            .with(priority: '10')
+            .that_comes_before('Class[pulpcore::apache]')
         end
       end
     end
