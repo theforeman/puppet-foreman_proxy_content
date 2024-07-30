@@ -122,7 +122,7 @@ class foreman_proxy_content (
 
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
-  $reverse_proxy_real = $pulpcore_mirror or $reverse_proxy
+  $reverse_proxy_real = $pulpcore_mirror and $reverse_proxy
   $proxy_foreman_url = $foreman_url.regsubst('https://', "${reverse_proxy_backend_protocol}://")
 
   # TODO: make it configurable
