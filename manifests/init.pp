@@ -280,6 +280,10 @@ class foreman_proxy_content (
         pulp_endpoint => "https://${servername}",
       }
     }
+  } else {
+    class { 'foreman_proxy::plugin::container_gateway':
+      version => 'absent',
+    }
   }
   if $enable_file {
     class { 'pulpcore::plugin::file':

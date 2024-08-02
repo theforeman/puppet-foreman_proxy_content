@@ -104,4 +104,36 @@ describe 'pulpcore mirror' do
       it { is_expected.to be_listening }
     end
   end
+
+  describe package('rubygem-smart_proxy_container_gateway') do
+    it { is_expected.to be_installed }
+  end
+
+  context 'with docker disabled' do
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<~PUPPET
+        include certs::foreman_proxy
+
+        class { 'foreman_proxy':
+          register_in_foreman => false,
+          ssl_ca              => $certs::foreman_proxy::proxy_ca_cert,
+          ssl_cert            => $certs::foreman_proxy::proxy_cert,
+          ssl_key             => $certs::foreman_proxy::proxy_key,
+        }
+
+        class { 'foreman_proxy_content':
+          pulpcore_mirror => true,
+          enable_docker   => false,
+          # No Ansible repo is set up in our CI
+          enable_ansible  => false,
+        }
+        PUPPET
+      end
+    end
+
+    describe package('rubygem-smart_proxy_container_gateway') do
+      it { is_expected.not_to be_installed }
+    end
+  end
 end
