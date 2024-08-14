@@ -4,3 +4,6 @@ foreman_proxy::manage_puppet_group: false
 foreman_proxy::puppet: false
 foreman_proxy::puppetca: false
 foreman_proxy::ssl_port: 9090
+
+# Fix idempotency in pulpcore
+pulpcore::database::always_run_migrations: false
