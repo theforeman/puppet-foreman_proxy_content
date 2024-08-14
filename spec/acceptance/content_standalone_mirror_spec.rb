@@ -39,15 +39,6 @@ describe 'pulpcore mirror' do
       it { is_expected.to contain(%{DocumentRoot "/var/www}) }
     end
 
-    describe service('qdrouterd') do
-      it { is_expected.not_to be_running }
-      it { is_expected.not_to be_enabled }
-    end
-
-    describe port('5647') do
-      it { is_expected.not_to be_listening }
-    end
-
     describe port('443') do
       it { is_expected.to be_listening }
     end

@@ -67,13 +67,4 @@ describe 'pulpcore non-mirror' do
     its(:stdout) { is_expected.to match(/admin/) }
     its(:stderr) { is_expected.not_to match(/Error/) }
   end
-
-  describe service('qdrouterd') do
-    it { is_expected.not_to be_running }
-    it { is_expected.not_to be_enabled }
-  end
-
-  describe port('5647') do
-    it { is_expected.not_to be_listening }
-  end
 end
