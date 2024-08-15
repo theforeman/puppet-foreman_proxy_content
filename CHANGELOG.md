@@ -1,5 +1,23 @@
 # Changelog
 
+## [29.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/29.0.0) (2024-08-16)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/28.0.0...29.0.0)
+
+**Breaking changes:**
+
+- Fixes [\#37701](https://projects.theforeman.org/issues/37701): Default 8443 reverse proxy to off [\#487](https://github.com/theforeman/puppet-foreman_proxy_content/pull/487) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Fixes [\#37620](https://projects.theforeman.org/issues/37620) - Use the correct docroot in the reverse proxy setup [\#490](https://github.com/theforeman/puppet-foreman_proxy_content/pull/490) ([ekohl](https://github.com/ekohl))
+- Mark compatible with katello/certs 19.x [\#489](https://github.com/theforeman/puppet-foreman_proxy_content/pull/489) ([ekohl](https://github.com/ekohl))
+- Add AlmaLinux 8 & 9 support [\#485](https://github.com/theforeman/puppet-foreman_proxy_content/pull/485) ([archanaserver](https://github.com/archanaserver))
+
+**Fixed bugs:**
+
+- Fixes [\#37707](https://projects.theforeman.org/issues/37707) - Purge container\_gateway feature without docker [\#488](https://github.com/theforeman/puppet-foreman_proxy_content/pull/488) ([ekohl](https://github.com/ekohl))
+
 ## [28.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/28.0.0) (2024-05-21)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/27.0.0...28.0.0)
