@@ -125,9 +125,8 @@ Puppet::Type.type(:rhsm_reconfigure_script).provide(:rhsm_reconfigure_script) do
 
       # also add the katello ca cert to the system wide ca cert store
       if [ -d $CA_TRUST_ANCHORS ]; then
-        update-ca-trust enable
         cp $CERT_DIR/$KATELLO_SERVER_CA_CERT $CA_TRUST_ANCHORS
-        update-ca-trust
+        update-ca-trust extract
       fi
 
       # restart yggdrasild if it is installed and running
