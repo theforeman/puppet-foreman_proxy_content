@@ -1,5 +1,13 @@
 # Changelog
 
+## [29.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/29.0.0) (2024-08-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/29.0.0...29.0.0)
+
+**Fixed bugs:**
+
+- Drop redundant update-ca-trust enable step [\#494](https://github.com/theforeman/puppet-foreman_proxy_content/pull/494) ([ekohl](https://github.com/ekohl))
+
 ## [29.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/29.0.0) (2024-08-16)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/28.0.0...29.0.0)
