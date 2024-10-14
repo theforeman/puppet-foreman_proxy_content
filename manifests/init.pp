@@ -22,10 +22,6 @@
 #
 # === Advanced parameters:
 #
-# $reverse_proxy::                             Add reverse proxy to the parent
-#
-# $reverse_proxy_port::                        Reverse proxy listening port
-#
 # $reverse_proxy_backend_protocol::            Configure the protocol used by the reverse proxy to connect to Foreman
 #
 # $pulpcore_allowed_content_checksums::        List of checksums to use for pulpcore content operations
@@ -81,8 +77,6 @@
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
-  Boolean $reverse_proxy = false,
-  Stdlib::Port $reverse_proxy_port = 8443,
   Enum['h2', 'https'] $reverse_proxy_backend_protocol = 'h2',
 
   Boolean $enable_yum = true,
@@ -122,7 +116,6 @@ class foreman_proxy_content (
 
   $foreman_url = $foreman_proxy::foreman_base_url
   $foreman_host = foreman_proxy_content::host_from_url($foreman_url)
-  $reverse_proxy_real = $pulpcore_mirror and $reverse_proxy
   $proxy_foreman_url = $foreman_url.regsubst('https://', "${reverse_proxy_backend_protocol}://")
 
   # TODO: make it configurable
@@ -136,15 +129,6 @@ class foreman_proxy_content (
 
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
-
-  if $reverse_proxy_real {
-    foreman_proxy_content::reverse_proxy { "rhsm-pulpcore-https-${reverse_proxy_port}":
-      path_url_map => { '/' => "${proxy_foreman_url}/" },
-      port         => $reverse_proxy_port,
-      priority     => '10',
-      before       => Class['pulpcore::apache'],
-    }
-  }
 
   include foreman_proxy_content::pub_dir
 
@@ -252,17 +236,15 @@ class foreman_proxy_content (
       require      => Class['certs::foreman'],
     }
   } elsif $pulpcore_mirror {
-    if $rhsm_port != $reverse_proxy_port {
-      foreman_proxy_content::reverse_proxy { $apache_https_vhost:
-        docroot      => $pulpcore::apache_docroot,
-        path_url_map => {
-          $rhsm_path     => "${proxy_foreman_url}${rhsm_path}",
-          $insights_path => "${proxy_foreman_url}${insights_path}",
-        },
-        port         => $rhsm_port,
-        priority     => '10',
-        before       => Class['pulpcore::apache'],
-      }
+    foreman_proxy_content::reverse_proxy { $apache_https_vhost:
+      docroot      => $pulpcore::apache_docroot,
+      path_url_map => {
+        $rhsm_path     => "${proxy_foreman_url}${rhsm_path}",
+        $insights_path => "${proxy_foreman_url}${insights_path}",
+      },
+      port         => $rhsm_port,
+      priority     => '10',
+      before       => Class['pulpcore::apache'],
     }
   }
 

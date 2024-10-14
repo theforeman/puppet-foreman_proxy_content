@@ -19,7 +19,7 @@ describe 'foreman_proxy_content::reverse_proxy' do
           is_expected.to contain_apache__vhost('my-reverse-proxy')
             .with_servername(facts[:fqdn])
             .with_serveraliases([])
-            .with_port(8443)
+            .with_port(443)
             .with_proxy_pass([{
               'path' => '/',
               'url' => "https://#{facts[:fqdn]}/",
