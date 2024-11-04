@@ -1,8 +1,21 @@
 # Changelog
 
-## [29.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/29.0.0) (2024-08-21)
+## [30.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/30.0.0) (2024-11-04)
 
-[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/29.0.0...29.0.0)
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/29.0.1...30.0.0)
+
+**Breaking changes:**
+
+- Drop port 8443 as a reverse proxy [\#496](https://github.com/theforeman/puppet-foreman_proxy_content/pull/496) ([ehelms](https://github.com/ehelms))
+
+**Implemented enhancements:**
+
+- Mark compatible with theforeman/foreman\_proxy 27.x [\#498](https://github.com/theforeman/puppet-foreman_proxy_content/pull/498) ([ekohl](https://github.com/ekohl))
+- Mark compatible with theforeman/pulpcore 11.x [\#497](https://github.com/theforeman/puppet-foreman_proxy_content/pull/497) ([ekohl](https://github.com/ekohl))
+
+## [29.0.1](https://github.com/theforeman/puppet-foreman_proxy_content/tree/29.0.1) (2024-08-21)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/29.0.0...29.0.1)
 
 **Fixed bugs:**
 
