@@ -5,10 +5,14 @@
 #
 # @param pub_dir_options
 #   The Directory options as Apache applies them
+#
+# @param ensure_bootstrap
+#   Enable installing the katello-client-bootstrap RPM
 class foreman_proxy_content::pub_dir (
   String $pub_dir_options = '+FollowSymLinks +Indexes',
+  Enum['present', 'absent'] $ensure_bootstrap = 'present',
 ) {
-  stdlib::ensure_packages('katello-client-bootstrap')
+  stdlib::ensure_packages('katello-client-bootstrap', { 'ensure' => $ensure_bootstrap })
 
   include apache::mod::alias
 
