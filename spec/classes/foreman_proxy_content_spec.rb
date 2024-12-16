@@ -244,6 +244,11 @@ describe 'foreman_proxy_content' do
             is_expected.to contain_class('foreman_proxy::plugin::pulp')
               .with_pulpcore_content_url("https://loadbalancer.example.com/pulp/content")
           end
+
+          it do
+            is_expected.to contain_class('foreman_proxy::plugin::container_gateway')
+              .with_pulp_endpoint("https://loadbalancer.example.com")
+          end
         end
 
         describe 'should throw an error if cname and registration_url do not match' do
