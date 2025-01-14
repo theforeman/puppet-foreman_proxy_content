@@ -18,9 +18,3 @@ if $facts['os']['selinux']['enabled'] {
 package { 'glibc-langpack-en':
   ensure => installed,
 }
-
-if $facts['os']['release']['major'] == "8" {
-  yumrepo { 'powertools':
-    enabled => true,
-  }
-}
