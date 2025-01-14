@@ -210,7 +210,7 @@ describe 'foreman_proxy_content' do
         end
         it do
           is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
-            .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ https://foo\.example\.com/katello/api/v2/repositories/})
+            .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ h2://foo\.example\.com/katello/api/v2/repositories/})
         end
       end
 
