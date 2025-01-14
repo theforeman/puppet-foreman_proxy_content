@@ -256,7 +256,7 @@ class foreman_proxy_content (
       }
 
       class { 'foreman_proxy::plugin::container_gateway':
-        pulp_endpoint => "https://${servername}",
+        pulp_endpoint => "https://${client_facing_servername}",
       }
     }
   } else {
