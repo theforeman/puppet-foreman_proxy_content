@@ -22,12 +22,28 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
     @base_dir = nil
   end
 
-  def exists?
-    copy_sources
-    write_specfile
-    build_rpm
+  def destroy
+    FileUtils.rm(symlink) unless symlink.nil?
 
-    !rpm_changed?
+    all_rpms.each do |rpm|
+      FileUtils.rm(rpm)
+    end
+
+    all_rpms(source: true).each do |rpm|
+      FileUtils.rm(rpm)
+    end
+  end
+
+  def exists?
+    if resource[:ensure] == :absent
+      File.exist?(resource[:symlink]) || !all_rpms.empty? || !all_rpms(source: true).empty?
+    else
+      copy_sources
+      write_specfile
+      build_rpm
+
+      !rpm_changed?
+    end
   end
 
   def symlink
@@ -39,10 +55,7 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
   end
 
   def latest_rpm(source: false)
-    extension = source ? 'src.rpm' : 'noarch.rpm'
-
-    rpms = Dir.glob("#{resource[:dest]}/#{resource[:name]}*.#{extension}")
-    rpms = rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
+    rpms = all_rpms(source: source)
 
     return false if rpms.empty?
 
@@ -50,6 +63,13 @@ Puppet::Type.type(:bootstrap_rpm).provide(:bootstrap_rpm) do
   end
 
   private
+
+  def all_rpms(source: false)
+    extension = source ? 'src.rpm' : 'noarch.rpm'
+
+    rpms = Dir.glob("#{resource[:dest]}/#{resource[:name]}*.#{extension}")
+    rpms.reject { |rpm| rpm.end_with?("latest.noarch.rpm") }
+  end
 
   def base_dir
     @base_dir ||= Dir.mktmpdir

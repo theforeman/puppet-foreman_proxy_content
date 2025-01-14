@@ -272,4 +272,36 @@ describe 'bootstrap_rpm', :order => :defined do
       it { should be_linked_to "/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm" }
     end
   end
+
+  context 'removes RPM when ensure is false' do
+    it_behaves_like 'an idempotent resource' do
+      let(:manifest) do
+        <<-PUPPET
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          ensure => 'absent',
+        }
+        PUPPET
+      end
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.src.rpm") do
+      it { should_not exist }
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-4.src.rpm") do
+      it { should_not exist }
+    end
+
+    describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-10.src.rpm") do
+      it { should_not exist }
+    end
+
+    describe file('/var/www/html/pub/katello-ca-consumer-latest.noarch.rpm') do
+      it { should_not exist }
+    end
+
+    describe file('/var/www/html/pub/katello-rhsm-consumer') do
+      it { should_not exist }
+    end
+  end
 end

@@ -74,6 +74,8 @@
 #
 # $pulpcore_import_workers_percent::           What percentage of available-workers will pulpcore use for import tasks at a time
 #
+# $ensure_bootstrap_rpm::                      Enable the deployment of the bootstrap RPM
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -110,6 +112,7 @@ class foreman_proxy_content (
   Boolean $pulpcore_analytics = false,
   Boolean $pulpcore_hide_guarded_distributions = true,
   Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
+  Enum['present', 'absent'] $ensure_bootstrap_rpm = 'present',
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -130,7 +133,9 @@ class foreman_proxy_content (
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
 
-  include foreman_proxy_content::pub_dir
+  class { 'foreman_proxy_content::pub_dir':
+    ensure_bootstrap => $ensure_bootstrap_rpm,
+  }
 
   if $pulpcore_mirror {
     $base_allowed_import_paths    = ['/var/lib/pulp/sync_imports']
@@ -307,6 +312,7 @@ class foreman_proxy_content (
   }
 
   class { 'foreman_proxy_content::bootstrap_rpm':
+    ensure        => $ensure_bootstrap_rpm,
     rhsm_hostname => $client_facing_servername,
     rhsm_port     => $rhsm_port,
     rhsm_path     => $rhsm_path,

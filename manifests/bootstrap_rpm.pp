@@ -2,6 +2,7 @@
 # This file is placed in $rpm_serve_dir.
 # @api private
 class foreman_proxy_content::bootstrap_rpm (
+  Enum['present', 'absent'] $ensure = 'present',
   Stdlib::Fqdn $rhsm_hostname = $facts['networking']['fqdn'],
   Stdlib::Port $rhsm_port = 443,
   Pattern[/\A(\/[a-zA-Z0-9]+)+(\/)?\z/] $rhsm_path = '/rhsm',
@@ -48,7 +49,7 @@ class foreman_proxy_content::bootstrap_rpm (
     require => File[$katello_server_ca_cert],
   } ->
   rhsm_reconfigure_script { "${rpm_serve_dir}/${katello_rhsm_setup_script}":
-    ensure          => present,
+    ensure          => $ensure,
     default_ca_cert => $ca_cert,
     server_ca_cert  => $katello_server_ca_cert,
     default_ca_name => $default_ca_name,
@@ -62,7 +63,7 @@ class foreman_proxy_content::bootstrap_rpm (
   }
 
   bootstrap_rpm { $bootstrap_rpm_name:
-    ensure  => present,
+    ensure  => $ensure,
     script  => "${rpm_serve_dir}/${katello_rhsm_setup_script}",
     dest    => $rpm_serve_dir,
     symlink => "${rpm_serve_dir}/${candlepin_cert_rpm_alias_filename}",
