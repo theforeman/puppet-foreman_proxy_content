@@ -1,5 +1,23 @@
 # Changelog
 
+## [30.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/30.0.0) (2025-02-13)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/30.0.0...30.0.0)
+
+**Breaking changes:**
+
+- Drop EL8 support -- Foreman/Katello do not support EL8 anymore [\#503](https://github.com/theforeman/puppet-foreman_proxy_content/pull/503) ([evgeni](https://github.com/evgeni))
+
+**Implemented enhancements:**
+
+- Allow puppet-foreman\_proxy 28.0.0 [\#507](https://github.com/theforeman/puppet-foreman_proxy_content/pull/507) ([ehelms](https://github.com/ehelms))
+- Allow puppet-pulpcore 12.0.0 [\#506](https://github.com/theforeman/puppet-foreman_proxy_content/pull/506) ([ehelms](https://github.com/ehelms))
+- Allow puppet-certs 20.0.0 [\#505](https://github.com/theforeman/puppet-foreman_proxy_content/pull/505) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- use the correct backend protocol when defining the gpg proxy [\#502](https://github.com/theforeman/puppet-foreman_proxy_content/pull/502) ([evgeni](https://github.com/evgeni))
+
 ## [30.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/30.0.0) (2024-11-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/29.0.1...30.0.0)
