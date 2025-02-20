@@ -253,6 +253,7 @@ class foreman_proxy_content (
     unless $shared_with_foreman_vhost {
       class { 'foreman_proxy_content::container':
         pulpcore_https_vhost => $apache_https_vhost,
+        cname                => $certs::foreman_proxy::hostname,
       }
 
       class { 'foreman_proxy::plugin::container_gateway':
