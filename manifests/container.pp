@@ -24,7 +24,7 @@ class foreman_proxy_content::container (
         'provider'        => 'location',
         'path'            => "${location_prefix}${registry_v2_path}",
         'request_headers' => ["set SSL_CLIENT_S_DN \"admin\""],
-        'requires'        => ["expr %{SSL_CLIENT_S_DN_CN} == \"${certs::foreman_proxy::hostname}\""]
+        'requires'        => ["expr %{tolower:%{SSL_CLIENT_S_DN_CN}} == \"${certs::foreman_proxy::hostname.downcase}\""]
       },
     ],
     'proxy_pass' => [
