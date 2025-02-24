@@ -261,6 +261,24 @@ describe 'foreman_proxy_content' do
           it { is_expected.not_to compile.with_all_deps }
         end
       end
+
+      context 'with boostrap_rpm false' do
+        let(:params) do
+          {
+            ensure_bootstrap_rpm: 'absent'
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_package('katello-client-bootstrap')
+            .with_ensure('absent')
+        end
+        it do
+          is_expected.to contain_class('foreman_proxy_content::bootstrap_rpm')
+            .with_ensure('absent')
+        end
+      end
     end
   end
 end
