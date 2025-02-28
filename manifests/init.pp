@@ -307,9 +307,13 @@ class foreman_proxy_content (
   }
 
   class { 'foreman_proxy_content::bootstrap_rpm':
-    rhsm_hostname => $client_facing_servername,
-    rhsm_port     => $rhsm_port,
-    rhsm_path     => $rhsm_path,
+    rhsm_hostname   => $client_facing_servername,
+    rhsm_port       => $rhsm_port,
+    rhsm_path       => $rhsm_path,
+    server_ca_cert  => $certs::katello_server_ca_cert,
+    server_ca_name  => $certs::server_ca_name,
+    default_ca_cert => $certs::katello_default_ca_cert,
+    default_ca_name => $certs::default_ca_name,
   }
 
   # smart_proxy_pulp dynamically retrieves the Pulp content types and Katello

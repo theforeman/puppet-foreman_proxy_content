@@ -10,7 +10,14 @@ describe 'bootstrap_rpm', :order => :defined do
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
-        include foreman_proxy_content::bootstrap_rpm
+        include certs
+
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_name  => $certs::server_ca_name,
+          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_name => $certs::default_ca_name,
+        }
 
         package { "katello-ca-consumer-#{host_inventory['fqdn']}":
           ensure => installed,
@@ -89,8 +96,19 @@ describe 'bootstrap_rpm', :order => :defined do
 
   context 'ensure symlink is present if deleted' do
     it 'removes symlink and re-applies the manifest' do
+      manifest = <<-PUPPET
+        include certs
+
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_name  => $certs::server_ca_name,
+          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_name => $certs::default_ca_name,
+        }
+      PUPPET
+
       apply_manifest("exec { '/bin/unlink /var/www/html/pub/katello-ca-consumer-latest.noarch.rpm': }", catch_failures: true)
-      apply_manifest("class { 'foreman_proxy_content::bootstrap_rpm': }", catch_failures: true)
+      apply_manifest(manifest, catch_failures: true)
     end
 
     describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-1.noarch.rpm") do
@@ -124,7 +142,14 @@ describe 'bootstrap_rpm', :order => :defined do
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
-        include foreman_proxy_content::bootstrap_rpm
+        include certs
+
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_name  => $certs::server_ca_name,
+          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_name => $certs::default_ca_name,
+        }
 
         package { "katello-ca-consumer-#{host_inventory['fqdn']}":
           ensure => latest,
@@ -156,8 +181,14 @@ describe 'bootstrap_rpm', :order => :defined do
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
+        include certs
+
         class { 'foreman_proxy_content::bootstrap_rpm':
-          rhsm_port => 8443,
+          rhsm_port       => 8443,
+          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_name  => $certs::server_ca_name,
+          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_name => $certs::default_ca_name,
         }
 
         package { "katello-ca-consumer-#{host_inventory['fqdn']}":
@@ -203,10 +234,19 @@ describe 'bootstrap_rpm', :order => :defined do
   context 'correctly sets latest RPM after reaching RPM release of 10' do
     it 'applies 7 more times without error' do
       7.times do |num|
-        apply_manifest(
-          "class { 'foreman_proxy_content::bootstrap_rpm': rhsm_port => 844#{num}, }",
-          catch_failures: true
-        )
+        manifest = <<-PUPPET
+          include certs
+
+          class { 'foreman_proxy_content::bootstrap_rpm':
+            rhsm_port       => 844#{num},
+            server_ca_cert  => $certs::katello_server_ca_cert,
+            server_ca_name  => $certs::server_ca_name,
+            default_ca_cert => $certs::katello_default_ca_cert,
+            default_ca_name => $certs::default_ca_name,
+          }
+        PUPPET
+
+        apply_manifest(manifest, catch_failures: true)
       end
     end
 
@@ -232,7 +272,14 @@ describe 'bootstrap_rpm', :order => :defined do
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do
         <<-PUPPET
-        include foreman_proxy_content::bootstrap_rpm
+          include certs
+
+          class { 'foreman_proxy_content::bootstrap_rpm':
+            server_ca_cert  => $certs::katello_server_ca_cert,
+            server_ca_name  => $certs::server_ca_name,
+            default_ca_cert => $certs::katello_default_ca_cert,
+            default_ca_name => $certs::default_ca_name,
+          }
         PUPPET
       end
     end
@@ -247,10 +294,19 @@ describe 'bootstrap_rpm', :order => :defined do
 
   context 'correctly sets the mode on subsequent RPMs' do
     it 'applies again without error' do
-      apply_manifest(
-        "class { 'foreman_proxy_content::bootstrap_rpm': rhsm_port => 8447, }",
-        catch_failures: true
-      )
+      manifest = <<-PUPPET
+        include certs
+
+        class { 'foreman_proxy_content::bootstrap_rpm':
+          rhsm_port       => 8447,
+          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_name  => $certs::server_ca_name,
+          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_name => $certs::default_ca_name,
+        }
+      PUPPET
+
+      apply_manifest(manifest, catch_failures: true)
     end
 
     describe file("/var/www/html/pub/katello-ca-consumer-#{host_inventory['fqdn']}-1.0-2.noarch.rpm") do
