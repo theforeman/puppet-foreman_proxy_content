@@ -310,9 +310,9 @@ class foreman_proxy_content (
     rhsm_hostname   => $client_facing_servername,
     rhsm_port       => $rhsm_port,
     rhsm_path       => $rhsm_path,
-    server_ca_cert  => $certs::katello_server_ca_cert,
+    server_ca_cert  => $certs::ca::server_ca_path,
     server_ca_name  => $certs::server_ca_name,
-    default_ca_cert => $certs::katello_default_ca_cert,
+    default_ca_cert => $certs::ca::default_ca_path,
     default_ca_name => $certs::default_ca_name,
   }
 

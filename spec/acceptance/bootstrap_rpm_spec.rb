@@ -13,9 +13,9 @@ describe 'bootstrap_rpm', :order => :defined do
         include certs
 
         class { 'foreman_proxy_content::bootstrap_rpm':
-          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_cert  => $certs::ca::server_ca_path,
           server_ca_name  => $certs::server_ca_name,
-          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_cert => $certs::ca::default_ca_path,
           default_ca_name => $certs::default_ca_name,
         }
 
@@ -100,9 +100,9 @@ describe 'bootstrap_rpm', :order => :defined do
         include certs
 
         class { 'foreman_proxy_content::bootstrap_rpm':
-          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_cert  => $certs::ca::server_ca_path,
           server_ca_name  => $certs::server_ca_name,
-          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_cert => $certs::ca::default_ca_path,
           default_ca_name => $certs::default_ca_name,
         }
       PUPPET
@@ -145,9 +145,9 @@ describe 'bootstrap_rpm', :order => :defined do
         include certs
 
         class { 'foreman_proxy_content::bootstrap_rpm':
-          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_cert  => $certs::ca::server_ca_path,
           server_ca_name  => $certs::server_ca_name,
-          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_cert => $certs::ca::default_ca_path,
           default_ca_name => $certs::default_ca_name,
         }
 
@@ -185,9 +185,9 @@ describe 'bootstrap_rpm', :order => :defined do
 
         class { 'foreman_proxy_content::bootstrap_rpm':
           rhsm_port       => 8443,
-          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_cert  => $certs::ca::server_ca_path,
           server_ca_name  => $certs::server_ca_name,
-          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_cert => $certs::ca::default_ca_path,
           default_ca_name => $certs::default_ca_name,
         }
 
@@ -239,9 +239,9 @@ describe 'bootstrap_rpm', :order => :defined do
 
           class { 'foreman_proxy_content::bootstrap_rpm':
             rhsm_port       => 844#{num},
-            server_ca_cert  => $certs::katello_server_ca_cert,
+            server_ca_cert  => $certs::ca::server_ca_path,
             server_ca_name  => $certs::server_ca_name,
-            default_ca_cert => $certs::katello_default_ca_cert,
+            default_ca_cert => $certs::ca::default_ca_path,
             default_ca_name => $certs::default_ca_name,
           }
         PUPPET
@@ -275,9 +275,9 @@ describe 'bootstrap_rpm', :order => :defined do
           include certs
 
           class { 'foreman_proxy_content::bootstrap_rpm':
-            server_ca_cert  => $certs::katello_server_ca_cert,
+            server_ca_cert  => $certs::ca::server_ca_path,
             server_ca_name  => $certs::server_ca_name,
-            default_ca_cert => $certs::katello_default_ca_cert,
+            default_ca_cert => $certs::ca::default_ca_path,
             default_ca_name => $certs::default_ca_name,
           }
         PUPPET
@@ -299,9 +299,9 @@ describe 'bootstrap_rpm', :order => :defined do
 
         class { 'foreman_proxy_content::bootstrap_rpm':
           rhsm_port       => 8447,
-          server_ca_cert  => $certs::katello_server_ca_cert,
+          server_ca_cert  => $certs::ca::server_ca_path,
           server_ca_name  => $certs::server_ca_name,
-          default_ca_cert => $certs::katello_default_ca_cert,
+          default_ca_cert => $certs::ca::default_ca_path,
           default_ca_name => $certs::default_ca_name,
         }
       PUPPET
