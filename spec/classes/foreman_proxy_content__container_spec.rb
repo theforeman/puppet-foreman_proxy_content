@@ -29,7 +29,15 @@ describe 'foreman_proxy_content::container' do
       end
 
       describe 'with explicit parameters' do
-        let(:params) { { location_prefix: '/other_pulpcore_registry', registry_v1_path: '/vr1/', registry_v2_path: '/vr2/', pulpcore_https_vhost: 'rhsm-pulpcore-reverse-proxy-443' } }
+        let(:params) do
+          {
+            location_prefix: '/other_pulpcore_registry',
+            registry_v1_path: '/vr1/',
+            registry_v2_path: '/vr2/',
+            pulpcore_https_vhost: 'rhsm-pulpcore-reverse-proxy-443',
+            cname: 'anoTHeR.example.COM',
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it do
@@ -37,7 +45,7 @@ describe 'foreman_proxy_content::container' do
             .with_vhost('rhsm-pulpcore-reverse-proxy-443')
             .with_priority('10')
             .with_content(%r{^\s+<Location "/other_pulpcore_registry/vr2/">$})
-            .with_content(%r{^\s+Require expr %\{tolower:%\{SSL_CLIENT_S_DN_CN\}\} == "foo.example.com"$})
+            .with_content(%r{^\s+Require expr %\{tolower:%\{SSL_CLIENT_S_DN_CN\}\} == "another.example.com"$})
             .with_content(%r{^\s+RequestHeader set SSL_CLIENT_S_DN "admin"$})
             .with_content(%r{^\s+</Location>$})
             .with_content(%r{^\s+ProxyPass /vr1/ https://foo\.example\.com:8443/container_gateway/vr1/$})

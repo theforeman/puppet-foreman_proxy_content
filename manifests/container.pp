@@ -10,21 +10,22 @@
 #   the content base url.
 # @param pulpcore_https_vhost
 #   The name of the Apache https vhost for Pulpcore
+# @param cname
+#   Common name to check for authentication against
 class foreman_proxy_content::container (
   String $location_prefix = '/pulpcore_registry',
   String $registry_v1_path = '/v1/',
   String $registry_v2_path = '/v2/',
   String $pulpcore_https_vhost = 'pulpcore-https',
+  Stdlib::Fqdn $cname = $facts['networking']['fqdn'],
 ) {
-  include certs::foreman_proxy
-
   $context = {
     'directories'  => [
       {
         'provider'        => 'location',
         'path'            => "${location_prefix}${registry_v2_path}",
         'request_headers' => ["set SSL_CLIENT_S_DN \"admin\""],
-        'requires'        => ["expr %{tolower:%{SSL_CLIENT_S_DN_CN}} == \"${certs::foreman_proxy::hostname.downcase}\""]
+        'requires'        => ["expr %{tolower:%{SSL_CLIENT_S_DN_CN}} == \"${cname.downcase}\""]
       },
     ],
     'proxy_pass' => [
