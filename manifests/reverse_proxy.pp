@@ -54,7 +54,7 @@ define foreman_proxy_content::reverse_proxy (
     ssl_options            => ['+StdEnvVars', '+ExportCertData', '+FakeBasicAuth'],
     ssl                    => true,
     ssl_proxyengine        => true,
-    ssl_proxy_ca_cert      => $certs::ca_cert,
+    ssl_proxy_ca_cert      => $certs::apache::apache_ca_cert,
     ssl_proxy_machine_cert => $certs::foreman_proxy::foreman_proxy_ssl_client_bundle,
     ssl_cert               => $certs::apache::apache_cert,
     ssl_key                => $certs::apache::apache_key,
