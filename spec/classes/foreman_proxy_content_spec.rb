@@ -15,7 +15,7 @@ describe 'foreman_proxy_content' do
             .with(content_service_worker_timeout: 90)
             .with(api_service_worker_timeout: 90)
             .with(allowed_content_checksums: ['sha1', 'sha224', 'sha256', 'sha384', 'sha512'])
-            .with(api_client_auth_cn_map: {facts[:fqdn] => 'admin'})
+            .with(api_client_auth_cn_map: {facts[:networking]['fqdn'] => 'admin'})
             .with(allowed_import_path: ['/var/lib/pulp/sync_imports', '/var/lib/pulp/imports'])
             .with(allowed_export_path: ['/var/lib/pulp/exports'])
             .that_comes_before('Class[foreman_proxy::plugin::pulp]')
@@ -23,7 +23,7 @@ describe 'foreman_proxy_content' do
 
         it do
           is_expected.to contain_class('foreman_proxy::plugin::pulp')
-            .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
+            .with_rhsm_url("https://#{facts[:networking]['fqdn']}:443/rhsm")
         end
 
         context 'with custom import/export paths as arrays' do
@@ -196,7 +196,7 @@ describe 'foreman_proxy_content' do
         end
         it do
           is_expected.to contain_class('foreman_proxy::plugin::pulp')
-            .with_rhsm_url("https://#{facts[:fqdn]}:443/rhsm")
+            .with_rhsm_url("https://#{facts[:networking]['fqdn']}:443/rhsm")
         end
         it do
           is_expected.not_to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-8443')
