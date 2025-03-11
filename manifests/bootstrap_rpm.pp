@@ -19,8 +19,7 @@ class foreman_proxy_content::bootstrap_rpm (
 
   include trusted_ca
   trusted_ca::ca { 'katello_server-host-cert':
-    source  => $server_ca_cert,
-    require => File[$server_ca_cert],
+    source => $server_ca_cert,
   }
 
   package { 'rpm-build':
@@ -37,12 +36,11 @@ class foreman_proxy_content::bootstrap_rpm (
 
   # Placing the CA in the pub dir for trusting by a user in their browser
   file { "${rpm_serve_dir}/${server_ca_name}.crt":
-    ensure  => file,
-    source  => $server_ca_cert,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => File[$server_ca_cert],
+    ensure => file,
+    source => $server_ca_cert,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   } ->
   rhsm_reconfigure_script { "${rpm_serve_dir}/${katello_rhsm_setup_script}":
     ensure          => present,
