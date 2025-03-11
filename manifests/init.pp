@@ -315,6 +315,7 @@ class foreman_proxy_content (
     server_ca_name  => $certs::server_ca_name,
     default_ca_cert => $certs::ca::default_ca_path,
     default_ca_name => $certs::default_ca_name,
+    require         => Class['certs'],
   }
 
   # smart_proxy_pulp dynamically retrieves the Pulp content types and Katello
