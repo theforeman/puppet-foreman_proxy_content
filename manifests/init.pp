@@ -24,6 +24,8 @@
 #
 # $reverse_proxy_backend_protocol::            Configure the protocol used by the reverse proxy to connect to Foreman
 #
+# $reverse_proxy_vhost_params::               Optional vhost parameters for the reverse proxy
+#
 # $pulpcore_allowed_content_checksums::        List of checksums to use for pulpcore content operations
 #
 # $pulpcore_manage_postgresql::                Manage the Pulpcore PostgreSQL database.
@@ -78,6 +80,7 @@ class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
   Enum['h2', 'https'] $reverse_proxy_backend_protocol = 'h2',
+  Hash $reverse_proxy_vhost_params = {},
 
   Boolean $enable_yum = true,
   Boolean $enable_file = true,
@@ -244,6 +247,7 @@ class foreman_proxy_content (
       },
       port         => $rhsm_port,
       priority     => '10',
+      vhost_params => $reverse_proxy_vhost_params,
       before       => Class['pulpcore::apache'],
     }
   }
