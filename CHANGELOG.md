@@ -1,8 +1,28 @@
 # Changelog
 
-## [30.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/30.0.0) (2025-02-13)
+## [31.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.1.0) (2025-05-13)
 
-[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/30.0.0...30.0.0)
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.0.0...31.1.0)
+
+**Implemented enhancements:**
+
+- Mark compatible with katello/certs 21.x [\#520](https://github.com/theforeman/puppet-foreman_proxy_content/pull/520) ([ekohl](https://github.com/ekohl))
+- Add proxy pass entry for lightspeed API [\#518](https://github.com/theforeman/puppet-foreman_proxy_content/pull/518) ([ehelms](https://github.com/ehelms))
+- Set client\_endpoint on container\_gateway plugin [\#517](https://github.com/theforeman/puppet-foreman_proxy_content/pull/517) ([ehelms](https://github.com/ehelms))
+- Do not require File resource for SSL cert in bootstrap RPM class [\#516](https://github.com/theforeman/puppet-foreman_proxy_content/pull/516) ([ehelms](https://github.com/ehelms))
+- Use correct CA variables in reverse proxy [\#515](https://github.com/theforeman/puppet-foreman_proxy_content/pull/515) ([ehelms](https://github.com/ehelms))
+- Rely on the generated CA certificate [\#512](https://github.com/theforeman/puppet-foreman_proxy_content/pull/512) ([ehelms](https://github.com/ehelms))
+- Provide certs as input to boostrap\_rpm class [\#511](https://github.com/theforeman/puppet-foreman_proxy_content/pull/511) ([ehelms](https://github.com/ehelms))
+- Drop dependency on certs::foreman\_proxy from container class [\#509](https://github.com/theforeman/puppet-foreman_proxy_content/pull/509) ([ehelms](https://github.com/ehelms))
+
+**Fixed bugs:**
+
+- Require a version of theforeman/foreman\_proxy w/ client\_endpoint [\#519](https://github.com/theforeman/puppet-foreman_proxy_content/pull/519) ([ekohl](https://github.com/ekohl))
+- Always compare CNs as downcase [\#510](https://github.com/theforeman/puppet-foreman_proxy_content/pull/510) ([ehelms](https://github.com/ehelms))
+
+## [31.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.0.0) (2025-02-13)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/30.0.0...31.0.0)
 
 **Breaking changes:**
 
