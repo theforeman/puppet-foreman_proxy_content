@@ -23,8 +23,10 @@ describe 'foreman_proxy_content::container' do
             .with_content(%r{^\s+</Location>$})
             .with_content(%r{^\s+ProxyPass /v1/ https://foo\.example\.com:8443/container_gateway/v1/$})
             .with_content(%r{^\s+ProxyPass /v2/ https://foo\.example\.com:8443/container_gateway/v2/$})
+            .with_content(%r{^\s+ProxyPass /index/ https://foo\.example\.com:8443/container_gateway/index/$})
             .with_content(%r{^\s+ProxyPassReverse /v1/ https://foo\.example\.com:8443/container_gateway/v1/$})
             .with_content(%r{^\s+ProxyPassReverse /v2/ https://foo\.example\.com:8443/container_gateway/v2/$})
+            .with_content(%r{^\s+ProxyPassReverse /index/ https://foo\.example\.com:8443/container_gateway/index/$})
         end
       end
 
@@ -34,6 +36,7 @@ describe 'foreman_proxy_content::container' do
             location_prefix: '/other_pulpcore_registry',
             registry_v1_path: '/vr1/',
             registry_v2_path: '/vr2/',
+            flatpak_index_path: '/index/',
             pulpcore_https_vhost: 'rhsm-pulpcore-reverse-proxy-443',
             cname: 'anoTHeR.example.COM',
           }
@@ -50,8 +53,10 @@ describe 'foreman_proxy_content::container' do
             .with_content(%r{^\s+</Location>$})
             .with_content(%r{^\s+ProxyPass /vr1/ https://foo\.example\.com:8443/container_gateway/vr1/$})
             .with_content(%r{^\s+ProxyPass /vr2/ https://foo\.example\.com:8443/container_gateway/vr2/$})
+            .with_content(%r{^\s+ProxyPass /index/ https://foo\.example\.com:8443/container_gateway/index/$})
             .with_content(%r{^\s+ProxyPassReverse /vr1/ https://foo\.example\.com:8443/container_gateway/vr1/$})
             .with_content(%r{^\s+ProxyPassReverse /vr2/ https://foo\.example\.com:8443/container_gateway/vr2/$})
+            .with_content(%r{^\s+ProxyPassReverse /index/ https://foo\.example\.com:8443/container_gateway/index/$})
         end
       end
     end
