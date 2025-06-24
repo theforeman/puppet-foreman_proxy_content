@@ -8,6 +8,8 @@
 # @param registry_v2_path
 #   The path beneath the location prefix to forward. This is also appended to
 #   the content base url.
+# @param flatpak_index_path
+#   The path where the flatpak index resides
 # @param pulpcore_https_vhost
 #   The name of the Apache https vhost for Pulpcore
 # @param cname
@@ -16,6 +18,7 @@ class foreman_proxy_content::container (
   String $location_prefix = '/pulpcore_registry',
   String $registry_v1_path = '/v1/',
   String $registry_v2_path = '/v2/',
+  String $flatpak_index_path = '/index/',
   String $pulpcore_https_vhost = 'pulpcore-https',
   Stdlib::Fqdn $cname = $facts['networking']['fqdn'],
 ) {
@@ -36,6 +39,10 @@ class foreman_proxy_content::container (
       {
         'path' => $registry_v2_path,
         'url'  => "${foreman_proxy::real_registered_proxy_url}/container_gateway${registry_v2_path}",
+      },
+      {
+        'path' => $flatpak_index_path,
+        'url'  => "${foreman_proxy::real_registered_proxy_url}/container_gateway${flatpak_index_path}",
       },
     ],
   }
