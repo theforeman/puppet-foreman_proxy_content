@@ -1,5 +1,14 @@
 # Changelog
 
+## [31.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.2.0) (2025-08-08)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.1.0...31.2.0)
+
+**Implemented enhancements:**
+
+- Allow puppet-pulpcore 13.0.0 [\#523](https://github.com/theforeman/puppet-foreman_proxy_content/pull/523) ([ehelms](https://github.com/ehelms))
+- Add Apache proxy for flatpak index [\#522](https://github.com/theforeman/puppet-foreman_proxy_content/pull/522) ([ianballou](https://github.com/ianballou))
+
 ## [31.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.1.0) (2025-05-13)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.0.0...31.1.0)
