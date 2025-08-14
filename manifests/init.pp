@@ -53,7 +53,11 @@
 #                                              degradation due to I/O blocking and is not recommended in most cases. Modifying this parameter should be done
 #                                              incrementally with benchmarking at each step to determine an optimal value for your deployment.
 #
+# $pulpcore_content_service_worker_count::     Gunicorn worker count for the pulpcore-content.service
+#
 # $pulpcore_content_service_worker_timeout::   Gunicorn worker timeout in seconds for the pulpcore-content.service
+#
+# $pulpcore_api_service_worker_count::         Gunicorn worker count for the pulpcore-api.service
 #
 # $pulpcore_api_service_worker_timeout::       Gunicorn worker timeout in seconds for the pulpcore-api.service
 #
@@ -101,7 +105,9 @@ class foreman_proxy_content (
   Stdlib::Absolutepath $pulpcore_postgresql_ssl_root_ca = '/etc/pki/tls/certs/ca-bundle.crt',
   Integer[0] $pulpcore_worker_count = $foreman_proxy_content::params::pulpcore_worker_count,
   Optional[String[50]] $pulpcore_django_secret_key = undef,
+  Optional[Integer[0]] $pulpcore_content_service_worker_count = undef,
   Integer[0] $pulpcore_content_service_worker_timeout = 90,
+  Optional[Integer[0]] $pulpcore_api_service_worker_count = undef,
   Integer[0] $pulpcore_api_service_worker_timeout = 90,
   Boolean $pulpcore_cache_enabled = true,
   Optional[Variant[Integer[1], Enum['None']]] $pulpcore_cache_expires_ttl = undef,
@@ -216,7 +222,9 @@ class foreman_proxy_content (
     postgresql_db_ssl_root_ca      => $pulpcore_postgresql_ssl_root_ca,
     worker_count                   => $pulpcore_worker_count,
     django_secret_key              => $pulpcore_django_secret_key,
+    content_service_worker_count   => $pulpcore_content_service_worker_count,
     content_service_worker_timeout => $pulpcore_content_service_worker_timeout,
+    api_service_worker_count       => $pulpcore_api_service_worker_count,
     api_service_worker_timeout     => $pulpcore_api_service_worker_timeout,
     api_client_auth_cn_map         => $api_client_auth_cn_map,
     cache_enabled                  => $pulpcore_cache_enabled,
