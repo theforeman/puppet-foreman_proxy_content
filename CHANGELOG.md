@@ -1,5 +1,13 @@
 # Changelog
 
+## [31.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.3.0) (2025-11-06)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.2.0...31.3.0)
+
+**Implemented enhancements:**
+
+- Allow puppetlabs/apache 13.x [\#525](https://github.com/theforeman/puppet-foreman_proxy_content/pull/525) ([shubhamsg199](https://github.com/shubhamsg199))
+
 ## [31.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.2.0) (2025-08-08)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.1.0...31.2.0)
