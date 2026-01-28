@@ -1,5 +1,18 @@
 # Changelog
 
+## [32.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.0.0) (2026-01-28)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.3.0...32.0.0)
+
+**Breaking changes:**
+
+- Drop support for Puppet 7 [\#529](https://github.com/theforeman/puppet-foreman_proxy_content/pull/529) ([evgeni](https://github.com/evgeni))
+
+**Implemented enhancements:**
+
+- Add support for OpenVox [\#530](https://github.com/theforeman/puppet-foreman_proxy_content/pull/530) ([evgeni](https://github.com/evgeni))
+- Allow theforeman/foreman\_proxy 30.x, theforeman/pulpcore 14.x [\#528](https://github.com/theforeman/puppet-foreman_proxy_content/pull/528) ([evgeni](https://github.com/evgeni))
+
 ## [31.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/31.3.0) (2025-11-06)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.2.0...31.3.0)
