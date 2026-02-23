@@ -218,6 +218,42 @@ describe 'foreman_proxy_content' do
         end
       end
 
+      context 'with container gateway database settings' do
+        let(:params) do
+          {
+            pulpcore_mirror: true,
+            container_gateway_database_max_connections: 100,
+            container_gateway_database_pool_timeout: 60,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_class('foreman_proxy::plugin::container_gateway')
+            .with_pulp_endpoint("https://#{facts[:networking]['fqdn']}")
+            .with_client_endpoint("https://#{facts[:networking]['fqdn']}")
+            .with_database_max_connections(100)
+            .with_database_pool_timeout(60)
+        end
+      end
+
+      context 'with default container gateway database settings' do
+        let(:params) do
+          {
+            pulpcore_mirror: true,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_class('foreman_proxy::plugin::container_gateway')
+            .with_pulp_endpoint("https://#{facts[:networking]['fqdn']}")
+            .with_client_endpoint("https://#{facts[:networking]['fqdn']}")
+            .with_database_max_connections(nil)
+            .with_database_pool_timeout(nil)
+        end
+      end
+
       context 'with registration_url' do
         let(:params) do
           {

@@ -26,7 +26,7 @@
     },
     {
       "name": "theforeman/foreman_proxy",
-      "version_requirement": ">= 28.1.0 < 31.0.0"
+      "version_requirement": ">= 30.1.0 < 31.0.0"
     },
     {
       "name": "katello/certs",
