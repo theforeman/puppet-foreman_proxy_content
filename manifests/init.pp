@@ -74,6 +74,10 @@
 #
 # $pulpcore_import_workers_percent::           What percentage of available-workers will pulpcore use for import tasks at a time
 #
+# $container_gateway_database_max_connections:: Maximum number of database connections for the container gateway
+#
+# $container_gateway_database_pool_timeout::   Database connection pool timeout in seconds for the container gateway
+#
 class foreman_proxy_content (
   Boolean $pulpcore_mirror = false,
 
@@ -110,6 +114,8 @@ class foreman_proxy_content (
   Boolean $pulpcore_analytics = false,
   Boolean $pulpcore_hide_guarded_distributions = true,
   Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
+  Optional[Integer] $container_gateway_database_max_connections = undef,
+  Optional[Integer] $container_gateway_database_pool_timeout = undef,
 ) inherits foreman_proxy_content::params {
   include certs
   include foreman_proxy
@@ -259,8 +265,10 @@ class foreman_proxy_content (
       }
 
       class { 'foreman_proxy::plugin::container_gateway':
-        pulp_endpoint   => "https://${servername}",
-        client_endpoint => "https://${client_facing_servername}",
+        pulp_endpoint            => "https://${servername}",
+        client_endpoint          => "https://${client_facing_servername}",
+        database_max_connections => $container_gateway_database_max_connections,
+        database_pool_timeout    => $container_gateway_database_pool_timeout,
       }
     }
   } else {
