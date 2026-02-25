@@ -207,6 +207,7 @@ describe 'foreman_proxy_content' do
               '/rhsm' => 'h2://foo.example.com/rhsm',
               '/redhat_access' => 'h2://foo.example.com/redhat_access',
               '/api/lightspeed' => 'h2://foo.example.com/api/lightspeed',
+              '/api/registration_commands' => 'h2://foo.example.com/api/registration_commands',
             })
             .with(port: 443)
             .with(priority: '10')

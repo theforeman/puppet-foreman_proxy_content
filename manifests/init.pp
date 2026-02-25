@@ -127,6 +127,7 @@ class foreman_proxy_content (
 
   $insights_path = '/redhat_access'
   $lightspeed_path = '/api/lightspeed'
+  $registration_commands_path = '/api/registration_commands'
 
   include certs::foreman_proxy
   Class['certs::foreman_proxy'] ~> Service['foreman-proxy']
@@ -240,9 +241,10 @@ class foreman_proxy_content (
     foreman_proxy_content::reverse_proxy { $apache_https_vhost:
       docroot      => $pulpcore::apache_docroot,
       path_url_map => {
-        $rhsm_path       => "${proxy_foreman_url}${rhsm_path}",
-        $insights_path   => "${proxy_foreman_url}${insights_path}",
-        $lightspeed_path => "${proxy_foreman_url}${lightspeed_path}",
+        $rhsm_path                  => "${proxy_foreman_url}${rhsm_path}",
+        $insights_path              => "${proxy_foreman_url}${insights_path}",
+        $lightspeed_path            => "${proxy_foreman_url}${lightspeed_path}",
+        $registration_commands_path => "${proxy_foreman_url}${registration_commands_path}",
       },
       port         => $rhsm_port,
       priority     => '10',
