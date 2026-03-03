@@ -1,5 +1,13 @@
 # Changelog
 
+## [32.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.1.0) (2026-03-03)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.0.0...32.1.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#39093](https://projects.theforeman.org/issues/39093) - add container gateway db connection options [\#532](https://github.com/theforeman/puppet-foreman_proxy_content/pull/532) ([ianballou](https://github.com/ianballou))
+
 ## [32.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.0.0) (2026-01-28)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/31.3.0...32.0.0)
