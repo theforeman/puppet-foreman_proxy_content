@@ -1,5 +1,13 @@
 # Changelog
 
+## [32.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.2.0) (2026-04-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.1.0...32.2.0)
+
+**Implemented enhancements:**
+
+- Fixes [\#39119](https://projects.theforeman.org/issues/39119) - Support generating registration command via REST API in isolated networks managed by external capsules [\#534](https://github.com/theforeman/puppet-foreman_proxy_content/pull/534) ([lfu](https://github.com/lfu))
+
 ## [32.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.1.0) (2026-03-03)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.0.0...32.1.0)
