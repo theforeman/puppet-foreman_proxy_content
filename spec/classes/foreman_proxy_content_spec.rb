@@ -175,6 +175,31 @@ describe 'foreman_proxy_content' do
               .with_django_secret_key('randomsecretkeyfordjangowithatleast50characters123')
           end
         end
+
+        context 'with custom gunicorn control socket paths' do
+          let(:params) do
+            {
+              pulpcore_api_control_socket_path: '/run/pulpcore-api/gunicorn.ctl',
+              pulpcore_content_control_socket_path: '/run/pulpcore-content/gunicorn.ctl',
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with_api_control_socket_path('/run/pulpcore-api/gunicorn.ctl')
+              .with_content_control_socket_path('/run/pulpcore-content/gunicorn.ctl')
+          end
+        end
+
+        context 'with default gunicorn control socket paths' do
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_class('pulpcore')
+              .with_api_control_socket_path(nil)
+              .with_content_control_socket_path(nil)
+          end
+        end
       end
 
       context 'as mirror' do

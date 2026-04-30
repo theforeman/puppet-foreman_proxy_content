@@ -74,6 +74,12 @@
 #
 # $pulpcore_import_workers_percent::           What percentage of available-workers will pulpcore use for import tasks at a time
 #
+# $pulpcore_api_control_socket_path::          Path for the gunicorn control socket of the API service.
+#                                              Only supported on gunicorn >= 25.1.0. Leave undef on older releases.
+#
+# $pulpcore_content_control_socket_path::      Path for the gunicorn control socket of the Content service.
+#                                              Only supported on gunicorn >= 25.1.0. Leave undef on older releases.
+#
 # $container_gateway_database_max_connections:: Maximum number of database connections for the container gateway
 #
 # $container_gateway_database_pool_timeout::   Database connection pool timeout in seconds for the container gateway
@@ -114,6 +120,8 @@ class foreman_proxy_content (
   Boolean $pulpcore_analytics = false,
   Boolean $pulpcore_hide_guarded_distributions = true,
   Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
+  Optional[Stdlib::Absolutepath] $pulpcore_api_control_socket_path = undef,
+  Optional[Stdlib::Absolutepath] $pulpcore_content_control_socket_path = undef,
   Optional[Integer] $container_gateway_database_max_connections = undef,
   Optional[Integer] $container_gateway_database_pool_timeout = undef,
 ) inherits foreman_proxy_content::params {
@@ -232,6 +240,8 @@ class foreman_proxy_content (
     analytics                      => $pulpcore_analytics,
     hide_guarded_distributions     => $pulpcore_hide_guarded_distributions,
     import_workers_percent         => $pulpcore_import_workers_percent,
+    api_control_socket_path        => $pulpcore_api_control_socket_path,
+    content_control_socket_path    => $pulpcore_content_control_socket_path,
   }
 
   if $shared_with_foreman_vhost {
