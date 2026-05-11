@@ -1,5 +1,14 @@
 # Changelog
 
+## [32.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.3.0) (2026-05-11)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.2.0...32.3.0)
+
+**Implemented enhancements:**
+
+- puppet/extlib: Allow 8.x [\#538](https://github.com/theforeman/puppet-foreman_proxy_content/pull/538) ([bastelfreak](https://github.com/bastelfreak))
+- Expose gunicorn control socket path parameters [\#537](https://github.com/theforeman/puppet-foreman_proxy_content/pull/537) ([Odilhao](https://github.com/Odilhao))
+
 ## [32.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.2.0) (2026-04-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.1.0...32.2.0)
