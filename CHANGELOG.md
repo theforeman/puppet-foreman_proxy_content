@@ -1,5 +1,13 @@
 # Changelog
 
+## [32.4.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.4.0) (2026-07-29)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.3.0...32.4.0)
+
+**Implemented enhancements:**
+
+- foreman\_proxy: Allow 31.x [\#540](https://github.com/theforeman/puppet-foreman_proxy_content/pull/540) ([arvind4501](https://github.com/arvind4501))
+
 ## [32.3.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.3.0) (2026-05-11)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.2.0...32.3.0)
@@ -9,7 +17,7 @@
 - puppet/extlib: Allow 8.x [\#538](https://github.com/theforeman/puppet-foreman_proxy_content/pull/538) ([bastelfreak](https://github.com/bastelfreak))
 - Expose gunicorn control socket path parameters [\#537](https://github.com/theforeman/puppet-foreman_proxy_content/pull/537) ([Odilhao](https://github.com/Odilhao))
 
-## [32.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.2.0) (2026-04-29)
+## [32.2.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.2.0) (2026-04-30)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.1.0...32.2.0)
 
@@ -17,7 +25,7 @@
 
 - Fixes [\#39119](https://projects.theforeman.org/issues/39119) - Support generating registration command via REST API in isolated networks managed by external capsules [\#534](https://github.com/theforeman/puppet-foreman_proxy_content/pull/534) ([lfu](https://github.com/lfu))
 
-## [32.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.1.0) (2026-03-03)
+## [32.1.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.1.0) (2026-03-04)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.0.0...32.1.0)
 
