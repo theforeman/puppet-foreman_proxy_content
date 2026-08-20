@@ -20,7 +20,7 @@ define foreman_proxy_content::reverse_proxy (
   Stdlib::Absolutepath $docroot = '/var/www/html',
   Hash[Stdlib::Unixpath, String[1]] $path_url_map = { '/' => "${foreman_proxy_content::foreman_url}/" },
   Stdlib::Port $port = 443,
-  Variant[Array[String], String, Undef] $ssl_protocol = undef,
+  Optional[Variant[Array[String], String]] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
   Hash[String, Variant[String, Integer]] $proxy_pass_params = { 'disablereuse' => 'on', 'retry' => '0' },
   Enum['present', 'absent'] $ensure = 'present',
