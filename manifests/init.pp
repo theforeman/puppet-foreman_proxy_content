@@ -201,7 +201,7 @@ class foreman_proxy_content (
   }
 
   $api_client_auth_cn_map = Hash($foreman_proxy::trusted_hosts.map |$host| {
-      [$host, 'admin']
+    [$host, 'admin']
   })
 
   class { 'pulpcore':
