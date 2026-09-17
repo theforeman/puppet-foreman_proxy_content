@@ -12,6 +12,9 @@
 #   Any parameters to pass to the apache::vhost resource
 # @param proxy_pass_params
 #   Any parameters to pass to the proxy_pass param of the apache::vhost resource
+# @param path_proxy_params
+#   Per-path ProxyPass parameter overrides, merged on top of proxy_pass_params.
+#   Keys are paths from path_url_map; paths not present get only proxy_pass_params.
 # @param ensure
 #   Specifies if the virtual host is present or absent.
 # @param priority
@@ -23,6 +26,7 @@ define foreman_proxy_content::reverse_proxy (
   Optional[Variant[Array[String], String]] $ssl_protocol = undef,
   Hash[String, Any] $vhost_params = {},
   Hash[String, Variant[String, Integer]] $proxy_pass_params = { 'disablereuse' => 'on', 'retry' => '0' },
+  Hash[Stdlib::Unixpath, Hash[String, Variant[String, Integer]]] $path_proxy_params = {},
   Enum['present', 'absent'] $ensure = 'present',
   Variant[String, Boolean] $priority = '28',
 ) {
@@ -39,7 +43,7 @@ define foreman_proxy_content::reverse_proxy (
       'path'         => $path,
       'url'          => $url,
       'reverse_urls' => [$url],
-      'params'       => $proxy_pass_params,
+      'params'       => $proxy_pass_params + pick($path_proxy_params[$path], {}),
     }
   }
 
