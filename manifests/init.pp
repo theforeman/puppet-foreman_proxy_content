@@ -80,6 +80,12 @@
 # $pulpcore_content_control_socket_path::      Path for the gunicorn control socket of the Content service.
 #                                              Only supported on gunicorn >= 25.1.0. Leave undef on older releases.
 #
+# $rhsm_proxy_timeout::                        Apache ProxyPass timeout in seconds for the /rhsm reverse proxy
+#                                              path on capsules. Should match subscription-manager's server_timeout.
+#
+# $redhat_access_proxy_timeout::               Apache ProxyPass timeout in seconds for the /redhat_access reverse
+#                                              proxy path on capsules. Should match insights-client's default timeout.
+#
 # $container_gateway_database_max_connections:: Maximum number of database connections for the container gateway
 #
 # $container_gateway_database_pool_timeout::   Database connection pool timeout in seconds for the container gateway
@@ -122,6 +128,8 @@ class foreman_proxy_content (
   Optional[Integer[1,100]] $pulpcore_import_workers_percent = undef,
   Optional[Stdlib::Absolutepath] $pulpcore_api_control_socket_path = undef,
   Optional[Stdlib::Absolutepath] $pulpcore_content_control_socket_path = undef,
+  Integer[0] $rhsm_proxy_timeout = 180,
+  Integer[0] $redhat_access_proxy_timeout = 120,
   Optional[Integer] $container_gateway_database_max_connections = undef,
   Optional[Integer] $container_gateway_database_pool_timeout = undef,
 ) inherits foreman_proxy_content::params {
@@ -255,16 +263,20 @@ class foreman_proxy_content (
     }
   } elsif $pulpcore_mirror {
     foreman_proxy_content::reverse_proxy { $apache_https_vhost:
-      docroot      => $pulpcore::apache_docroot,
-      path_url_map => {
+      docroot           => $pulpcore::apache_docroot,
+      path_url_map      => {
         $rhsm_path                  => "${proxy_foreman_url}${rhsm_path}",
         $insights_path              => "${proxy_foreman_url}${insights_path}",
         $lightspeed_path            => "${proxy_foreman_url}${lightspeed_path}",
         $registration_commands_path => "${proxy_foreman_url}${registration_commands_path}",
       },
-      port         => $rhsm_port,
-      priority     => '10',
-      before       => Class['pulpcore::apache'],
+      path_proxy_params => {
+        $rhsm_path     => { 'timeout' => $rhsm_proxy_timeout },
+        $insights_path => { 'timeout' => $redhat_access_proxy_timeout },
+      },
+      port              => $rhsm_port,
+      priority          => '10',
+      before            => Class['pulpcore::apache'],
     }
   }
 

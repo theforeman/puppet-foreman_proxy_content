@@ -94,6 +94,41 @@ describe 'foreman_proxy_content::reverse_proxy' do
               .with_content(%r{^\s+ProxyPass / https://foreman\.example\.com/ disablereuse=off$})
           end
         end
+
+        context 'with path_proxy_params' do
+          let(:params) do
+            super().merge(
+              path_url_map: {
+                '/rhsm' => 'https://foreman.example.com/rhsm',
+                '/redhat_access' => 'https://foreman.example.com/redhat_access',
+              },
+              path_proxy_params: {
+                '/rhsm' => { 'timeout' => 180 },
+                '/redhat_access' => { 'timeout' => 120 },
+              },
+            )
+          end
+          let(:title) { 'katello-reverse-proxy' }
+
+          it { is_expected.to compile.with_all_deps }
+          it do
+            is_expected.to contain_apache__vhost('katello-reverse-proxy')
+              .with_proxy_pass([
+                {
+                  'path' => '/rhsm',
+                  'url' => 'https://foreman.example.com/rhsm',
+                  'reverse_urls' => ['https://foreman.example.com/rhsm'],
+                  'params' => { 'disablereuse' => 'on', 'retry' => '0', 'timeout' => 180 },
+                },
+                {
+                  'path' => '/redhat_access',
+                  'url' => 'https://foreman.example.com/redhat_access',
+                  'reverse_urls' => ['https://foreman.example.com/redhat_access'],
+                  'params' => { 'disablereuse' => 'on', 'retry' => '0', 'timeout' => 120 },
+                },
+              ])
+          end
+        end
       end
     end
   end
