@@ -1,5 +1,18 @@
 # Changelog
 
+## [33.0.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/33.0.0) (2026-10-23)
+
+[Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.4.0...33.0.0)
+
+**Breaking changes:**
+
+- Drop testing on puppet [\#544](https://github.com/theforeman/puppet-foreman_proxy_content/pull/544) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- puppetlabs/stdlib: Allow 10.x & theforeman/foreman\_proxy: Allow 32.x [\#546](https://github.com/theforeman/puppet-foreman_proxy_content/pull/546) ([bastelfreak](https://github.com/bastelfreak))
+- Add EL 10 support [\#542](https://github.com/theforeman/puppet-foreman_proxy_content/pull/542) ([ekohl](https://github.com/ekohl))
+
 ## [32.4.0](https://github.com/theforeman/puppet-foreman_proxy_content/tree/32.4.0) (2026-07-29)
 
 [Full Changelog](https://github.com/theforeman/puppet-foreman_proxy_content/compare/32.3.0...32.4.0)
