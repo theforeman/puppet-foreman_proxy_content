@@ -234,6 +234,10 @@ describe 'foreman_proxy_content' do
               '/api/lightspeed' => 'h2://foo.example.com/api/lightspeed',
               '/api/registration_commands' => 'h2://foo.example.com/api/registration_commands',
             })
+            .with(path_proxy_params: {
+              '/rhsm' => { 'timeout' => 180 },
+              '/redhat_access' => { 'timeout' => 120 },
+            })
             .with(port: 443)
             .with(priority: '10')
             .that_comes_before('Class[pulpcore::apache]')
@@ -241,6 +245,25 @@ describe 'foreman_proxy_content' do
         it do
           is_expected.to contain_pulpcore__apache__fragment('gpg_key_proxy')
             .with_https_content(%r{ProxyPass /katello/api/v2/repositories/ h2://foo\.example\.com/katello/api/v2/repositories/})
+        end
+      end
+
+      context 'as mirror with custom proxy timeouts' do
+        let(:params) do
+          {
+            pulpcore_mirror: true,
+            rhsm_proxy_timeout: 300,
+            redhat_access_proxy_timeout: 60,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_foreman_proxy_content__reverse_proxy('rhsm-pulpcore-https-443')
+            .with(path_proxy_params: {
+              '/rhsm' => { 'timeout' => 300 },
+              '/redhat_access' => { 'timeout' => 60 },
+            })
         end
       end
 
